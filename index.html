@@ -346,6 +346,12 @@ textarea.inp{resize:vertical;min-height:64px}
 .pthumb .ic{opacity:.6}
 .pcard .px{min-width:0}
 @container (max-width:380px){.pthumb{width:88px;height:88px}}
+.meta .open,.meta .shut{background:color-mix(in srgb,var(--t-header-ink) 14%,transparent);color:var(--t-header-ink);font-weight:700}
+.sdot{width:9px;height:9px;border-radius:50%;flex:none;display:inline-block}
+.sdot.on{background:#22C55E;box-shadow:0 0 0 0 rgb(34 197 94 / .7);animation:sdot 1.8s ease-out infinite}
+.sdot.off{background:#EF4444;box-shadow:0 0 0 3px rgb(239 68 68 / .25)}
+@keyframes sdot{0%{box-shadow:0 0 0 0 rgb(34 197 94 / .7)}70%{box-shadow:0 0 0 7px rgb(34 197 94 / 0)}100%{box-shadow:0 0 0 0 rgb(34 197 94 / 0)}}
+@media (prefers-reduced-motion:reduce){.sdot.on{animation:none;box-shadow:0 0 0 3px rgb(34 197 94 / .25)}}
 </style>
 
 </head>
@@ -619,7 +625,7 @@ function catalogHTML(cfg,live){
   <div class="cinfo"><h1>${esc(st.name)}</h1><p>${esc(tr(st.slogan))}</p></div>
  </div>
  <div class="facts"><span>${ic('pin',15)}${esc(st.address)}</span><span>${ic('clock',15)}${esc(todayHours(st))}</span><span>${ic('msg',15)}+${esc(String(st.whatsapp).replace(/\D/g,'').replace(/^(\d{3})(\d{3})(\d{3})(\d+)$/,'$1 $2 $3 $4'))}</span>
-  <div class="meta" style="width:100%">${(()=>{const o=openState(st);return `<span class="${o.open?'open':'shut'}">${ic(o.open?'check':'clock',14)}${esc(openLabel(st))}</span>`})()}${modes}<span>${t('prep')} ${st.prep} ${t('min')}</span></div></div>
+  <div class="meta" style="width:100%">${(()=>{const o=openState(st);return `<span class="${o.open?'open':'shut'}"><i class="sdot ${o.open?'on':'off'}" aria-hidden="true"></i>${esc(openLabel(st))}</span>`})()}${modes}<span>${t('prep')} ${st.prep} ${t('min')}</span></div></div>
  </header>
  <div class="cbody">
   ${adSliderHTML(cfg,live)}
