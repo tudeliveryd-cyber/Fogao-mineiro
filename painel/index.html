@@ -340,6 +340,12 @@ textarea.inp{resize:vertical;min-height:64px}
 .clang{position:absolute;z-index:3;top:calc(12px + env(safe-area-inset-top,0px));right:max(12px,env(safe-area-inset-right,0px));display:inline-flex;gap:2px;padding:3px;border-radius:10px;background:rgb(0 0 0 / .45);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .clang button{border:0;background:transparent;color:#fff;font-weight:700;font-size:13px;padding:6px 11px;border-radius:8px;opacity:.75}
 .clang button[aria-pressed="true"]{background:#fff;color:#141414;opacity:1}
+.pcard{flex-direction:row;align-items:stretch}
+.pthumb{width:104px;height:104px;margin:12px 12px 12px 0;align-self:center;flex:none;border-radius:12px;overflow:hidden;background:color-mix(in srgb,var(--t-primary) 12%,var(--t-card));color:var(--t-primary);display:grid;place-items:center;position:relative}
+.pthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pthumb .ic{opacity:.6}
+.pcard .px{min-width:0}
+@container (max-width:380px){.pthumb{width:88px;height:88px}}
 </style>
 
 </head>
@@ -637,9 +643,9 @@ function sectionsHTML(cfg,live){
   out+=`<section><h2 class="sech" id="sec-${c.id}">${esc(tr(c.n))}<span class="ct">${ps.length}</span></h2><div class="grid ${lay.cards==='list'?'l':'g'}">${ps.map(p=>{
    const promo=p.promo>0&&p.promo<p.price;
    return `<button class="pcard ${p.on?'':'off'}" data-act="${live&&p.on?'open':''}" data-pid="${p.id}" ${p.on?'':'aria-disabled="true"'}>
-    ${p.photo?`<div class="ph">${!p.on?`<span class="badge">${t('unavailable')}</span>`:promo?`<span class="badge">${t('promo')}</span>`:''}${photo(cfg,p,44)}</div>`:''}
-    <div class="px">${!p.photo&&(!p.on||promo)?`<span class="pbadge">${!p.on?t('unavailable'):t('promo')}</span>`:''}<span class="pname">${esc(tr(p.n))}</span><span class="pdesc">${esc(tr(p.d))}</span>
-    <div class="prow"><span class="price">${gs(eff(p))}${promo?`<span class="old">${gs(p.price)}</span>`:''}</span>${p.on?`<span class="addb">${ic('plus',18)}</span>`:''}</div></div></button>`}).join('')}</div></section>`});
+    
+    <div class="px">${(!p.on||promo)?`<span class="pbadge">${!p.on?t('unavailable'):t('promo')}</span>`:''}<span class="pname">${esc(tr(p.n))}</span><span class="pdesc">${esc(tr(p.d))}</span>
+    <div class="prow"><span class="price">${gs(eff(p))}${promo?`<span class="old">${gs(p.price)}</span>`:''}</span>${p.on?`<span class="addb">${ic('plus',18)}</span>`:''}</div></div><div class="pthumb">${photo(cfg,p,30)}</div></button>`}).join('')}</div></section>`});
  return out||`<div class="empty">${ic('search',28)}<p>—</p></div>`}
 
 /* ===== Folhas: produto, carrinho, checkout ===== */
