@@ -68,7 +68,7 @@ button{cursor:pointer}
 .facts{max-width:1080px;margin:0 auto;padding-block:8px 18px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;opacity:.85}
 .facts span{display:inline-flex;align-items:center;gap:6px}
 .chead .meta{margin-top:10px}
-@container (max-width:520px){.chead-in{flex-direction:column;align-items:flex-start;gap:10px;margin-top:-44px}.chead-in .logo{width:80px;height:80px;font-size:26px}}
+@container (max-width:520px){.chead-in{flex-direction:column;align-items:center;text-align:center;gap:10px;margin-top:-44px}.chead-in .logo{width:80px;height:80px;font-size:26px}}
 .chead-in .logo:has(img){width:170px;height:112px;border-radius:20px}
 @container (max-width:520px){.chead-in .logo:has(img){width:140px;height:92px}}
 .pcard .pbadge{align-self:flex-start;background:var(--t-promo);color:var(--t-promo-ink);font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:6px}
@@ -443,6 +443,7 @@ textarea.inp{resize:vertical;min-height:64px}
 .filebtn{position:relative;overflow:hidden;cursor:pointer}.filebtn input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
 .filebtn .ic{transform:rotate(180deg)}
 .two-mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px}
+@container (max-width:520px){.facts{justify-content:center;text-align:center}.chead .meta{justify-content:center;gap:5px}.chead .meta>span{padding:4px 8px;font-size:11.5px;gap:4px}.meta .pl{display:none}.chead p{margin-inline:auto}}
 </style>
 
 </head>
@@ -1980,7 +1981,7 @@ function catalogHTML(cfg,live){
   <div class="cinfo"><h1>${esc(st.name)}</h1><p>${esc(tr(st.slogan))}</p></div>
  </div>
  <div class="facts"><span>${ic('pin',15)}${esc(st.address)}</span><span>${ic('clock',15)}${esc(todayHours(st))}</span>
-  <div class="meta" style="width:100%">${(()=>{const o=openState(st);return `<span class="${o.open?'open':'shut'}"><i class="sdot ${o.open?'on':'off'}" aria-hidden="true"></i>${esc(openLabel(st))}</span>`})()}${modes}<span>${t('prep')} ${st.prep} ${t('min')}</span></div>${linksHTML(st)}</div>
+  <div class="meta" style="width:100%">${(()=>{const o=openState(st);return `<span class="${o.open?'open':'shut'}"><i class="sdot ${o.open?'on':'off'}" aria-hidden="true"></i>${esc(openLabel(st))}</span>`})()}${modes}<span title="${t('prep')} ${st.prep} ${t('min')}">${ic('clock',14)}<span class="pl">${t('prep')} </span>${st.prep} ${t('min')}</span></div>${linksHTML(st)}</div>
  </header>
  <div class="cbody ${live?'live':''}"><div class="cmain">
   ${adSliderHTML(cfg,live)}
