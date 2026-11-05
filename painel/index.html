@@ -1972,7 +1972,7 @@ function catalogHTML(cfg,live){
   <div class="logo">${st.logo?`<img src="${st.logo}" alt="">`:esc(initials(st.name))}</div>
   <div class="cinfo"><h1>${esc(st.name)}</h1><p>${esc(tr(st.slogan))}</p></div>
  </div>
- <div class="facts"><span>${ic('pin',15)}${esc(st.address)}</span><span>${ic('clock',15)}${esc(todayHours(st))}</span><span>${ic('msg',15)}+${esc(String(st.whatsapp).replace(/\D/g,'').replace(/^(\d{3})(\d{3})(\d{3})(\d+)$/,'$1 $2 $3 $4'))}</span>
+ <div class="facts"><span>${ic('pin',15)}${esc(st.address)}</span><span>${ic('clock',15)}${esc(todayHours(st))}</span>
   <div class="meta" style="width:100%">${(()=>{const o=openState(st);return `<span class="${o.open?'open':'shut'}"><i class="sdot ${o.open?'on':'off'}" aria-hidden="true"></i>${esc(openLabel(st))}</span>`})()}${modes}<span>${t('prep')} ${st.prep} ${t('min')}</span></div>${linksHTML(st)}</div>
  </header>
  <div class="cbody ${live?'live':''}"><div class="cmain">
