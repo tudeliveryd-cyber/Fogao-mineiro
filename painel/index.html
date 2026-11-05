@@ -366,6 +366,68 @@ textarea.inp{resize:vertical;min-height:64px}
 .qrbox img,.qrbox canvas{width:180px!important;height:180px!important}
 .share-r{flex:1;min-width:min(100%,260px);display:flex;flex-direction:column;gap:12px}
 .share-r .inp{min-width:0;flex:1;font-size:13px}
+/* painel: celular = barra embaixo; computador = menu lateral */
+.tabs-a{display:none}
+.side{display:none}
+.d-only{display:none}
+.bnav{position:fixed;left:0;right:0;bottom:0;z-index:45;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(6,minmax(0,1fr));padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px);box-shadow:0 -4px 16px rgb(0 0 0 / .06)}
+.bnav button{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 2px 9px;font-size:10.5px;font-weight:600;color:var(--muted);min-width:0}
+.bnav button span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.bnav button[aria-current="page"]{color:var(--accent)}
+.adm .admin-wrap{padding-bottom:24px}
+.admin-credit{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))!important}
+.icon-btn{padding:9px 10px}.icon-btn span{display:none}
+.side-store{display:flex;align-items:center;gap:10px;padding:4px 6px 16px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.side-store .logo{width:58px;height:40px;border-radius:10px;border:1px solid var(--line);font-size:14px;flex:none}
+.side-store b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.side-store small{color:var(--muted);font-size:12px}
+.side-nav{display:flex;flex-direction:column;gap:2px}
+.side-nav button{border:0;background:transparent;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-weight:600;color:var(--muted);text-align:left}
+.side-nav button:hover{background:var(--soft);color:var(--fg)}
+.side-nav button[aria-current="page"]{background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent)}
+.side-foot{margin-top:auto;display:flex;flex-direction:column;gap:6px;padding-top:12px}
+.side-foot .btn{justify-content:center}
+@media (min-width:900px){
+ .adm{display:grid;grid-template-columns:248px minmax(0,1fr);align-items:start}
+ .side{display:flex;flex-direction:column;gap:6px;position:sticky;top:var(--topH,0px);height:calc(100vh - var(--topH,0px));padding:20px 14px;border-right:1px solid var(--line);background:var(--surface);overflow:auto}
+ .bnav{display:none}
+ .adm .admin-wrap{padding-bottom:40px;margin:0;max-width:1180px;width:100%}
+ .m-only{display:none!important}.d-only{display:inline}
+ .admin-credit{padding-bottom:28px!important}
+}
+/* tabelas viram cartões quando o espaço é pequeno */
+.card{container-type:inline-size}
+@container (max-width:620px){
+ .tbl-wrap{overflow:visible;margin:0;padding:0}
+ .tbl,.tbl tbody{display:block;width:100%}
+ .tbl thead{display:none}
+ .tbl tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px;align-items:end;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px;background:var(--surface)}
+ .tbl td{display:block;border:0;padding:0;min-width:0}
+ .tbl td[data-label]::before{content:attr(data-label);display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px}
+ .tbl td.full{grid-column:1/-1}.tbl td.full::before{display:none}
+ .tbl td.act{grid-column:1/-1;display:flex;justify-content:flex-end;gap:6px}
+ .tbl td.act>div{justify-content:flex-end}
+ .tbl .inp{width:100%!important}
+ .pcell{min-width:0}
+}
+/* catálogo no computador: carrinho fixo à direita */
+.cmain{display:flex;flex-direction:column;gap:18px;min-width:0}
+.cartpanel{display:none}
+.cartpanel h2{font-family:var(--f-display);font-size:20px;margin:0;display:flex;align-items:center;gap:8px;letter-spacing:-.01em}
+.cp-items{display:flex;flex-direction:column;gap:12px}
+.cp-item{display:flex;gap:10px;padding-bottom:12px;border-bottom:1px solid color-mix(in srgb,currentColor 10%,transparent)}
+.cp-item small{display:block;opacity:.65;font-size:12.5px}
+.cp-item .warn{color:var(--bad);opacity:1;font-weight:600}
+.cp-row{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.stepper.sm button{width:30px;height:30px}
+.cp-empty{text-align:center;opacity:.6;padding:28px 0 12px}.cp-empty .ic{margin:0 auto}
+.cp-note{opacity:.7}
+@media (min-width:1024px){
+ .cbody.live{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:28px;align-items:start;max-width:1260px}
+ .cbody.live .cmain{container-type:inline-size}
+ .cartpanel{display:flex;flex-direction:column;gap:14px;position:sticky;top:calc(var(--topH,0px) + 16px);background:var(--t-card);color:var(--t-text);border:1px solid color-mix(in srgb,var(--t-text) 10%,transparent);border-radius:var(--t-r2);padding:18px;max-height:calc(100vh - var(--topH,0px) - 32px);overflow:auto;box-shadow:0 10px 30px rgb(0 0 0 / .06)}
+ .catwrap .cartbar{display:none}
+ .chead-in,.facts{max-width:1260px}
+}
 </style>
 
 </head>
@@ -1695,7 +1757,7 @@ const ic=(n,s=20)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 2
 /* ===== Textos PT / ES ===== */
 const T={pt:{
 fee_mode:'Como cobrar a entrega',by_bairro:'Por bairro',by_zone:'Por distância (zonas)',bairros_sub:'O cliente escolhe o bairro na lista e a taxa aparece na hora.',from_store:'Valores da entrega saindo do restaurante:',bairro_name:'Bairro',add_bairro:'Adicionar bairro',choose_bairro:'Selecione seu bairro',bairro_out:'Meu bairro não está na lista',err_out_bairro:'Ainda não entregamos neste bairro. Escolha retirada ou fale com a loja.',pix_key:'Chave PIX',pix_name:'Nome do titular',pix_info:'Pague com PIX usando a chave abaixo e envie o comprovante pelo WhatsApp junto com o pedido.',pix_nokey:'A loja vai enviar a chave PIX pelo WhatsApp.',key_copied:'Chave copiada',pix_note:'enviar comprovante',
-dev_by:'Desenvolvido por',how_to_get:'Como chegar',share_title:'Compartilhar meu catálogo',share_sub:'Mande o link para os clientes ou imprima o QR Code para as mesas, o balcão e os panfletos.',cat_link:'Link do catálogo',copy_link:'Copiar',link_copied:'Link copiado',download_qr:'Baixar QR Code',download_poster:'Baixar cartaz para imprimir',dl_note:'Os botões de baixar funcionam no site publicado.',qr_fail:'Não foi possível gerar o QR Code agora. Verifique a internet e recarregue.',instagram_l:'Instagram (usuário ou link)',facebook_l:'Facebook (link da página)',login_sub:'Acesso exclusivo do estabelecimento',user_l:'Usuário',pass_l:'Senha',enter:'Entrar',login_err:'Usuário ou senha incorretos.',logout:'Sair',show_pass:'Mostrar senha',nav_catalog:'Catálogo',nav_admin:'Painel da loja',search:'Buscar no cardápio',featured:'Destaques',unavailable:'Indisponível',promo:'Promoção',
+dev_by:'Desenvolvido por',s_resumo:'Resumo',s_custom:'Visual',s_products:'Produtos',s_delivery:'Entrega',s_ads:'Anúncios',s_orders:'Pedidos',how_to_get:'Como chegar',share_title:'Compartilhar meu catálogo',share_sub:'Mande o link para os clientes ou imprima o QR Code para as mesas, o balcão e os panfletos.',cat_link:'Link do catálogo',copy_link:'Copiar',link_copied:'Link copiado',download_qr:'Baixar QR Code',download_poster:'Baixar cartaz para imprimir',dl_note:'Os botões de baixar funcionam no site publicado.',qr_fail:'Não foi possível gerar o QR Code agora. Verifique a internet e recarregue.',instagram_l:'Instagram (usuário ou link)',facebook_l:'Facebook (link da página)',login_sub:'Acesso exclusivo do estabelecimento',user_l:'Usuário',pass_l:'Senha',enter:'Entrar',login_err:'Usuário ou senha incorretos.',logout:'Sair',show_pass:'Mostrar senha',nav_catalog:'Catálogo',nav_admin:'Painel da loja',search:'Buscar no cardápio',featured:'Destaques',unavailable:'Indisponível',promo:'Promoção',
 view_cart:'Ver carrinho',cart:'Seu pedido',subtotal:'Subtotal',fee:'Taxa de entrega',total:'Total',empty_cart:'Seu carrinho está vazio.',
 notes:'Observações',notes_ph:'Ex.: sem cebola, ponto da carne…',required:'Obrigatório',optional:'Opcional',add_to_cart:'Adicionar',
 continue:'Continuar',remove:'Remover',keep_buying:'Adicionar mais itens',checkout:'Finalizar pedido',
@@ -1730,7 +1792,7 @@ st:{aguardando:'Aguardando confirmação',recebido:'Pedido recebido',aceito:'Ped
 c:{primary:'Principal',secondary:'Secundária',button:'Botões',text:'Textos',bg:'Fundo',price:'Preços',promo:'Promoções',highlight:'Destaques',card:'Cartões',header:'Cabeçalho'}
 },es:{
 fee_mode:'Cómo cobrar el envío',by_bairro:'Por barrio',by_zone:'Por distancia (zonas)',bairros_sub:'El cliente elige el barrio en la lista y el costo aparece al instante.',from_store:'Costos de envío saliendo del local:',bairro_name:'Barrio',add_bairro:'Agregar barrio',choose_bairro:'Seleccioná tu barrio',bairro_out:'Mi barrio no está en la lista',err_out_bairro:'Todavía no hacemos envíos a este barrio. Elegí retiro o hablá con el local.',pix_key:'Clave PIX',pix_name:'Nombre del titular',pix_info:'Pagá con PIX usando la clave de abajo y enviá el comprobante por WhatsApp junto con el pedido.',pix_nokey:'El local te enviará la clave PIX por WhatsApp.',key_copied:'Clave copiada',pix_note:'enviar comprobante',
-dev_by:'Desarrollado por',how_to_get:'Cómo llegar',share_title:'Compartir mi catálogo',share_sub:'Enviá el link a tus clientes o imprimí el código QR para mesas, mostrador y volantes.',cat_link:'Link del catálogo',copy_link:'Copiar',link_copied:'Link copiado',download_qr:'Descargar código QR',download_poster:'Descargar cartel para imprimir',dl_note:'Los botones de descarga funcionan en el sitio publicado.',qr_fail:'No se pudo generar el código QR ahora. Verificá internet y recargá.',instagram_l:'Instagram (usuario o link)',facebook_l:'Facebook (link de la página)',login_sub:'Acceso exclusivo del local',user_l:'Usuario',pass_l:'Contraseña',enter:'Ingresar',login_err:'Usuario o contraseña incorrectos.',logout:'Salir',show_pass:'Mostrar contraseña',nav_catalog:'Catálogo',nav_admin:'Panel del local',search:'Buscar en el menú',featured:'Destacados',unavailable:'No disponible',promo:'Promoción',
+dev_by:'Desarrollado por',s_resumo:'Resumen',s_custom:'Diseño',s_products:'Productos',s_delivery:'Envío',s_ads:'Anuncios',s_orders:'Pedidos',how_to_get:'Cómo llegar',share_title:'Compartir mi catálogo',share_sub:'Enviá el link a tus clientes o imprimí el código QR para mesas, mostrador y volantes.',cat_link:'Link del catálogo',copy_link:'Copiar',link_copied:'Link copiado',download_qr:'Descargar código QR',download_poster:'Descargar cartel para imprimir',dl_note:'Los botones de descarga funcionan en el sitio publicado.',qr_fail:'No se pudo generar el código QR ahora. Verificá internet y recargá.',instagram_l:'Instagram (usuario o link)',facebook_l:'Facebook (link de la página)',login_sub:'Acceso exclusivo del local',user_l:'Usuario',pass_l:'Contraseña',enter:'Ingresar',login_err:'Usuario o contraseña incorrectos.',logout:'Salir',show_pass:'Mostrar contraseña',nav_catalog:'Catálogo',nav_admin:'Panel del local',search:'Buscar en el menú',featured:'Destacados',unavailable:'No disponible',promo:'Promoción',
 view_cart:'Ver carrito',cart:'Tu pedido',subtotal:'Subtotal',fee:'Costo de envío',total:'Total',empty_cart:'Tu carrito está vacío.',
 notes:'Observaciones',notes_ph:'Ej.: sin cebolla, punto de la carne…',required:'Obligatorio',optional:'Opcional',add_to_cart:'Agregar',
 continue:'Continuar',remove:'Quitar',keep_buying:'Agregar más productos',checkout:'Finalizar pedido',
@@ -1905,7 +1967,7 @@ function catalogHTML(cfg,live){
  <div class="facts"><span>${ic('pin',15)}${esc(st.address)}</span><span>${ic('clock',15)}${esc(todayHours(st))}</span><span>${ic('msg',15)}+${esc(String(st.whatsapp).replace(/\D/g,'').replace(/^(\d{3})(\d{3})(\d{3})(\d+)$/,'$1 $2 $3 $4'))}</span>
   <div class="meta" style="width:100%">${(()=>{const o=openState(st);return `<span class="${o.open?'open':'shut'}"><i class="sdot ${o.open?'on':'off'}" aria-hidden="true"></i>${esc(openLabel(st))}</span>`})()}${modes}<span>${t('prep')} ${st.prep} ${t('min')}</span></div>${linksHTML(st)}</div>
  </header>
- <div class="cbody">
+ <div class="cbody ${live?'live':''}"><div class="cmain">
   ${adSliderHTML(cfg,live)}
   ${live&&!openState(st).open?`<div class="info">${ic('clock',18)}<span><b>${esc(openLabel(st))}</b><br>${t('closed_info')}</span></div>`:''}
   ${live?againHTML():''}
@@ -1915,6 +1977,7 @@ function catalogHTML(cfg,live){
   ${lay.featured&&feat.length?`<section><h2 class="sech">${ic('star',18)}${t('featured')}</h2><div class="feat">${feat.map(p=>`<button class="fcard" data-act="${live?'open':''}" data-pid="${p.id}"><div class="ph ${p.photo?'':'short'}">${p.promo>0&&p.promo<p.price?`<span class="badge">${t('promo')}</span>`:''}${photo(cfg,p,30)}</div><div class="fx"><span class="pname">${esc(tr(p.n))}</span><span class="price">${gs(eff(p))}</span></div></button>`).join('')}</div></section>`:''}
   <div id="secs">${sectionsHTML(cfg,live)}</div>
   <footer class="credit">${t('dev_by')} <b>Araújo Tech</b></footer>
+  </div>${live?`<aside class="cartpanel" aria-label="${t('cart')}">${cartPanelHTML()}</aside>`:''}
  </div>
  ${live&&cart.length?`<div class="cartbar"><button data-act="cart"><span class="cnt">${cartCount()}</span><span class="sp">${t('view_cart')}</span><span class="num">${gs(subtotal())}</span></button></div>`:''}
  </div>`}
@@ -2064,10 +2127,17 @@ function sendOrder(){
 function adminHTML(){
  const st=draft.store;
  const tabs=[['resumo','chart'],['custom','palette'],['products','box'],['delivery','map'],['ads','layers'],['orders','list']];
- return `<div class="admin-wrap">
- <div class="ahead"><div class="logo" style="background:${pub.theme.primary};color:${ink(pub.theme.primary)}">${pub.store.logo?`<img src="${pub.store.logo}" alt="">`:esc(initials(pub.store.name))}</div><div><h2>${esc(pub.store.name)}</h2><p>tudelivery.com/fogao-mineiro</p></div><span class="spacer"></span>${MODE==='panel'?`<a class="btn" href="../" target="_blank" rel="noopener" style="text-decoration:none">${ic('eye',16)}${t('nav_catalog')}</a>`:`<button class="btn" data-act="view" data-v="catalog">${ic('eye',16)}${t('nav_catalog')}</button>`}<button class="btn" data-act="logout">${t('logout')}</button></div>
- <div class="tabs-a" role="tablist">${tabs.map(([k,i])=>`<button role="tab" aria-selected="${ui.tab===k}" data-act="tab" data-t="${k}">${ic(i,17)}${t('a_'+k)}</button>`).join('')}</div>
- <div id="tabBody">${({resumo:tabResumo,custom:tabCustom,products:tabProducts,delivery:tabDelivery,ads:()=>`<div style="margin-top:16px">${adsCard()}</div>`,orders:tabOrders})[ui.tab]()}</div></div>`}
+ const catBtn=(cls)=>MODE==='panel'?`<a class="btn ${cls}" href="../" target="_blank" rel="noopener" style="text-decoration:none">${ic('eye',16)}<span>${t('nav_catalog')}</span></a>`:`<button class="btn ${cls}" data-act="view" data-v="catalog">${ic('eye',16)}<span>${t('nav_catalog')}</span></button>`;
+ const logo=`<div class="logo" style="background:${pub.theme.primary};color:${ink(pub.theme.primary)}">${pub.store.logo?`<img src="${pub.store.logo}" alt="">`:esc(initials(pub.store.name))}</div>`;
+ return `<div class="adm">
+ <aside class="side"><div class="side-store">${logo}<div style="min-width:0"><b>${esc(pub.store.name)}</b><small>${t('nav_admin')}</small></div></div>
+  <nav class="side-nav" aria-label="${t('nav_admin')}">${tabs.map(([k,i])=>`<button data-act="tab" data-t="${k}" aria-current="${ui.tab===k?'page':'false'}">${ic(i,18)}<span>${t('a_'+k)}</span></button>`).join('')}</nav>
+  <div class="side-foot">${catBtn('')}<button class="btn" data-act="logout">${t('logout')}</button></div></aside>
+ <div class="admin-wrap adm-main">
+ <div class="ahead"><span class="m-only">${logo}</span><div style="min-width:0"><h2><span class="m-only">${esc(pub.store.name)}</span><span class="d-only">${t('a_'+ui.tab)}</span></h2><p><span class="m-only">${t('a_'+ui.tab)}</span><span class="d-only">${esc(pub.store.name)} · tudelivery.com/fogao-mineiro</span></p></div><span class="spacer"></span><span class="m-only" style="display:flex;gap:6px">${catBtn('icon-btn')}<button class="btn icon-btn" data-act="logout" aria-label="${t('logout')}">${ic('x',16)}<span>${t('logout')}</span></button></span></div>
+ <div id="tabBody">${({resumo:tabResumo,custom:tabCustom,products:tabProducts,delivery:tabDelivery,ads:()=>`<div style="margin-top:16px">${adsCard()}</div>`,orders:tabOrders})[ui.tab]()}</div></div>
+ <nav class="bnav" aria-label="${t('nav_admin')}">${tabs.map(([k,i])=>`<button data-act="tab" data-t="${k}" aria-current="${ui.tab===k?'page':'false'}">${ic(i,20)}<span>${t('s_'+k)}</span></button>`).join('')}</nav>
+ </div>`}
 function isToday(iso){const d=new Date(iso),n=new Date();return d.toDateString()===n.toDateString()}
 function orderCard(o){const ss=Object.keys(T.pt.st).filter(k=>o.mode==='delivery'?k!=='pronto'&&k!=='retirado':k!=='entregador'&&k!=='saiu'&&k!=='entregue');
  const tm=new Date(o.date).toTimeString().slice(0,5);
@@ -2279,6 +2349,13 @@ function poster(cb){const st=pub.store,th=pub.theme,W=1240,H=1754;const c=docume
   x.fillStyle=th.promo;x.font=`700 40px ${body}`;x.fillText('Delivery · Retiro · '+CAT_URL.replace(/^https?:\/\//,'').replace(/\/$/,''),W/2,qy+qs+245);
   x.globalAlpha=.45;x.fillStyle=ink(th.header);x.font=`500 28px ${body}`;x.fillText('Desarrollado por Araújo Tech',W/2,H-60);x.globalAlpha=1;cb(c.toDataURL('image/png'))};
  if(st.logo){const im=new Image();im.onload=()=>{const lw=440,lh=im.height*lw/im.width,cx=(W-lw)/2-28,cy=120;x.fillStyle='#fff';rrect2(x,cx,cy,lw+56,lh+56,36);x.fill();x.drawImage(im,cx+28,cy+28,lw,lh);finish(cy+lh+56)};im.onerror=()=>finish(260);im.src=st.logo}else finish(260)}
+function cartPanelHTML(){const bad=cart.some(it=>!cartOk(it)),st=pub.store;
+ return `<h2>${ic('cart',20)}${t('cart')}</h2>${cart.length?`<div class="cp-items">${cart.map((it,i)=>{const p=prod(pub,it.pid);const ex=lineLabel(pub,it);return `<div class="cp-item"><div style="min-width:0;flex:1"><b>${esc(p?tr(p.n):'—')}</b>${ex.length?`<small>${esc(ex.join(' · '))}</small>`:''}${it.note?`<small>${esc(it.note)}</small>`:''}${cartOk(it)?'':`<small class="warn">${t('unavailable')}</small>`}<div class="cp-row"><div class="stepper sm"><button data-act="pcq" data-i="${i}" data-d="-1" aria-label="-">${it.q===1?ic('trash',14):ic('minus',14)}</button><span>${it.q}</span><button data-act="pcq" data-i="${i}" data-d="1" aria-label="+">${ic('plus',14)}</button></div><span class="price">${gs(lineUnit(pub,it)*it.q)}</span></div></div></div>`}).join('')}</div>
+ <div class="tots"><div class="tt"><span>${t('subtotal')}</span><span>${gs(subtotal())}</span></div></div>
+ ${st.delivery&&st.minOrder>0?`<small class="cp-note">${t('min_order')}: ${gs(st.minOrder)}</small>`:''}
+ ${bad?`<div class="info bad">${t('err_unavail')}</div>`:''}
+ <button class="btn-main" data-act="checkout" ${bad?'disabled':''}>${t('checkout')}</button>`:`<div class="cp-empty">${ic('cart',30)}<p>${t('empty_cart')}</p></div>`}`}
+function labelTables(){document.querySelectorAll('.tbl').forEach(tb=>{const hs=[...tb.querySelectorAll('thead th')].map(th=>th.textContent.trim());tb.querySelectorAll('tbody tr').forEach(tr=>{[...tr.children].forEach((td,i)=>{const h=hs[i]||'';if(h)td.setAttribute('data-label',h);else td.classList.add('act');if(i===0&&td.querySelector('.pcell'))td.classList.add('full')})})})}
 function suspendedHTML(){const st=pub.store;return `<div class="catwrap" style="${themeStyle(pub)}"><div class="susp-wrap"><div class="logo">${st.logo?`<img src="${st.logo}" alt="">`:esc(initials(st.name))}</div><h1>${t('suspended_cat')}</h1><p>${t('suspended_cat_sub')}</p></div></div>`}
 
 /* ===== Render geral ===== */
@@ -2296,6 +2373,7 @@ function render(){
  document.documentElement.style.setProperty('--topH',document.getElementById('top').offsetHeight+'px');
  if(MODE==='catalog')document.body.style.setProperty('--band',pub.theme.header);
  if(document.getElementById('qrBox'))makeQR();
+ labelTables();
  const selTab=document.querySelector('.tabs-a [aria-selected="true"]');if(selTab)selTab.parentElement.scrollLeft=Math.max(0,selTab.offsetLeft-24);
 }
 function refreshPreview(){const pv=document.getElementById('pv');if(pv)pv.innerHTML=catalogHTML(draft,false);const b=document.getElementById('stBadge');if(b)b.outerHTML=stateBadge()}
@@ -2326,7 +2404,7 @@ const acts={
   try{navigator.geolocation.getCurrentPosition(p=>{ck.lat=p.coords.latitude;ck.lng=p.coords.longitude;ck.gps='ok';ck.zone=zoneByKm(dist(pub.store.lat,pub.store.lng,ck.lat,ck.lng));checkoutSheet()},()=>{ck.gps='fail';checkoutSheet()},{timeout:8000,enableHighAccuracy:true})}catch(e){ck.gps='fail';checkoutSheet()}},
  send(){sendOrder()},
  copymsg(){const txt=document.getElementById('msgText').textContent;const ok=()=>toast(t('copied'));try{navigator.clipboard.writeText(txt).then(ok,()=>selectMsg())}catch(e){selectMsg()}},
- tab(el){ui.tab=el.dataset.t;ui.confirmPub=false;render()},
+ tab(el){ui.tab=el.dataset.t;ui.confirmPub=false;render();scrollTo(0,0)},
  dev(el){ui.device=el.dataset.d;document.querySelectorAll('[data-act="dev"]').forEach(b=>b.setAttribute('aria-pressed',b===el));document.getElementById('pv').className='pvframe '+ui.device},
  preset(el){draft.theme=clone(PRESETS[+el.dataset.i].t);Object.keys(draft.theme).forEach(k=>{const i=document.getElementById('c_'+k);if(i)i.value=draft.theme[k];const c=document.getElementById('cv_'+k);if(c)c.textContent=draft.theme[k].toUpperCase()});dirty()},
  lay(el){draft.layout[el.dataset.k]=el.dataset.v;document.querySelectorAll(`[data-act="lay"][data-k="${el.dataset.k}"]`).forEach(b=>b.setAttribute('aria-pressed',b===el));dirty()},
@@ -2373,6 +2451,7 @@ const acts={
  copylink(){const v=CAT_URL;const ok=()=>toast(t('link_copied'));try{navigator.clipboard.writeText(v).then(ok,()=>{const i=document.getElementById('shareUrl');if(i){i.select()}})}catch(e){const i=document.getElementById('shareUrl');if(i)i.select()}},
  dlqr(){if(!window.qrMatrix){toast(t('qr_fail'),true);return}const c=document.createElement('canvas');c.width=c.height=720;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,720,720);x.imageSmoothingEnabled=false;x.drawImage(qrCanvas(720),0,0,720,720);saveData(c.toDataURL('image/png'),'qr-'+slugify(pub.store.name)+'.png')},
  dlposter(){if(!window.qrMatrix){toast(t('qr_fail'),true);return}poster(u=>saveData(u,'cartel-'+slugify(pub.store.name)+'.png'))},
+ pcq(el){const i=+el.dataset.i,it=cart[i];if(!it)return;it.q+=(+el.dataset.d);if(it.q<1)cart.splice(i,1);saveCart();render()},
  showpw(){const i=document.getElementById('lg_pass');if(i)i.type=i.type==='password'?'text':'password'},
  logout(){S.set(K.auth,false);if(MODE==='panel'){ui.view='admin'}else{ui.view='catalog';history.replaceState(null,'','#catalogo')}render()},
  addad(){const a={adv:'',title:P('',''),sub:P('',''),link:'',color:'#1A1714',img:null,start:isoDay(Date.now()),end:isoDay(Date.now()+30*DAY),price:100000,on:false};applyBoth(c=>c.store.ads.unshift(clone(a)));render()},
