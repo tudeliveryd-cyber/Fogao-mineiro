@@ -4,10 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#1A1714">
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Painel Fogão">
 <meta name="robots" content="noindex">
 <script>window.TDC_MODE='panel'</script>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}body{margin:0;font:14px/1.4 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>Fogão Mineiro · Painel da loja</title>
+<title>Fogão Mineiro · Panel del local</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
@@ -28,7 +34,7 @@
 *{box-sizing:border-box}
 html,body{min-height:100%}
 body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--surface)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--band,var(--surface))}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -352,6 +358,13 @@ textarea.inp{resize:vertical;min-height:64px}
 .sdot.off{background:#EF4444;box-shadow:0 0 0 3px rgb(239 68 68 / .25)}
 @keyframes sdot{0%{box-shadow:0 0 0 0 rgb(34 197 94 / .7)}70%{box-shadow:0 0 0 7px rgb(34 197 94 / 0)}100%{box-shadow:0 0 0 0 rgb(34 197 94 / 0)}}
 @media (prefers-reduced-motion:reduce){.sdot.on{animation:none;box-shadow:0 0 0 3px rgb(34 197 94 / .25)}}
+.clinks{display:flex;flex-wrap:wrap;gap:8px;width:100%;margin-top:4px}
+.clinks a{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--t-header-ink);text-decoration:none;padding:7px 12px;border-radius:999px;border:1px solid color-mix(in srgb,var(--t-header-ink) 30%,transparent)}
+.share{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.qrbox{width:196px;height:196px;padding:4px;background:#fff;border-radius:12px;border:1px solid var(--line);display:grid;place-items:center;flex:none;font-size:12px;color:#555;text-align:center}
+.qrbox img,.qrbox canvas{width:180px!important;height:180px!important}
+.share-r{flex:1;min-width:min(100%,260px);display:flex;flex-direction:column;gap:12px}
+.share-r .inp{min-width:0;flex:1;font-size:13px}
 </style>
 
 </head>
@@ -377,9 +390,1273 @@ textarea.inp{resize:vertical;min-height:64px}
 <div id="toastRoot"></div>
 
 <script>
+/* QR encoder: QRCode for JavaScript (Kazuhiko Arase, MIT) via qrcode-terminal (Apache-2.0) */
+(function(){var M={'QR8bitByte':function(module,exports,require){
+var QRMode = require('./QRMode');
+
+function QR8bitByte(data) {
+	this.mode = QRMode.MODE_8BIT_BYTE;
+	this.data = data;
+}
+
+QR8bitByte.prototype = {
+
+	getLength : function() {
+		return this.data.length;
+	},
+	
+	write : function(buffer) {
+		for (var i = 0; i < this.data.length; i++) {
+			// not JIS ...
+			buffer.put(this.data.charCodeAt(i), 8);
+		}
+	}
+};
+
+module.exports = QR8bitByte;
+
+},
+'QRBitBuffer':function(module,exports,require){
+function QRBitBuffer() {
+	this.buffer = [];
+	this.length = 0;
+}
+
+QRBitBuffer.prototype = {
+
+	get : function(index) {
+		var bufIndex = Math.floor(index / 8);
+		return ( (this.buffer[bufIndex] >>> (7 - index % 8) ) & 1) == 1;
+	},
+	
+	put : function(num, length) {
+		for (var i = 0; i < length; i++) {
+			this.putBit( ( (num >>> (length - i - 1) ) & 1) == 1);
+		}
+	},
+	
+	getLengthInBits : function() {
+		return this.length;
+	},
+	
+	putBit : function(bit) {
+	
+		var bufIndex = Math.floor(this.length / 8);
+		if (this.buffer.length <= bufIndex) {
+			this.buffer.push(0);
+		}
+	
+		if (bit) {
+			this.buffer[bufIndex] |= (0x80 >>> (this.length % 8) );
+		}
+	
+		this.length++;
+	}
+};
+
+module.exports = QRBitBuffer;
+
+},
+'QRErrorCorrectLevel':function(module,exports,require){
+module.exports = {
+	L : 1,
+	M : 0,
+	Q : 3,
+	H : 2
+};
+
+
+},
+'QRMaskPattern':function(module,exports,require){
+module.exports = {
+	PATTERN000 : 0,
+	PATTERN001 : 1,
+	PATTERN010 : 2,
+	PATTERN011 : 3,
+	PATTERN100 : 4,
+	PATTERN101 : 5,
+	PATTERN110 : 6,
+	PATTERN111 : 7
+};
+
+},
+'QRMath':function(module,exports,require){
+var QRMath = {
+
+	glog : function(n) {
+	
+		if (n < 1) {
+			throw new Error("glog(" + n + ")");
+		}
+		
+		return QRMath.LOG_TABLE[n];
+	},
+	
+	gexp : function(n) {
+	
+		while (n < 0) {
+			n += 255;
+		}
+	
+		while (n >= 256) {
+			n -= 255;
+		}
+	
+		return QRMath.EXP_TABLE[n];
+	},
+	
+	EXP_TABLE : new Array(256),
+	
+	LOG_TABLE : new Array(256)
+
+};
+	
+for (var i = 0; i < 8; i++) {
+	QRMath.EXP_TABLE[i] = 1 << i;
+}
+for (var i = 8; i < 256; i++) {
+	QRMath.EXP_TABLE[i] = QRMath.EXP_TABLE[i - 4]
+		^ QRMath.EXP_TABLE[i - 5]
+		^ QRMath.EXP_TABLE[i - 6]
+		^ QRMath.EXP_TABLE[i - 8];
+}
+for (var i = 0; i < 255; i++) {
+	QRMath.LOG_TABLE[QRMath.EXP_TABLE[i] ] = i;
+}
+
+module.exports = QRMath;
+
+},
+'QRMode':function(module,exports,require){
+module.exports = {
+    MODE_NUMBER :       1 << 0,
+    MODE_ALPHA_NUM :    1 << 1,
+    MODE_8BIT_BYTE :    1 << 2,
+    MODE_KANJI :        1 << 3
+};
+
+},
+'QRPolynomial':function(module,exports,require){
+var QRMath = require('./QRMath');
+
+function QRPolynomial(num, shift) {
+	if (num.length === undefined) {
+		throw new Error(num.length + "/" + shift);
+	}
+
+	var offset = 0;
+
+	while (offset < num.length && num[offset] === 0) {
+		offset++;
+	}
+
+	this.num = new Array(num.length - offset + shift);
+	for (var i = 0; i < num.length - offset; i++) {
+		this.num[i] = num[i + offset];
+	}
+}
+
+QRPolynomial.prototype = {
+
+	get : function(index) {
+		return this.num[index];
+	},
+	
+	getLength : function() {
+		return this.num.length;
+	},
+	
+	multiply : function(e) {
+	
+		var num = new Array(this.getLength() + e.getLength() - 1);
+	
+		for (var i = 0; i < this.getLength(); i++) {
+			for (var j = 0; j < e.getLength(); j++) {
+				num[i + j] ^= QRMath.gexp(QRMath.glog(this.get(i) ) + QRMath.glog(e.get(j) ) );
+			}
+		}
+	
+		return new QRPolynomial(num, 0);
+	},
+	
+	mod : function(e) {
+	
+		if (this.getLength() - e.getLength() < 0) {
+			return this;
+		}
+	
+		var ratio = QRMath.glog(this.get(0) ) - QRMath.glog(e.get(0) );
+	
+		var num = new Array(this.getLength() );
+		
+		for (var i = 0; i < this.getLength(); i++) {
+			num[i] = this.get(i);
+		}
+		
+		for (var x = 0; x < e.getLength(); x++) {
+			num[x] ^= QRMath.gexp(QRMath.glog(e.get(x) ) + ratio);
+		}
+	
+		// recursive call
+		return new QRPolynomial(num, 0).mod(e);
+	}
+};
+
+module.exports = QRPolynomial;
+
+},
+'QRRSBlock':function(module,exports,require){
+var QRErrorCorrectLevel = require('./QRErrorCorrectLevel');
+
+function QRRSBlock(totalCount, dataCount) {
+	this.totalCount = totalCount;
+	this.dataCount  = dataCount;
+}
+
+QRRSBlock.RS_BLOCK_TABLE = [
+
+	// L
+	// M
+	// Q
+	// H
+
+	// 1
+	[1, 26, 19],
+	[1, 26, 16],
+	[1, 26, 13],
+	[1, 26, 9],
+	
+	// 2
+	[1, 44, 34],
+	[1, 44, 28],
+	[1, 44, 22],
+	[1, 44, 16],
+
+	// 3
+	[1, 70, 55],
+	[1, 70, 44],
+	[2, 35, 17],
+	[2, 35, 13],
+
+	// 4		
+	[1, 100, 80],
+	[2, 50, 32],
+	[2, 50, 24],
+	[4, 25, 9],
+	
+	// 5
+	[1, 134, 108],
+	[2, 67, 43],
+	[2, 33, 15, 2, 34, 16],
+	[2, 33, 11, 2, 34, 12],
+	
+	// 6
+	[2, 86, 68],
+	[4, 43, 27],
+	[4, 43, 19],
+	[4, 43, 15],
+	
+	// 7		
+	[2, 98, 78],
+	[4, 49, 31],
+	[2, 32, 14, 4, 33, 15],
+	[4, 39, 13, 1, 40, 14],
+	
+	// 8
+	[2, 121, 97],
+	[2, 60, 38, 2, 61, 39],
+	[4, 40, 18, 2, 41, 19],
+	[4, 40, 14, 2, 41, 15],
+	
+	// 9
+	[2, 146, 116],
+	[3, 58, 36, 2, 59, 37],
+	[4, 36, 16, 4, 37, 17],
+	[4, 36, 12, 4, 37, 13],
+	
+	// 10		
+	[2, 86, 68, 2, 87, 69],
+	[4, 69, 43, 1, 70, 44],
+	[6, 43, 19, 2, 44, 20],
+	[6, 43, 15, 2, 44, 16],
+
+	// 11
+	[4, 101, 81],
+	[1, 80, 50, 4, 81, 51],
+	[4, 50, 22, 4, 51, 23],
+	[3, 36, 12, 8, 37, 13],
+
+	// 12
+	[2, 116, 92, 2, 117, 93],
+	[6, 58, 36, 2, 59, 37],
+	[4, 46, 20, 6, 47, 21],
+	[7, 42, 14, 4, 43, 15],
+
+	// 13
+	[4, 133, 107],
+	[8, 59, 37, 1, 60, 38],
+	[8, 44, 20, 4, 45, 21],
+	[12, 33, 11, 4, 34, 12],
+
+	// 14
+	[3, 145, 115, 1, 146, 116],
+	[4, 64, 40, 5, 65, 41],
+	[11, 36, 16, 5, 37, 17],
+	[11, 36, 12, 5, 37, 13],
+
+	// 15
+	[5, 109, 87, 1, 110, 88],
+	[5, 65, 41, 5, 66, 42],
+	[5, 54, 24, 7, 55, 25],
+	[11, 36, 12],
+
+	// 16
+	[5, 122, 98, 1, 123, 99],
+	[7, 73, 45, 3, 74, 46],
+	[15, 43, 19, 2, 44, 20],
+	[3, 45, 15, 13, 46, 16],
+
+	// 17
+	[1, 135, 107, 5, 136, 108],
+	[10, 74, 46, 1, 75, 47],
+	[1, 50, 22, 15, 51, 23],
+	[2, 42, 14, 17, 43, 15],
+
+	// 18
+	[5, 150, 120, 1, 151, 121],
+	[9, 69, 43, 4, 70, 44],
+	[17, 50, 22, 1, 51, 23],
+	[2, 42, 14, 19, 43, 15],
+
+	// 19
+	[3, 141, 113, 4, 142, 114],
+	[3, 70, 44, 11, 71, 45],
+	[17, 47, 21, 4, 48, 22],
+	[9, 39, 13, 16, 40, 14],
+
+	// 20
+	[3, 135, 107, 5, 136, 108],
+	[3, 67, 41, 13, 68, 42],
+	[15, 54, 24, 5, 55, 25],
+	[15, 43, 15, 10, 44, 16],
+
+	// 21
+	[4, 144, 116, 4, 145, 117],
+	[17, 68, 42],
+	[17, 50, 22, 6, 51, 23],
+	[19, 46, 16, 6, 47, 17],
+
+	// 22
+	[2, 139, 111, 7, 140, 112],
+	[17, 74, 46],
+	[7, 54, 24, 16, 55, 25],
+	[34, 37, 13],
+
+	// 23
+	[4, 151, 121, 5, 152, 122],
+	[4, 75, 47, 14, 76, 48],
+	[11, 54, 24, 14, 55, 25],
+	[16, 45, 15, 14, 46, 16],
+
+	// 24
+	[6, 147, 117, 4, 148, 118],
+	[6, 73, 45, 14, 74, 46],
+	[11, 54, 24, 16, 55, 25],
+	[30, 46, 16, 2, 47, 17],
+
+	// 25
+	[8, 132, 106, 4, 133, 107],
+	[8, 75, 47, 13, 76, 48],
+	[7, 54, 24, 22, 55, 25],
+	[22, 45, 15, 13, 46, 16],
+
+	// 26
+	[10, 142, 114, 2, 143, 115],
+	[19, 74, 46, 4, 75, 47],
+	[28, 50, 22, 6, 51, 23],
+	[33, 46, 16, 4, 47, 17],
+
+	// 27
+	[8, 152, 122, 4, 153, 123],
+	[22, 73, 45, 3, 74, 46],
+	[8, 53, 23, 26, 54, 24],
+	[12, 45, 15, 28, 46, 16],
+
+	// 28
+	[3, 147, 117, 10, 148, 118],
+	[3, 73, 45, 23, 74, 46],
+	[4, 54, 24, 31, 55, 25],
+	[11, 45, 15, 31, 46, 16],
+
+	// 29
+	[7, 146, 116, 7, 147, 117],
+	[21, 73, 45, 7, 74, 46],
+	[1, 53, 23, 37, 54, 24],
+	[19, 45, 15, 26, 46, 16],
+
+	// 30
+	[5, 145, 115, 10, 146, 116],
+	[19, 75, 47, 10, 76, 48],
+	[15, 54, 24, 25, 55, 25],
+	[23, 45, 15, 25, 46, 16],
+
+	// 31
+	[13, 145, 115, 3, 146, 116],
+	[2, 74, 46, 29, 75, 47],
+	[42, 54, 24, 1, 55, 25],
+	[23, 45, 15, 28, 46, 16],
+
+	// 32
+	[17, 145, 115],
+	[10, 74, 46, 23, 75, 47],
+	[10, 54, 24, 35, 55, 25],
+	[19, 45, 15, 35, 46, 16],
+
+	// 33
+	[17, 145, 115, 1, 146, 116],
+	[14, 74, 46, 21, 75, 47],
+	[29, 54, 24, 19, 55, 25],
+	[11, 45, 15, 46, 46, 16],
+
+	// 34
+	[13, 145, 115, 6, 146, 116],
+	[14, 74, 46, 23, 75, 47],
+	[44, 54, 24, 7, 55, 25],
+	[59, 46, 16, 1, 47, 17],
+
+	// 35
+	[12, 151, 121, 7, 152, 122],
+	[12, 75, 47, 26, 76, 48],
+	[39, 54, 24, 14, 55, 25],
+	[22, 45, 15, 41, 46, 16],
+
+	// 36
+	[6, 151, 121, 14, 152, 122],
+	[6, 75, 47, 34, 76, 48],
+	[46, 54, 24, 10, 55, 25],
+	[2, 45, 15, 64, 46, 16],
+
+	// 37
+	[17, 152, 122, 4, 153, 123],
+	[29, 74, 46, 14, 75, 47],
+	[49, 54, 24, 10, 55, 25],
+	[24, 45, 15, 46, 46, 16],
+
+	// 38
+	[4, 152, 122, 18, 153, 123],
+	[13, 74, 46, 32, 75, 47],
+	[48, 54, 24, 14, 55, 25],
+	[42, 45, 15, 32, 46, 16],
+
+	// 39
+	[20, 147, 117, 4, 148, 118],
+	[40, 75, 47, 7, 76, 48],
+	[43, 54, 24, 22, 55, 25],
+	[10, 45, 15, 67, 46, 16],
+
+	// 40
+	[19, 148, 118, 6, 149, 119],
+	[18, 75, 47, 31, 76, 48],
+	[34, 54, 24, 34, 55, 25],
+	[20, 45, 15, 61, 46, 16]
+];
+
+QRRSBlock.getRSBlocks = function(typeNumber, errorCorrectLevel) {
+	
+	var rsBlock = QRRSBlock.getRsBlockTable(typeNumber, errorCorrectLevel);
+	
+	if (rsBlock === undefined) {
+		throw new Error("bad rs block @ typeNumber:" + typeNumber + "/errorCorrectLevel:" + errorCorrectLevel);
+	}
+
+	var length = rsBlock.length / 3;
+	
+	var list = [];
+	
+	for (var i = 0; i < length; i++) {
+
+		var count = rsBlock[i * 3 + 0];
+		var totalCount = rsBlock[i * 3 + 1];
+		var dataCount  = rsBlock[i * 3 + 2];
+
+		for (var j = 0; j < count; j++) {
+			list.push(new QRRSBlock(totalCount, dataCount) );	
+		}
+	}
+	
+	return list;
+};
+
+QRRSBlock.getRsBlockTable = function(typeNumber, errorCorrectLevel) {
+
+	switch(errorCorrectLevel) {
+	case QRErrorCorrectLevel.L :
+		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
+	case QRErrorCorrectLevel.M :
+		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
+	case QRErrorCorrectLevel.Q :
+		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
+	case QRErrorCorrectLevel.H :
+		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
+	default :
+		return undefined;
+	}
+};
+
+module.exports = QRRSBlock;
+
+},
+'QRUtil':function(module,exports,require){
+var QRMode = require('./QRMode');
+var QRPolynomial = require('./QRPolynomial');
+var QRMath = require('./QRMath');
+var QRMaskPattern = require('./QRMaskPattern');
+
+var QRUtil = {
+
+    PATTERN_POSITION_TABLE : [
+        [],
+        [6, 18],
+        [6, 22],
+        [6, 26],
+        [6, 30],
+        [6, 34],
+        [6, 22, 38],
+        [6, 24, 42],
+        [6, 26, 46],
+        [6, 28, 50],
+        [6, 30, 54],        
+        [6, 32, 58],
+        [6, 34, 62],
+        [6, 26, 46, 66],
+        [6, 26, 48, 70],
+        [6, 26, 50, 74],
+        [6, 30, 54, 78],
+        [6, 30, 56, 82],
+        [6, 30, 58, 86],
+        [6, 34, 62, 90],
+        [6, 28, 50, 72, 94],
+        [6, 26, 50, 74, 98],
+        [6, 30, 54, 78, 102],
+        [6, 28, 54, 80, 106],
+        [6, 32, 58, 84, 110],
+        [6, 30, 58, 86, 114],
+        [6, 34, 62, 90, 118],
+        [6, 26, 50, 74, 98, 122],
+        [6, 30, 54, 78, 102, 126],
+        [6, 26, 52, 78, 104, 130],
+        [6, 30, 56, 82, 108, 134],
+        [6, 34, 60, 86, 112, 138],
+        [6, 30, 58, 86, 114, 142],
+        [6, 34, 62, 90, 118, 146],
+        [6, 30, 54, 78, 102, 126, 150],
+        [6, 24, 50, 76, 102, 128, 154],
+        [6, 28, 54, 80, 106, 132, 158],
+        [6, 32, 58, 84, 110, 136, 162],
+        [6, 26, 54, 82, 110, 138, 166],
+        [6, 30, 58, 86, 114, 142, 170]
+    ],
+
+    G15 : (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0),
+    G18 : (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0),
+    G15_MASK : (1 << 14) | (1 << 12) | (1 << 10)    | (1 << 4) | (1 << 1),
+
+    getBCHTypeInfo : function(data) {
+        var d = data << 10;
+        while (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G15) >= 0) {
+            d ^= (QRUtil.G15 << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G15) ) );    
+        }
+        return ( (data << 10) | d) ^ QRUtil.G15_MASK;
+    },
+
+    getBCHTypeNumber : function(data) {
+        var d = data << 12;
+        while (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G18) >= 0) {
+            d ^= (QRUtil.G18 << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G18) ) );    
+        }
+        return (data << 12) | d;
+    },
+
+    getBCHDigit : function(data) {
+
+        var digit = 0;
+
+        while (data !== 0) {
+            digit++;
+            data >>>= 1;
+        }
+
+        return digit;
+    },
+
+    getPatternPosition : function(typeNumber) {
+        return QRUtil.PATTERN_POSITION_TABLE[typeNumber - 1];
+    },
+
+    getMask : function(maskPattern, i, j) {
+        
+        switch (maskPattern) {
+            
+        case QRMaskPattern.PATTERN000 : return (i + j) % 2 === 0;
+        case QRMaskPattern.PATTERN001 : return i % 2 === 0;
+        case QRMaskPattern.PATTERN010 : return j % 3 === 0;
+        case QRMaskPattern.PATTERN011 : return (i + j) % 3 === 0;
+        case QRMaskPattern.PATTERN100 : return (Math.floor(i / 2) + Math.floor(j / 3) ) % 2 === 0;
+        case QRMaskPattern.PATTERN101 : return (i * j) % 2 + (i * j) % 3 === 0;
+        case QRMaskPattern.PATTERN110 : return ( (i * j) % 2 + (i * j) % 3) % 2 === 0;
+        case QRMaskPattern.PATTERN111 : return ( (i * j) % 3 + (i + j) % 2) % 2 === 0;
+
+        default :
+            throw new Error("bad maskPattern:" + maskPattern);
+        }
+    },
+
+    getErrorCorrectPolynomial : function(errorCorrectLength) {
+
+        var a = new QRPolynomial([1], 0);
+
+        for (var i = 0; i < errorCorrectLength; i++) {
+            a = a.multiply(new QRPolynomial([1, QRMath.gexp(i)], 0) );
+        }
+
+        return a;
+    },
+
+    getLengthInBits : function(mode, type) {
+
+        if (1 <= type && type < 10) {
+
+            // 1 - 9
+
+            switch(mode) {
+            case QRMode.MODE_NUMBER     : return 10;
+            case QRMode.MODE_ALPHA_NUM  : return 9;
+            case QRMode.MODE_8BIT_BYTE  : return 8;
+            case QRMode.MODE_KANJI      : return 8;
+            default :
+                throw new Error("mode:" + mode);
+            }
+
+        } else if (type < 27) {
+
+            // 10 - 26
+
+            switch(mode) {
+            case QRMode.MODE_NUMBER     : return 12;
+            case QRMode.MODE_ALPHA_NUM  : return 11;
+            case QRMode.MODE_8BIT_BYTE  : return 16;
+            case QRMode.MODE_KANJI      : return 10;
+            default :
+                throw new Error("mode:" + mode);
+            }
+
+        } else if (type < 41) {
+
+            // 27 - 40
+
+            switch(mode) {
+            case QRMode.MODE_NUMBER     : return 14;
+            case QRMode.MODE_ALPHA_NUM  : return 13;
+            case QRMode.MODE_8BIT_BYTE  : return 16;
+            case QRMode.MODE_KANJI      : return 12;
+            default :
+                throw new Error("mode:" + mode);
+            }
+
+        } else {
+            throw new Error("type:" + type);
+        }
+    },
+
+    getLostPoint : function(qrCode) {
+        
+        var moduleCount = qrCode.getModuleCount();
+        var lostPoint = 0;
+        var row = 0; 
+        var col = 0;
+
+        
+        // LEVEL1
+        
+        for (row = 0; row < moduleCount; row++) {
+
+            for (col = 0; col < moduleCount; col++) {
+
+                var sameCount = 0;
+                var dark = qrCode.isDark(row, col);
+
+                for (var r = -1; r <= 1; r++) {
+
+                    if (row + r < 0 || moduleCount <= row + r) {
+                        continue;
+                    }
+
+                    for (var c = -1; c <= 1; c++) {
+
+                        if (col + c < 0 || moduleCount <= col + c) {
+                            continue;
+                        }
+
+                        if (r === 0 && c === 0) {
+                            continue;
+                        }
+
+                        if (dark === qrCode.isDark(row + r, col + c) ) {
+                            sameCount++;
+                        }
+                    }
+                }
+
+                if (sameCount > 5) {
+                    lostPoint += (3 + sameCount - 5);
+                }
+            }
+        }
+
+        // LEVEL2
+
+        for (row = 0; row < moduleCount - 1; row++) {
+            for (col = 0; col < moduleCount - 1; col++) {
+                var count = 0;
+                if (qrCode.isDark(row,     col    ) ) count++;
+                if (qrCode.isDark(row + 1, col    ) ) count++;
+                if (qrCode.isDark(row,     col + 1) ) count++;
+                if (qrCode.isDark(row + 1, col + 1) ) count++;
+                if (count === 0 || count === 4) {
+                    lostPoint += 3;
+                }
+            }
+        }
+
+        // LEVEL3
+
+        for (row = 0; row < moduleCount; row++) {
+            for (col = 0; col < moduleCount - 6; col++) {
+                if (qrCode.isDark(row, col) && 
+                        !qrCode.isDark(row, col + 1) && 
+                         qrCode.isDark(row, col + 2) && 
+                         qrCode.isDark(row, col + 3) && 
+                         qrCode.isDark(row, col + 4) && 
+                        !qrCode.isDark(row, col + 5) && 
+                         qrCode.isDark(row, col + 6) ) {
+                    lostPoint += 40;
+                }
+            }
+        }
+
+        for (col = 0; col < moduleCount; col++) {
+            for (row = 0; row < moduleCount - 6; row++) {
+                if (qrCode.isDark(row, col) &&
+                        !qrCode.isDark(row + 1, col) &&
+                         qrCode.isDark(row + 2, col) &&
+                         qrCode.isDark(row + 3, col) &&
+                         qrCode.isDark(row + 4, col) &&
+                        !qrCode.isDark(row + 5, col) &&
+                         qrCode.isDark(row + 6, col) ) {
+                    lostPoint += 40;
+                }
+            }
+        }
+
+        // LEVEL4
+        
+        var darkCount = 0;
+
+        for (col = 0; col < moduleCount; col++) {
+            for (row = 0; row < moduleCount; row++) {
+                if (qrCode.isDark(row, col) ) {
+                    darkCount++;
+                }
+            }
+        }
+        
+        var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+        lostPoint += ratio * 10;
+
+        return lostPoint;       
+    }
+
+};
+
+module.exports = QRUtil;
+
+},
+'index':function(module,exports,require){
+//---------------------------------------------------------------------
+// QRCode for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: http://www.d-project.com/
+//
+// Licensed under the MIT license:
+//   http://www.opensource.org/licenses/mit-license.php
+//
+// The word "QR Code" is registered trademark of 
+// DENSO WAVE INCORPORATED
+//   http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+// Modified to work in node for this project (and some refactoring)
+//---------------------------------------------------------------------
+
+var QR8bitByte = require('./QR8bitByte');
+var QRUtil = require('./QRUtil');
+var QRPolynomial = require('./QRPolynomial');
+var QRRSBlock = require('./QRRSBlock');
+var QRBitBuffer = require('./QRBitBuffer');
+
+function QRCode(typeNumber, errorCorrectLevel) {
+	this.typeNumber = typeNumber;
+	this.errorCorrectLevel = errorCorrectLevel;
+	this.modules = null;
+	this.moduleCount = 0;
+	this.dataCache = null;
+	this.dataList = [];
+}
+
+QRCode.prototype = {
+	
+	addData : function(data) {
+		var newData = new QR8bitByte(data);
+		this.dataList.push(newData);
+		this.dataCache = null;
+	},
+	
+	isDark : function(row, col) {
+		if (row < 0 || this.moduleCount <= row || col < 0 || this.moduleCount <= col) {
+			throw new Error(row + "," + col);
+		}
+		return this.modules[row][col];
+	},
+
+	getModuleCount : function() {
+		return this.moduleCount;
+	},
+	
+	make : function() {
+		// Calculate automatically typeNumber if provided is < 1
+		if (this.typeNumber < 1 ){
+			var typeNumber = 1;
+			for (typeNumber = 1; typeNumber < 40; typeNumber++) {
+				var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, this.errorCorrectLevel);
+
+				var buffer = new QRBitBuffer();
+				var totalDataCount = 0;
+				for (var i = 0; i < rsBlocks.length; i++) {
+					totalDataCount += rsBlocks[i].dataCount;
+				}
+
+				for (var x = 0; x < this.dataList.length; x++) {
+					var data = this.dataList[x];
+					buffer.put(data.mode, 4);
+					buffer.put(data.getLength(), QRUtil.getLengthInBits(data.mode, typeNumber) );
+					data.write(buffer);
+				}
+				if (buffer.getLengthInBits() <= totalDataCount * 8)
+					break;
+			}
+			this.typeNumber = typeNumber;
+		}
+		this.makeImpl(false, this.getBestMaskPattern() );
+	},
+	
+	makeImpl : function(test, maskPattern) {
+		
+		this.moduleCount = this.typeNumber * 4 + 17;
+		this.modules = new Array(this.moduleCount);
+		
+		for (var row = 0; row < this.moduleCount; row++) {
+			
+			this.modules[row] = new Array(this.moduleCount);
+			
+			for (var col = 0; col < this.moduleCount; col++) {
+				this.modules[row][col] = null;//(col + row) % 3;
+			}
+		}
+	
+		this.setupPositionProbePattern(0, 0);
+		this.setupPositionProbePattern(this.moduleCount - 7, 0);
+		this.setupPositionProbePattern(0, this.moduleCount - 7);
+		this.setupPositionAdjustPattern();
+		this.setupTimingPattern();
+		this.setupTypeInfo(test, maskPattern);
+		
+		if (this.typeNumber >= 7) {
+			this.setupTypeNumber(test);
+		}
+	
+		if (this.dataCache === null) {
+			this.dataCache = QRCode.createData(this.typeNumber, this.errorCorrectLevel, this.dataList);
+		}
+	
+		this.mapData(this.dataCache, maskPattern);
+	},
+
+	setupPositionProbePattern : function(row, col)  {
+		
+		for (var r = -1; r <= 7; r++) {
+			
+			if (row + r <= -1 || this.moduleCount <= row + r) continue;
+			
+			for (var c = -1; c <= 7; c++) {
+				
+				if (col + c <= -1 || this.moduleCount <= col + c) continue;
+				
+				if ( (0 <= r && r <= 6 && (c === 0 || c === 6) ) || 
+                     (0 <= c && c <= 6 && (r === 0 || r === 6) ) || 
+                     (2 <= r && r <= 4 && 2 <= c && c <= 4) ) {
+					this.modules[row + r][col + c] = true;
+				} else {
+					this.modules[row + r][col + c] = false;
+				}
+			}		
+		}		
+	},
+	
+	getBestMaskPattern : function() {
+	
+		var minLostPoint = 0;
+		var pattern = 0;
+	
+		for (var i = 0; i < 8; i++) {
+			
+			this.makeImpl(true, i);
+	
+			var lostPoint = QRUtil.getLostPoint(this);
+	
+			if (i === 0 || minLostPoint >  lostPoint) {
+				minLostPoint = lostPoint;
+				pattern = i;
+			}
+		}
+	
+		return pattern;
+	},
+	
+	createMovieClip : function(target_mc, instance_name, depth) {
+	
+		var qr_mc = target_mc.createEmptyMovieClip(instance_name, depth);
+		var cs = 1;
+	
+		this.make();
+
+		for (var row = 0; row < this.modules.length; row++) {
+			
+			var y = row * cs;
+			
+			for (var col = 0; col < this.modules[row].length; col++) {
+	
+				var x = col * cs;
+				var dark = this.modules[row][col];
+			
+				if (dark) {
+					qr_mc.beginFill(0, 100);
+					qr_mc.moveTo(x, y);
+					qr_mc.lineTo(x + cs, y);
+					qr_mc.lineTo(x + cs, y + cs);
+					qr_mc.lineTo(x, y + cs);
+					qr_mc.endFill();
+				}
+			}
+		}
+		
+		return qr_mc;
+	},
+
+	setupTimingPattern : function() {
+		
+		for (var r = 8; r < this.moduleCount - 8; r++) {
+			if (this.modules[r][6] !== null) {
+				continue;
+			}
+			this.modules[r][6] = (r % 2 === 0);
+		}
+	
+		for (var c = 8; c < this.moduleCount - 8; c++) {
+			if (this.modules[6][c] !== null) {
+				continue;
+			}
+			this.modules[6][c] = (c % 2 === 0);
+		}
+	},
+	
+	setupPositionAdjustPattern : function() {
+	
+		var pos = QRUtil.getPatternPosition(this.typeNumber);
+		
+		for (var i = 0; i < pos.length; i++) {
+		
+			for (var j = 0; j < pos.length; j++) {
+			
+				var row = pos[i];
+				var col = pos[j];
+				
+				if (this.modules[row][col] !== null) {
+					continue;
+				}
+				
+				for (var r = -2; r <= 2; r++) {
+				
+					for (var c = -2; c <= 2; c++) {
+					
+						if (Math.abs(r) === 2 || 
+                            Math.abs(c) === 2 ||
+                            (r === 0 && c === 0) ) {
+							this.modules[row + r][col + c] = true;
+						} else {
+							this.modules[row + r][col + c] = false;
+						}
+					}
+				}
+			}
+		}
+	},
+	
+	setupTypeNumber : function(test) {
+	
+		var bits = QRUtil.getBCHTypeNumber(this.typeNumber);
+        var mod;
+	
+		for (var i = 0; i < 18; i++) {
+			mod = (!test && ( (bits >> i) & 1) === 1);
+			this.modules[Math.floor(i / 3)][i % 3 + this.moduleCount - 8 - 3] = mod;
+		}
+	
+		for (var x = 0; x < 18; x++) {
+			mod = (!test && ( (bits >> x) & 1) === 1);
+			this.modules[x % 3 + this.moduleCount - 8 - 3][Math.floor(x / 3)] = mod;
+		}
+	},
+	
+	setupTypeInfo : function(test, maskPattern) {
+	
+		var data = (this.errorCorrectLevel << 3) | maskPattern;
+		var bits = QRUtil.getBCHTypeInfo(data);
+        var mod;
+	
+		// vertical		
+		for (var v = 0; v < 15; v++) {
+	
+			mod = (!test && ( (bits >> v) & 1) === 1);
+	
+			if (v < 6) {
+				this.modules[v][8] = mod;
+			} else if (v < 8) {
+				this.modules[v + 1][8] = mod;
+			} else {
+				this.modules[this.moduleCount - 15 + v][8] = mod;
+			}
+		}
+	
+		// horizontal
+		for (var h = 0; h < 15; h++) {
+	
+			mod = (!test && ( (bits >> h) & 1) === 1);
+			
+			if (h < 8) {
+				this.modules[8][this.moduleCount - h - 1] = mod;
+			} else if (h < 9) {
+				this.modules[8][15 - h - 1 + 1] = mod;
+			} else {
+				this.modules[8][15 - h - 1] = mod;
+			}
+		}
+	
+		// fixed module
+		this.modules[this.moduleCount - 8][8] = (!test);
+	
+	},
+	
+	mapData : function(data, maskPattern) {
+		
+		var inc = -1;
+		var row = this.moduleCount - 1;
+		var bitIndex = 7;
+		var byteIndex = 0;
+		
+		for (var col = this.moduleCount - 1; col > 0; col -= 2) {
+	
+			if (col === 6) col--;
+	
+			while (true) {
+	
+				for (var c = 0; c < 2; c++) {
+					
+					if (this.modules[row][col - c] === null) {
+						
+						var dark = false;
+	
+						if (byteIndex < data.length) {
+							dark = ( ( (data[byteIndex] >>> bitIndex) & 1) === 1);
+						}
+	
+						var mask = QRUtil.getMask(maskPattern, row, col - c);
+	
+						if (mask) {
+							dark = !dark;
+						}
+						
+						this.modules[row][col - c] = dark;
+						bitIndex--;
+	
+						if (bitIndex === -1) {
+							byteIndex++;
+							bitIndex = 7;
+						}
+					}
+				}
+								
+				row += inc;
+	
+				if (row < 0 || this.moduleCount <= row) {
+					row -= inc;
+					inc = -inc;
+					break;
+				}
+			}
+		}
+		
+	}
+
+};
+
+QRCode.PAD0 = 0xEC;
+QRCode.PAD1 = 0x11;
+
+QRCode.createData = function(typeNumber, errorCorrectLevel, dataList) {
+	
+	var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectLevel);
+	
+	var buffer = new QRBitBuffer();
+	
+	for (var i = 0; i < dataList.length; i++) {
+		var data = dataList[i];
+		buffer.put(data.mode, 4);
+		buffer.put(data.getLength(), QRUtil.getLengthInBits(data.mode, typeNumber) );
+		data.write(buffer);
+	}
+
+	// calc num max data.
+	var totalDataCount = 0;
+	for (var x = 0; x < rsBlocks.length; x++) {
+		totalDataCount += rsBlocks[x].dataCount;
+	}
+
+	if (buffer.getLengthInBits() > totalDataCount * 8) {
+		throw new Error("code length overflow. (" + 
+            buffer.getLengthInBits() + 
+            ">" +  
+            totalDataCount * 8 + 
+            ")");
+	}
+
+	// end code
+	if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+		buffer.put(0, 4);
+	}
+
+	// padding
+	while (buffer.getLengthInBits() % 8 !== 0) {
+		buffer.putBit(false);
+	}
+
+	// padding
+	while (true) {
+		
+		if (buffer.getLengthInBits() >= totalDataCount * 8) {
+			break;
+		}
+		buffer.put(QRCode.PAD0, 8);
+		
+		if (buffer.getLengthInBits() >= totalDataCount * 8) {
+			break;
+		}
+		buffer.put(QRCode.PAD1, 8);
+	}
+
+	return QRCode.createBytes(buffer, rsBlocks);
+};
+
+QRCode.createBytes = function(buffer, rsBlocks) {
+
+	var offset = 0;
+	
+	var maxDcCount = 0;
+	var maxEcCount = 0;
+	
+	var dcdata = new Array(rsBlocks.length);
+	var ecdata = new Array(rsBlocks.length);
+	
+	for (var r = 0; r < rsBlocks.length; r++) {
+
+		var dcCount = rsBlocks[r].dataCount;
+		var ecCount = rsBlocks[r].totalCount - dcCount;
+
+		maxDcCount = Math.max(maxDcCount, dcCount);
+		maxEcCount = Math.max(maxEcCount, ecCount);
+		
+		dcdata[r] = new Array(dcCount);
+		
+		for (var i = 0; i < dcdata[r].length; i++) {
+			dcdata[r][i] = 0xff & buffer.buffer[i + offset];
+		}
+		offset += dcCount;
+		
+		var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+		var rawPoly = new QRPolynomial(dcdata[r], rsPoly.getLength() - 1);
+
+		var modPoly = rawPoly.mod(rsPoly);
+		ecdata[r] = new Array(rsPoly.getLength() - 1);
+		for (var x = 0; x < ecdata[r].length; x++) {
+            var modIndex = x + modPoly.getLength() - ecdata[r].length;
+			ecdata[r][x] = (modIndex >= 0)? modPoly.get(modIndex) : 0;
+		}
+
+	}
+	
+	var totalCodeCount = 0;
+	for (var y = 0; y < rsBlocks.length; y++) {
+		totalCodeCount += rsBlocks[y].totalCount;
+	}
+
+	var data = new Array(totalCodeCount);
+	var index = 0;
+
+	for (var z = 0; z < maxDcCount; z++) {
+		for (var s = 0; s < rsBlocks.length; s++) {
+			if (z < dcdata[s].length) {
+				data[index++] = dcdata[s][z];
+			}
+		}
+	}
+
+	for (var xx = 0; xx < maxEcCount; xx++) {
+		for (var t = 0; t < rsBlocks.length; t++) {
+			if (xx < ecdata[t].length) {
+				data[index++] = ecdata[t][xx];
+			}
+		}
+	}
+
+	return data;
+
+};
+
+module.exports = QRCode;
+
+}};var C={};function R(p){var n=p.replace(/^\.\//,'').replace(/\.js$/,'');if(n==='')n='index';if(C[n])return C[n].exports;var m={exports:{}};C[n]=m;M[n](m,m.exports,R);return m.exports}
+var QR=R('./index'),EC=R('./QRErrorCorrectLevel');window.qrMatrix=function(text){var q=new QR(-1,EC.M);q.addData(text);q.make();var n=q.getModuleCount(),out=[];for(var r=0;r<n;r++){var row=[];for(var c=0;c<n;c++)row.push(q.isDark(r,c));out.push(row)}return out}})();
+</script>
+<script>
 const MODE=window.TDC_MODE||'demo';
 /* ===== Ícones de linha ===== */
 const ICONS={
+qr:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/>',
+download:'<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
+route:'<circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h7a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h7"/>',
+instagram:'<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17 7h.01"/>',
+facebook:'<path d="M15 3h-2.5A3.5 3.5 0 0 0 9 6.5V10H6.5v3.5H9V21h3.5v-7.5H15l.5-3.5h-3V7a1 1 0 0 1 1-1H15z"/>',
 repeat:'<path d="M4 12a8 8 0 0 1 13.7-5.6L20 9M20 4v5h-5M20 12a8 8 0 0 1-13.7 5.6L4 15M4 20v-5h5"/>',
 ticket:'<path d="M3 8a2 2 0 0 0 2-2h14a2 2 0 0 0 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 0-2 2H5a2 2 0 0 0-2-2v-2a2 2 0 0 0 0-4z"/><path d="M14 7v2M14 11v2M14 15v2"/>',
 up:'<path d="M6 15l6-6 6 6"/>',arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',down:'<path d="M6 9l6 6 6-6"/>',
@@ -417,7 +1694,7 @@ const ic=(n,s=20)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 2
 /* ===== Textos PT / ES ===== */
 const T={pt:{
 fee_mode:'Como cobrar a entrega',by_bairro:'Por bairro',by_zone:'Por distância (zonas)',bairros_sub:'O cliente escolhe o bairro na lista e a taxa aparece na hora.',from_store:'Valores da entrega saindo do restaurante:',bairro_name:'Bairro',add_bairro:'Adicionar bairro',choose_bairro:'Selecione seu bairro',bairro_out:'Meu bairro não está na lista',err_out_bairro:'Ainda não entregamos neste bairro. Escolha retirada ou fale com a loja.',pix_key:'Chave PIX',pix_name:'Nome do titular',pix_info:'Pague com PIX usando a chave abaixo e envie o comprovante pelo WhatsApp junto com o pedido.',pix_nokey:'A loja vai enviar a chave PIX pelo WhatsApp.',key_copied:'Chave copiada',pix_note:'enviar comprovante',
-dev_by:'Desenvolvido por',login_sub:'Acesso exclusivo do estabelecimento',user_l:'Usuário',pass_l:'Senha',enter:'Entrar',login_err:'Usuário ou senha incorretos.',logout:'Sair',show_pass:'Mostrar senha',nav_catalog:'Catálogo',nav_admin:'Painel da loja',search:'Buscar no cardápio',featured:'Destaques',unavailable:'Indisponível',promo:'Promoção',
+dev_by:'Desenvolvido por',how_to_get:'Como chegar',share_title:'Compartilhar meu catálogo',share_sub:'Mande o link para os clientes ou imprima o QR Code para as mesas, o balcão e os panfletos.',cat_link:'Link do catálogo',copy_link:'Copiar',link_copied:'Link copiado',download_qr:'Baixar QR Code',download_poster:'Baixar cartaz para imprimir',dl_note:'Os botões de baixar funcionam no site publicado.',qr_fail:'Não foi possível gerar o QR Code agora. Verifique a internet e recarregue.',instagram_l:'Instagram (usuário ou link)',facebook_l:'Facebook (link da página)',login_sub:'Acesso exclusivo do estabelecimento',user_l:'Usuário',pass_l:'Senha',enter:'Entrar',login_err:'Usuário ou senha incorretos.',logout:'Sair',show_pass:'Mostrar senha',nav_catalog:'Catálogo',nav_admin:'Painel da loja',search:'Buscar no cardápio',featured:'Destaques',unavailable:'Indisponível',promo:'Promoção',
 view_cart:'Ver carrinho',cart:'Seu pedido',subtotal:'Subtotal',fee:'Taxa de entrega',total:'Total',empty_cart:'Seu carrinho está vazio.',
 notes:'Observações',notes_ph:'Ex.: sem cebola, ponto da carne…',required:'Obrigatório',optional:'Opcional',add_to_cart:'Adicionar',
 continue:'Continuar',remove:'Remover',keep_buying:'Adicionar mais itens',checkout:'Finalizar pedido',
@@ -452,7 +1729,7 @@ st:{aguardando:'Aguardando confirmação',recebido:'Pedido recebido',aceito:'Ped
 c:{primary:'Principal',secondary:'Secundária',button:'Botões',text:'Textos',bg:'Fundo',price:'Preços',promo:'Promoções',highlight:'Destaques',card:'Cartões',header:'Cabeçalho'}
 },es:{
 fee_mode:'Cómo cobrar el envío',by_bairro:'Por barrio',by_zone:'Por distancia (zonas)',bairros_sub:'El cliente elige el barrio en la lista y el costo aparece al instante.',from_store:'Costos de envío saliendo del local:',bairro_name:'Barrio',add_bairro:'Agregar barrio',choose_bairro:'Seleccioná tu barrio',bairro_out:'Mi barrio no está en la lista',err_out_bairro:'Todavía no hacemos envíos a este barrio. Elegí retiro o hablá con el local.',pix_key:'Clave PIX',pix_name:'Nombre del titular',pix_info:'Pagá con PIX usando la clave de abajo y enviá el comprobante por WhatsApp junto con el pedido.',pix_nokey:'El local te enviará la clave PIX por WhatsApp.',key_copied:'Clave copiada',pix_note:'enviar comprobante',
-dev_by:'Desarrollado por',login_sub:'Acceso exclusivo del local',user_l:'Usuario',pass_l:'Contraseña',enter:'Ingresar',login_err:'Usuario o contraseña incorrectos.',logout:'Salir',show_pass:'Mostrar contraseña',nav_catalog:'Catálogo',nav_admin:'Panel del local',search:'Buscar en el menú',featured:'Destacados',unavailable:'No disponible',promo:'Promoción',
+dev_by:'Desarrollado por',how_to_get:'Cómo llegar',share_title:'Compartir mi catálogo',share_sub:'Enviá el link a tus clientes o imprimí el código QR para mesas, mostrador y volantes.',cat_link:'Link del catálogo',copy_link:'Copiar',link_copied:'Link copiado',download_qr:'Descargar código QR',download_poster:'Descargar cartel para imprimir',dl_note:'Los botones de descarga funcionan en el sitio publicado.',qr_fail:'No se pudo generar el código QR ahora. Verificá internet y recargá.',instagram_l:'Instagram (usuario o link)',facebook_l:'Facebook (link de la página)',login_sub:'Acceso exclusivo del local',user_l:'Usuario',pass_l:'Contraseña',enter:'Ingresar',login_err:'Usuario o contraseña incorrectos.',logout:'Salir',show_pass:'Mostrar contraseña',nav_catalog:'Catálogo',nav_admin:'Panel del local',search:'Buscar en el menú',featured:'Destacados',unavailable:'No disponible',promo:'Promoción',
 view_cart:'Ver carrito',cart:'Tu pedido',subtotal:'Subtotal',fee:'Costo de envío',total:'Total',empty_cart:'Tu carrito está vacío.',
 notes:'Observaciones',notes_ph:'Ej.: sin cebolla, punto de la carne…',required:'Obligatorio',optional:'Opcional',add_to_cart:'Agregar',
 continue:'Continuar',remove:'Quitar',keep_buying:'Agregar más productos',checkout:'Finalizar pedido',
@@ -545,7 +1822,7 @@ function defStoreAds(){const d=k=>new Date(Date.now()+k*864e5).toISOString().sli
  {adv:'Tu Delivery',title:P('Precisa de entregas? A gente leva.','¿Necesitás envíos? Nosotros llevamos.'),sub:P('Peça pelo WhatsApp 0982 086 171','Pedí por WhatsApp 0982 086 171'),link:'0982086171',color:'#C2410C',img:null,start:d(-10),end:d(50),price:150000,on:true},
  {adv:'Ótica Visão Clara',title:P('Exame de vista grátis em novembro','Examen de vista gratis en noviembre'),sub:P('Na compra de óculos completos','En la compra de lentes completos'),link:'',color:'#1F4E8C',img:null,start:d(-5),end:d(25),price:100000,on:true,ex:true},
  {adv:'Auto Center Santa Rita',title:P('Troca de óleo com 20% de desconto','Cambio de aceite con 20% de descuento'),sub:P('Mostre este anúncio no balcão','Mostrá este anuncio en el mostrador'),link:'',color:'#2F5E2A',img:null,start:d(-12),end:d(18),price:100000,on:true,ex:true}]}
-function migrate(c){const s=c.store;if(!s.bairrosV2){s.bairros=[{name:'Centro',fee:5000},{name:'San José',fee:7000},{name:'Bella Vista',fee:7000},{name:'Jardín América',fee:8000},{name:'Unión',fee:8000},{name:'San Ramón',fee:8000},{name:'Villa Nueva',fee:9000},{name:'Carmelitas',fee:9000},{name:'Nueva Esperanza',fee:10000},{name:'Nueva Santa Rita',fee:10000},{name:'Esquina Gaucha',fee:10000},{name:'Los Trigales',fee:12000},{name:'El Colono',fee:12000},{name:'San Miguel 1',fee:12000},{name:'Santa Lucía',fee:15000}];s.feeMode='bairro';s.bairrosV2=true}
+function migrate(c){const s=c.store;if(s.instagram==null){s.instagram='';s.facebook=''}if(!s.bairrosV2){s.bairros=[{name:'Centro',fee:5000},{name:'San José',fee:7000},{name:'Bella Vista',fee:7000},{name:'Jardín América',fee:8000},{name:'Unión',fee:8000},{name:'San Ramón',fee:8000},{name:'Villa Nueva',fee:9000},{name:'Carmelitas',fee:9000},{name:'Nueva Esperanza',fee:10000},{name:'Nueva Santa Rita',fee:10000},{name:'Esquina Gaucha',fee:10000},{name:'Los Trigales',fee:12000},{name:'El Colono',fee:12000},{name:'San Miguel 1',fee:12000},{name:'Santa Lucía',fee:15000}];s.feeMode='bairro';s.bairrosV2=true}
  if(!s.pixV2){s.pay.pix=true;s.pixV2=true;if(s.pixKey==null)s.pixKey='';if(s.pixName==null)s.pixName=''}if(!s.ads)s.ads=defStoreAds();if(!s.slides)s.slides=defSlides();if(!s.coverSet){s.cover=COVER_FM;s.coverSet=true}if(!s.daysV2){s.days=defDays();s.daysV2=true}if(!s.days)s.days=defDays();if(s.minOrder==null)s.minOrder=30000;if(s.paused==null)s.paused=false;
  if(!s.coupons)s.coupons=[{code:'BEMVINDO10',type:'pct',value:10,min:0,on:true},{code:'FRETEGRATIS',type:'frete',value:0,min:60000,on:true}];
  c.products.forEach(p=>{if(!p.g)p.g=[]});return c}
@@ -625,7 +1902,7 @@ function catalogHTML(cfg,live){
   <div class="cinfo"><h1>${esc(st.name)}</h1><p>${esc(tr(st.slogan))}</p></div>
  </div>
  <div class="facts"><span>${ic('pin',15)}${esc(st.address)}</span><span>${ic('clock',15)}${esc(todayHours(st))}</span><span>${ic('msg',15)}+${esc(String(st.whatsapp).replace(/\D/g,'').replace(/^(\d{3})(\d{3})(\d{3})(\d+)$/,'$1 $2 $3 $4'))}</span>
-  <div class="meta" style="width:100%">${(()=>{const o=openState(st);return `<span class="${o.open?'open':'shut'}"><i class="sdot ${o.open?'on':'off'}" aria-hidden="true"></i>${esc(openLabel(st))}</span>`})()}${modes}<span>${t('prep')} ${st.prep} ${t('min')}</span></div></div>
+  <div class="meta" style="width:100%">${(()=>{const o=openState(st);return `<span class="${o.open?'open':'shut'}"><i class="sdot ${o.open?'on':'off'}" aria-hidden="true"></i>${esc(openLabel(st))}</span>`})()}${modes}<span>${t('prep')} ${st.prep} ${t('min')}</span></div>${linksHTML(st)}</div>
  </header>
  <div class="cbody">
   ${adSliderHTML(cfg,live)}
@@ -721,6 +1998,7 @@ function checkoutSheet(){
   ${ck.mode==='pickup'?`
    <div class="sect">${t('pickup_at')}</div>
    <div class="info">${ic('pin',18)}<span><b>${esc(st.name)}</b><br>${esc(st.address)}<br>${ic('clock',14).replace('class="ic"','class="ic" style="display:inline;vertical-align:-2px"')} ${esc(todayHours(st))} · ${t('prep')} ${st.prep} ${t('min')}</span></div>
+   <a class="btn-ghost" href="${esc(mapsUrl(st))}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">${ic('route',16)}${t('how_to_get')}</a>
    <div class="fld"><label for="ck_time">${t('pickup_time')}</label>${sl.length?`<select id="ck_time" class="inp" data-ck="time">${sl.map(s=>`<option ${ck.time===s?'selected':''}>${s}</option>`).join('')}</select>`:`<div class="info bad">${t('no_slots')}</div>`}${E('time')}</div>
   `:''}
   <div class="sect">${t('payment')}</div>
@@ -799,6 +2077,7 @@ function orderCard(o){const ss=Object.keys(T.pt.st).filter(k=>o.mode==='delivery
 function tabResumo(){const td=orders.filter(o=>isToday(o.date)&&o.status!=='cancelado');const rev=td.reduce((s,o)=>s+o.total,0);
  return `<div style="display:flex;flex-direction:column;gap:16px;margin-top:16px">
  <div class="stats"><div class="stat"><small>${t('orders_today')}</small><b>${td.length}</b></div><div class="stat"><small>${t('revenue')}</small><b>${gs(rev)}</b></div><div class="stat"><small>${t('active_products')}</small><b>${pub.products.filter(p=>p.on).length} / ${pub.products.length}</b></div><div class="stat"><small>${t('avg_ticket')}</small><b>${gs(td.length?rev/td.length:0)}</b></div></div>
+ ${shareCard()}
  <div class="card"><h3>${ic('list',18)}${t('recent')}<span class="spacer"></span><button class="btn sm" data-act="tab" data-t="orders">${t('see_all')}</button></h3>${orders.slice(0,4).map(orderCard).join('')||`<p class="muted">${t('no_orders')}</p>`}</div></div>`}
 function stateBadge(){return `<span class="state ${ui.state==='dirty'?'dirty':ui.state==='pub'?'pub':''}" id="stBadge">${t(ui.state==='dirty'?'st_dirty':ui.state==='pub'?'st_pub':'st_saved')}</span>`}
 function tabCustom(){const th=draft.theme,lay=draft.layout,st=draft.store;
@@ -855,6 +2134,7 @@ function tabDelivery(){const st=pub.store;
   <div class="row2"><div class="fld"><label for="sx_prep">${t('prep_time')}</label><input id="sx_prep" class="inp num" data-sx="prep" inputmode="numeric" value="${st.prep}"></div><div class="fld"><label for="sx_min">${t('min_order_l')}</label><input id="sx_min" class="inp num" data-sx="minOrder" inputmode="numeric" value="${st.minOrder||''}" placeholder="—"></div></div>
   <div class="fld"><label for="sx_addr">${t('pickup_addr')}</label><input id="sx_addr" class="inp" data-sx="address" value="${esc(st.address)}"></div>
   <div class="fld"><label for="sx_wa">${t('whatsapp')}</label><input id="sx_wa" class="inp num" data-sx="whatsapp" inputmode="tel" value="${esc(st.whatsapp)}"><span class="note">595 + número sem o 0 inicial · ex.: 595982086171</span></div>
+  <div class="row2"><div class="fld"><label for="sx_ig">${t('instagram_l')}</label><input id="sx_ig" class="inp" data-sx="instagram" value="${esc(st.instagram||'')}" placeholder="@fogaomineiro"></div><div class="fld"><label for="sx_fb">${t('facebook_l')}</label><input id="sx_fb" class="inp" data-sx="facebook" value="${esc(st.facebook||'')}" placeholder="facebook.com/…"></div></div>
  </div>
  ${scheduleCard()}
  <div class="card"><h3>${t('payments')}</h3>${['cash','transfer','pix','card'].map(k=>`<label class="sw-row">${t(k)}<input type="checkbox" class="tog" id="pay_${k}" data-pay="${k}" ${st.pay[k]?'checked':''}></label>`).join('')}
@@ -977,6 +2257,27 @@ function loginHTML(){const st=pub.store;return `<div class="login"><form id="log
  <div class="fld"><label for="lg_user">${t('user_l')}</label><input id="lg_user" class="inp" autocomplete="username" autocapitalize="none" spellcheck="false"></div>
  <div class="fld"><label for="lg_pass">${t('pass_l')}</label><div class="pw"><input id="lg_pass" class="inp" type="password" autocomplete="current-password"><button type="button" data-act="showpw" aria-label="${t('show_pass')}">${ic('eye',18)}</button></div></div>
  <span class="err" id="lgErr" role="alert"></span><button class="btn pri" type="submit" style="justify-content:center;padding:12px">${t('enter')}</button></form></div>`}
+function mapsUrl(st){return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(st.name+', '+st.address)}`}
+function linksHTML(st){const ig=st.instagram?(/^https?:/i.test(st.instagram)?st.instagram:'https://instagram.com/'+st.instagram.replace(/^@/,'').trim()):'';const fb=st.facebook?(/^https?:/i.test(st.facebook)?st.facebook:'https://'+st.facebook.replace(/^\/+/,'')):'';
+ return `<div class="clinks"><a href="${esc(mapsUrl(st))}" target="_blank" rel="noopener">${ic('route',15)}${t('how_to_get')}</a>${ig?`<a href="${esc(ig)}" target="_blank" rel="noopener">${ic('instagram',15)}Instagram</a>`:''}${fb?`<a href="${esc(fb)}" target="_blank" rel="noopener">${ic('facebook',15)}Facebook</a>`:''}</div>`}
+const CAT_URL=MODE==='panel'?new URL('../',location.href).href:'https://tudeliveryd-cyber.github.io/Fogao-mineiro/';
+function shareCard(){return `<div class="card"><h3>${ic('qr',18)}${t('share_title')}</h3><p class="sub">${t('share_sub')}</p>
+ <div class="share"><div class="qrbox" id="qrBox"></div><div class="share-r"><div class="fld"><span class="lbl">${t('cat_link')}</span><div style="display:flex;gap:8px;min-width:0"><input class="inp" id="shareUrl" readonly value="${esc(CAT_URL)}" aria-label="${t('cat_link')}"><button class="btn" data-act="copylink">${ic('copy',15)}${t('copy_link')}</button></div></div>
+ <div class="actions">${MODE==='demo'?`<span class="note">${t('dl_note')}</span>`:`<button class="btn" data-act="dlqr">${ic('download',15)}${t('download_qr')}</button><button class="btn pri" data-act="dlposter">${ic('download',15)}${t('download_poster')}</button>`}</div></div></div></div>`}
+function qrCanvas(size){const m=qrMatrix(CAT_URL),n=m.length,q=4,cell=Math.max(1,Math.floor(size/(n+q*2))),dim=cell*(n+q*2);const c=document.createElement('canvas');c.width=c.height=dim;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,dim,dim);x.fillStyle='#141414';for(let r=0;r<n;r++)for(let k=0;k<n;k++)if(m[r][k])x.fillRect((k+q)*cell,(r+q)*cell,cell,cell);return c}
+function makeQR(){const box=document.getElementById('qrBox');if(!box)return;try{const c=qrCanvas(360);box.innerHTML='';box.appendChild(c)}catch(e){box.textContent=t('qr_fail')}}
+function saveData(url,name){const a=document.createElement('a');a.href=url;a.download=name;a.rel='noopener';document.body.appendChild(a);a.click();a.remove()}
+function rrect2(x,X,Y,w,h,r){x.beginPath();x.moveTo(X+r,Y);x.arcTo(X+w,Y,X+w,Y+h,r);x.arcTo(X+w,Y+h,X,Y+h,r);x.arcTo(X,Y+h,X,Y,r);x.arcTo(X,Y,X+w,Y,r);x.closePath()}
+function poster(cb){const st=pub.store,th=pub.theme,W=1240,H=1754;const c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
+ x.fillStyle=th.header;x.fillRect(0,0,W,H);x.fillStyle=th.primary;x.fillRect(0,0,W,300);x.fillStyle='rgba(0,0,0,.13)';for(let i=0;i<W;i+=52)x.fillRect(i,0,26,300);
+ const disp='"Bricolage Grotesque", "Arial Black", Arial, sans-serif',body='"Figtree", Arial, sans-serif';
+ const finish=y0=>{x.textAlign='center';x.fillStyle=ink(th.header);x.font=`800 100px ${disp}`;x.fillText(st.name,W/2,y0+115);
+  const qs=660,qy=y0+170;x.fillStyle='#fff';rrect2(x,(W-qs)/2,qy,qs,qs,40);x.fill();const q=qrCanvas(720);x.imageSmoothingEnabled=false;x.drawImage(q,(W-620)/2,qy+20,620,620);
+  x.fillStyle=ink(th.header);x.font=`800 68px ${disp}`;x.fillText('Escaneá y pedí online',W/2,qy+qs+105);
+  x.globalAlpha=.72;x.font=`600 46px ${body}`;x.fillText('Escaneie e peça online',W/2,qy+qs+170);x.globalAlpha=1;
+  x.fillStyle=th.promo;x.font=`700 40px ${body}`;x.fillText('Delivery · Retiro · '+CAT_URL.replace(/^https?:\/\//,'').replace(/\/$/,''),W/2,qy+qs+245);
+  x.globalAlpha=.45;x.fillStyle=ink(th.header);x.font=`500 28px ${body}`;x.fillText('Desarrollado por Araújo Tech',W/2,H-60);x.globalAlpha=1;cb(c.toDataURL('image/png'))};
+ if(st.logo){const im=new Image();im.onload=()=>{const lw=440,lh=im.height*lw/im.width,cx=(W-lw)/2-28,cy=120;x.fillStyle='#fff';rrect2(x,cx,cy,lw+56,lh+56,36);x.fill();x.drawImage(im,cx+28,cy+28,lw,lh);finish(cy+lh+56)};im.onerror=()=>finish(260);im.src=st.logo}else finish(260)}
 function suspendedHTML(){const st=pub.store;return `<div class="catwrap" style="${themeStyle(pub)}"><div class="susp-wrap"><div class="logo">${st.logo?`<img src="${st.logo}" alt="">`:esc(initials(st.name))}</div><h1>${t('suspended_cat')}</h1><p>${t('suspended_cat_sub')}</p></div></div>`}
 
 /* ===== Render geral ===== */
@@ -992,6 +2293,8 @@ function render(){
  const app=document.getElementById('app');
  app.innerHTML=(ui.view==='catalog'?((liveShop()&&liveShop().status==='suspenso')?suspendedHTML():catalogHTML(pub,true)):ui.view==='admin'?(S.get(K.auth,false)?adminHTML():loginHTML()):platformHTML())+(ui.view==='catalog'?'':`<footer class="credit admin-credit" style="padding-bottom:28px">${t('dev_by')} <b>Araújo Tech</b></footer>`);
  document.documentElement.style.setProperty('--topH',document.getElementById('top').offsetHeight+'px');
+ if(MODE==='catalog')document.body.style.setProperty('--band',pub.theme.header);
+ if(document.getElementById('qrBox'))makeQR();
  const selTab=document.querySelector('.tabs-a [aria-selected="true"]');if(selTab)selTab.parentElement.scrollLeft=Math.max(0,selTab.offsetLeft-24);
 }
 function refreshPreview(){const pv=document.getElementById('pv');if(pv)pv.innerHTML=catalogHTML(draft,false);const b=document.getElementById('stBadge');if(b)b.outerHTML=stateBadge()}
@@ -1066,6 +2369,9 @@ const acts={
  addbairro(){applyBoth(c=>c.store.bairros.push({name:'',fee:5000}));render()},
  delbairro(el){const i=+el.dataset.i;applyBoth(c=>c.store.bairros.splice(i,1));render()},
  copypix(){const k=pub.store.pixKey||'';try{navigator.clipboard.writeText(k).then(()=>toast(t('key_copied')),()=>{})}catch(e){}},
+ copylink(){const v=CAT_URL;const ok=()=>toast(t('link_copied'));try{navigator.clipboard.writeText(v).then(ok,()=>{const i=document.getElementById('shareUrl');if(i){i.select()}})}catch(e){const i=document.getElementById('shareUrl');if(i)i.select()}},
+ dlqr(){if(!window.qrMatrix){toast(t('qr_fail'),true);return}const c=document.createElement('canvas');c.width=c.height=720;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,720,720);x.imageSmoothingEnabled=false;x.drawImage(qrCanvas(720),0,0,720,720);saveData(c.toDataURL('image/png'),'qr-'+slugify(pub.store.name)+'.png')},
+ dlposter(){if(!window.qrMatrix){toast(t('qr_fail'),true);return}poster(u=>saveData(u,'cartel-'+slugify(pub.store.name)+'.png'))},
  showpw(){const i=document.getElementById('lg_pass');if(i)i.type=i.type==='password'?'text':'password'},
  logout(){S.set(K.auth,false);if(MODE==='panel'){ui.view='admin'}else{ui.view='catalog';history.replaceState(null,'','#catalogo')}render()},
  addad(){const a={adv:'',title:P('',''),sub:P('',''),link:'',color:'#1A1714',img:null,start:isoDay(Date.now()),end:isoDay(Date.now()+30*DAY),price:100000,on:false};applyBoth(c=>c.store.ads.unshift(clone(a)));render()},
