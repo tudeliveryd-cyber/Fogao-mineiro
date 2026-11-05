@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#1A1714">
 <meta name="description" content="Fogão Mineiro — cardápio digital, pedidos por delivery ou retirada pelo WhatsApp.">
+<script>window.TDC_MODE='catalog'</script>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}body{margin:0;font:14px/1.4 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Fogão Mineiro · Cardápio digital</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -335,6 +336,10 @@ textarea.inp{resize:vertical;min-height:64px}
 .login p{margin:0;color:var(--muted);font-size:13.5px}
 .login .inp{background:var(--surface)}
 .pw{position:relative}.pw .inp{padding-right:44px}.pw button{position:absolute;right:4px;top:50%;transform:translateY(-50%);border:0;background:transparent;width:38px;height:38px;display:grid;place-items:center;color:var(--muted)}
+.chead{position:relative}
+.clang{position:absolute;z-index:3;top:calc(12px + env(safe-area-inset-top,0px));right:max(12px,env(safe-area-inset-right,0px));display:inline-flex;gap:2px;padding:3px;border-radius:10px;background:rgb(0 0 0 / .45);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.clang button{border:0;background:transparent;color:#fff;font-weight:700;font-size:13px;padding:6px 11px;border-radius:8px;opacity:.75}
+.clang button[aria-pressed="true"]{background:#fff;color:#141414;opacity:1}
 </style>
 
 </head>
@@ -360,6 +365,7 @@ textarea.inp{resize:vertical;min-height:64px}
 <div id="toastRoot"></div>
 
 <script>
+const MODE=window.TDC_MODE||'demo';
 /* ===== Ícones de linha ===== */
 const ICONS={
 repeat:'<path d="M4 12a8 8 0 0 1 13.7-5.6L20 9M20 4v5h-5M20 12a8 8 0 0 1-13.7 5.6L4 15M4 20v-5h5"/>',
@@ -532,7 +538,7 @@ pub=migrate(pub);draft=migrate(draft);
 function viewFromHash(){return location.hash==='#painel'?'admin':location.hash==='#plataforma'?'platform':'catalog'}
 let cart=S.get(K.cart,[]);
 let orders=S.get(K.orders,null);
-let ui={view:viewFromHash(),q:'',tab:'resumo',device:'phone',state:'pub',confirmPub:false,edit:null};
+let ui={view:MODE==='catalog'?'catalog':MODE==='panel'?'admin':viewFromHash(),q:'',tab:'resumo',device:'phone',state:'pub',confirmPub:false,edit:null};
 let ck=Object.assign({mode:'',name:'',phone:'',street:'',num:'',bairro:'',ref:'',zone:'',lat:null,lng:null,link:'',time:'',pay:'',change:'',gps:''},S.get(K.cust,{}));
 ck.mode='';ck.time='';ck.lat=null;ck.lng=null;ck.gps='';ck.coupon='';ck.couponIn='';
 
@@ -596,7 +602,7 @@ function catalogHTML(cfg,live){
  const modes=st.delivery&&st.pickup?`<span>${ic('bike',14)}${t('delivery')}</span><span>${ic('store',14)}${t('pickup')}</span>`:st.delivery?`<span>${ic('bike',14)}${t('delivery_only')}</span>`:`<span>${ic('store',14)}${t('pickup_only')}</span>`;
  const feat=cfg.products.filter(p=>p.feat&&p.on);
  return `<div class="catwrap" style="${themeStyle(cfg)}">
- <header class="chead"><div class="cover ${st.cover?'':'plain'}">${st.cover?`<img src="${st.cover}" alt="">`:''}</div>
+ <header class="chead">${MODE==='catalog'&&live?`<div class="clang" role="group" aria-label="Idioma"><button data-act="lang" data-l="pt" aria-pressed="${lang==='pt'}">PT</button><button data-act="lang" data-l="es" aria-pressed="${lang==='es'}">ES</button></div>`:''}<div class="cover ${st.cover?'':'plain'}">${st.cover?`<img src="${st.cover}" alt="">`:''}</div>
  <div class="chead-in">
   <div class="logo">${st.logo?`<img src="${st.logo}" alt="">`:esc(initials(st.name))}</div>
   <div class="cinfo"><h1>${esc(st.name)}</h1><p>${esc(tr(st.slogan))}</p></div>
@@ -758,7 +764,7 @@ function adminHTML(){
  const st=draft.store;
  const tabs=[['resumo','chart'],['custom','palette'],['products','box'],['delivery','map'],['ads','layers'],['orders','list']];
  return `<div class="admin-wrap">
- <div class="ahead"><div class="logo" style="background:${pub.theme.primary};color:${ink(pub.theme.primary)}">${pub.store.logo?`<img src="${pub.store.logo}" alt="">`:esc(initials(pub.store.name))}</div><div><h2>${esc(pub.store.name)}</h2><p>tudelivery.com/fogao-mineiro</p></div><span class="spacer"></span><button class="btn" data-act="view" data-v="catalog">${ic('eye',16)}${t('nav_catalog')}</button><button class="btn" data-act="logout">${t('logout')}</button></div>
+ <div class="ahead"><div class="logo" style="background:${pub.theme.primary};color:${ink(pub.theme.primary)}">${pub.store.logo?`<img src="${pub.store.logo}" alt="">`:esc(initials(pub.store.name))}</div><div><h2>${esc(pub.store.name)}</h2><p>tudelivery.com/fogao-mineiro</p></div><span class="spacer"></span>${MODE==='panel'?`<a class="btn" href="../" target="_blank" rel="noopener" style="text-decoration:none">${ic('eye',16)}${t('nav_catalog')}</a>`:`<button class="btn" data-act="view" data-v="catalog">${ic('eye',16)}${t('nav_catalog')}</button>`}<button class="btn" data-act="logout">${t('logout')}</button></div>
  <div class="tabs-a" role="tablist">${tabs.map(([k,i])=>`<button role="tab" aria-selected="${ui.tab===k}" data-act="tab" data-t="${k}">${ic(i,17)}${t('a_'+k)}</button>`).join('')}</div>
  <div id="tabBody">${({resumo:tabResumo,custom:tabCustom,products:tabProducts,delivery:tabDelivery,ads:()=>`<div style="margin-top:16px">${adsCard()}</div>`,orders:tabOrders})[ui.tab]()}</div></div>`}
 function isToday(iso){const d=new Date(iso),n=new Date();return d.toDateString()===n.toDateString()}
@@ -954,6 +960,8 @@ function render(){
  document.getElementById('bm').innerHTML=ic('bike',16);
  document.getElementById('vCat').innerHTML=ic('store',15)+'<span>'+t('nav_catalog')+'</span>';document.getElementById('vAdm').innerHTML=ic('grid',15)+'<span>'+t('nav_admin')+'</span>';
  document.getElementById('vCat').setAttribute('aria-pressed',ui.view==='catalog');document.getElementById('vAdm').setAttribute('aria-pressed',ui.view==='admin');
+ document.getElementById('top').hidden=MODE==='catalog';
+ if(MODE==='panel'){document.getElementById('vCat').hidden=true;document.getElementById('navSeg').hidden=!plVisible();document.querySelector('.urlpill').hidden=true;if(ui.view==='catalog')ui.view='admin'}
  const vp=document.getElementById('vPl');vp.hidden=!plVisible();if(ui.view==='platform'&&!plVisible())ui.view='catalog';vp.innerHTML=ic('layers',15)+'<span>'+t('nav_platform')+'</span>';vp.setAttribute('aria-pressed',ui.view==='platform');
  document.getElementById('lPt').setAttribute('aria-pressed',lang==='pt');document.getElementById('lEs').setAttribute('aria-pressed',lang==='es');
  const app=document.getElementById('app');
@@ -1030,7 +1038,7 @@ const acts={
  shoppay(el){const x=PL.shops.find(z=>z.id===el.dataset.sid);if(!x)return;const base=Math.max(new Date(x.due+'T12:00:00').getTime(),Date.now());x.due=isoDay(base+30*DAY);x.status='ativo';x.pays.push({date:isoDay(Date.now()),v:planOf(x).price});savePL();render();toast(t('pay_ok'))},
  shopstatus(el){const x=PL.shops.find(z=>z.id===el.dataset.sid);if(!x)return;x.status='suspenso';savePL();render()},
  showpw(){const i=document.getElementById('lg_pass');if(i)i.type=i.type==='password'?'text':'password'},
- logout(){S.set(K.auth,false);ui.view='catalog';history.replaceState(null,'','#catalogo');render()},
+ logout(){S.set(K.auth,false);if(MODE==='panel'){ui.view='admin'}else{ui.view='catalog';history.replaceState(null,'','#catalogo')}render()},
  addad(){const a={adv:'',title:P('',''),sub:P('',''),link:'',color:'#1A1714',img:null,start:isoDay(Date.now()),end:isoDay(Date.now()+30*DAY),price:100000,on:false};applyBoth(c=>c.store.ads.unshift(clone(a)));render()},
  delad(el){const i=+el.dataset.i;applyBoth(c=>c.store.ads.splice(i,1));render()},
  adrmimg(el){const i=+el.dataset.i;applyBoth(c=>{if(c.store.ads[i])c.store.ads[i].img=null});render()},
@@ -1087,7 +1095,7 @@ document.addEventListener('submit',e=>{if(e.target.id!=='loginForm')return;e.pre
 let spyRaf=0;window.addEventListener('scroll',()=>{if(spyRaf||ui.view!=='catalog')return;spyRaf=requestAnimationFrame(()=>{spyRaf=0;const nav=document.getElementById('cnav');if(!nav)return;const lim=nav.getBoundingClientRect().bottom+12;let cur=null;
  nav.querySelectorAll('a[data-c]').forEach(a=>{const sec=document.getElementById('sec-'+a.dataset.c);if(sec&&sec.getBoundingClientRect().top<=lim)cur=a});if(!cur)cur=nav.querySelector('a[data-c]');if(innerHeight+scrollY>=document.documentElement.scrollHeight-6){const all=nav.querySelectorAll('a[data-c]');cur=all[all.length-1]||cur}
  if(cur&&!cur.classList.contains('on')){nav.querySelectorAll('a').forEach(a=>a.classList.toggle('on',a===cur));nav.scrollTo({left:Math.max(0,cur.offsetLeft-16),behavior:'smooth'})}})},{passive:true});
-window.addEventListener('hashchange',()=>{const v=viewFromHash();if(v!==ui.view){ui.view=v;closeSheet();render()}});
+window.addEventListener('hashchange',()=>{if(MODE!=='demo')return;const v=viewFromHash();if(v!==ui.view){ui.view=v;closeSheet();render()}});
 window.addEventListener('resize',()=>document.documentElement.style.setProperty('--topH',document.getElementById('top').offsetHeight+'px'));
 render();
 </script>
