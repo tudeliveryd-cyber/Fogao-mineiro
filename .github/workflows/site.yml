@@ -1,0 +1,45 @@
+name: Publicar site Araújo Tech
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'araujo-tech-site/**'
+      - '.github/workflows/site.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      FTP_SERVER: ${{ secrets.FTP_SERVER }}
+      SITE_FTP_USERNAME: ${{ secrets.SITE_FTP_USERNAME }}
+      SITE_FTP_PASSWORD: ${{ secrets.SITE_FTP_PASSWORD }}
+    steps:
+      - name: Aguardando os dados do FTP do site
+        if: env.SITE_FTP_USERNAME == '' || env.SITE_FTP_PASSWORD == ''
+        run: echo "Faltam SITE_FTP_USERNAME e SITE_FTP_PASSWORD nos secrets. Nada foi enviado."
+      - uses: actions/checkout@v4
+        if: env.SITE_FTP_USERNAME != '' && env.SITE_FTP_PASSWORD != ''
+      - name: Instalar lftp
+        if: env.SITE_FTP_USERNAME != '' && env.SITE_FTP_PASSWORD != ''
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+      - name: Enviar arquivos para araujotechsistemas.com
+        if: env.SITE_FTP_USERNAME != '' && env.SITE_FTP_PASSWORD != ''
+        run: |
+          export LFTP_PASSWORD="$SITE_FTP_PASSWORD"
+          # Só envia o conteúdo de araujo-tech-site/. Sem --delete: nada no servidor é apagado
+          # (a pasta fogaomineiro, php.ini e afins ficam intactos).
+          lftp -e "
+            set ftp:ssl-force true;
+            set ftp:ssl-protect-data true;
+            set ssl:verify-certificate yes;
+            set ssl:verify-certificate/CC:40:F0:6A:08:0C:63:04:01:05:A9:20:7B:23:53:CA:60:35:A7:05 no;
+            set ftp:passive-mode true;
+            set net:max-retries 3;
+            set net:timeout 30;
+            open --env-password -u "$SITE_FTP_USERNAME" ftp://$FTP_SERVER;
+            mirror --reverse --verbose --only-newer --parallel=3 \
+              --exclude-glob fogaomineiro/ \
+              ./araujo-tech-site/ ./;
+            bye"

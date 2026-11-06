@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Araújo Tech Sistemas — Sistemas a medida en Santa Rita, Paraguay</title>
+<meta name="description" content="Sistemas y aplicaciones web a medida para comercios, empresas de delivery e iglesias. Hechos en Santa Rita, Paraguay. Español y portugués.">
+<meta name="theme-color" content="#24093F">
+<!-- ===== DIRECCIÓN DEL SITIO: cambie SITE en las 5 líneas de abajo cuando tenga dominio propio ===== -->
+<link rel="alternate" hreflang="es" href="https://araujotechsistemas.com/">
+<link rel="alternate" hreflang="pt-BR" href="https://araujotechsistemas.com/">
+<link rel="canonical" href="https://araujotechsistemas.com/">
+<meta name="robots" content="index,follow">
+<meta name="keywords" content="sistemas a medida Paraguay, desarrollo de software Santa Rita, aplicaciones web Paraguay, catálogo digital WhatsApp, sistema para iglesias, sistema delivery">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Araújo Tech Sistemas">
+<meta property="og:title" content="Araújo Tech Sistemas — Tecnología que transforma negocios">
+<meta property="og:description" content="Sistemas y aplicaciones web a medida para comercios, empresas de delivery e iglesias. Hechos en Santa Rita, Paraguay.">
+<meta property="og:url" content="https://araujotechsistemas.com/">
+<meta property="og:image" content="https://araujotechsistemas.com/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="es_PY">
+<meta property="og:locale:alternate" content="pt_BR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://araujotechsistemas.com/img/og.jpg">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LocalBusiness","name":"Araújo Tech Sistemas","slogan":"Tecnología que transforma negocios",
+"description":"Desarrollo de sistemas a medida, aplicaciones web y catálogos digitales para empresas, comercios e iglesias.",
+"url":"https://araujotechsistemas.com/","logo":"https://araujotechsistemas.com/img/simbolo.png","image":"https://araujotechsistemas.com/img/og.jpg",
+"address":{"@type":"PostalAddress","addressLocality":"Santa Rita","addressRegion":"Alto Paraná","addressCountry":"PY"},
+"areaServed":["PY","BR"],"knowsLanguage":["es","pt"],"founder":{"@type":"Person","name":"Jean Carlos Borges de Araújo"}}
+</script>
+<link rel="icon" href="img/simbolo.png">
+<link rel="apple-touch-icon" href="img/simbolo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@700;900&family=Red+Hat+Text:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --purple:#8A12D6;
+  --deep:#4A0A80;
+  --night:#24093F;
+  --lilac:#F3ECFB;
+  --ink:#1A1222;
+  --muted:#5F566B;
+  --line:#E4DAF0;
+  --white:#FFFFFF;
+  --ok:#11845A;
+  --dev:#B26A00;
+  --display:"Red Hat Display",system-ui,sans-serif;
+  --text:"Red Hat Text",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--text);font-size:17px;line-height:1.6;color:var(--ink);background:var(--white);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--purple);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* ---------- header ---------- */
+.hdr{position:fixed;inset:0 0 auto;z-index:50;transition:background .25s,box-shadow .25s}
+.hdr.solid{background:var(--white);box-shadow:0 1px 0 var(--line)}
+.nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand img{height:42px;width:auto}
+.brand .c{display:none}
+.hdr.solid .brand .w{display:none}
+.hdr.solid .brand .c{display:block}
+.menu{display:flex;align-items:center;gap:28px;font-weight:500;font-size:16px;color:#fff}
+.hdr.solid .menu{color:var(--ink)}
+.menu a{text-decoration:none}
+.menu a:not(.btn):hover{text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:2px}
+.right{display:flex;align-items:center;gap:14px}
+.lang{display:flex;padding:3px;border-radius:999px;border:1.5px solid rgba(255,255,255,.45);font-size:14px;font-weight:700;color:#fff}
+.hdr.solid .lang{border-color:var(--line);color:var(--ink)}
+.lang button{border:0;background:none;padding:6px 12px;border-radius:999px;cursor:pointer;color:inherit;opacity:.8}
+.lang button.on{opacity:1;background:#fff;color:var(--deep)}
+.hdr.solid .lang button.on{background:var(--deep);color:#fff}
+.lang .short{display:none}
+.burger{display:none;border:0;background:none;color:#fff;cursor:pointer;padding:6px}
+.hdr.solid .burger{color:var(--ink)}
+.burger svg.i{width:26px;height:26px}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 22px;border-radius:10px;font-weight:700;font-size:16px;text-decoration:none;border:2px solid transparent;cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.btn svg.i{width:19px;height:19px}
+.btn-solid{background:var(--purple);color:#fff}
+.btn-solid:hover{background:var(--deep)}
+.btn-white{background:#fff;color:var(--night)}
+.btn-white:hover{background:var(--lilac)}
+.btn-line{border-color:rgba(255,255,255,.55);color:#fff}
+.btn-line:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+.btn-ghost{border-color:var(--line);color:var(--ink);background:#fff}
+.btn-ghost:hover{border-color:var(--purple);color:var(--purple)}
+.btn-sm{padding:10px 16px;font-size:15px}
+.hdr:not(.solid) .menu .btn-sm{background:#fff;color:var(--deep)}
+
+/* ---------- hero ---------- */
+.hero{position:relative;background:var(--night);color:#fff;overflow:hidden;padding:172px 0 120px}
+.hero .wrap{position:relative;z-index:1}
+.hero h1{font-family:var(--display);font-weight:900;font-size:clamp(42px,6.6vw,88px);line-height:.98;letter-spacing:-.035em;max-width:11ch;margin-bottom:30px}
+.hero p{font-size:clamp(18px,1.6vw,21px);line-height:1.55;max-width:34em;color:rgba(255,255,255,.88);margin-bottom:40px}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:14px}
+.hero .mark{position:absolute;right:-6%;bottom:-14%;width:min(58vw,820px);z-index:0;opacity:.85}
+.hero .where{margin-top:64px;font-size:15px;color:rgba(255,255,255,.75)}
+@media (prefers-reduced-motion:no-preference){
+  .hero h1,.hero p,.hero .ctas{animation:rise .8s cubic-bezier(.2,.7,.2,1) both}
+  .hero p{animation-delay:.08s}.hero .ctas{animation-delay:.16s}
+  .hero .mark{animation:slide 1.1s cubic-bezier(.2,.7,.2,1) both}
+}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}}
+@keyframes slide{from{opacity:0;transform:translateX(60px)}}
+
+/* ---------- section basics ---------- */
+section{padding:112px 0}
+h2{font-family:var(--display);font-weight:900;font-size:clamp(32px,4.2vw,54px);line-height:1.02;letter-spacing:-.03em;margin-bottom:18px}
+.lead{font-size:19px;color:var(--muted);max-width:36em}
+.sec-head{margin-bottom:56px}
+
+/* pixel bullet, taken from the logo */
+.px{display:inline-block;width:9px;height:9px;background:var(--purple);border-radius:2px;flex:none;margin-top:.62em}
+
+/* ---------- systems index ---------- */
+.sys-list{border-top:2px solid var(--ink)}
+.sys{display:grid;grid-template-columns:5fr 7fr;gap:24px 56px;padding:48px 0;border-bottom:1px solid var(--line)}
+.sys h3{font-family:var(--display);font-weight:900;font-size:clamp(30px,3.4vw,46px);line-height:1.02;letter-spacing:-.03em;margin-bottom:12px}
+.sys .for{font-size:17px;color:var(--muted)}
+.sys .st{display:inline-flex;align-items:center;gap:8px;margin-top:18px;font-size:14px;font-weight:700}
+.sys .st::before{content:"";width:9px;height:9px;border-radius:2px;background:currentColor}
+.sys .st.ok{color:var(--ok)}.sys .st.dev{color:var(--dev)}
+.sys .desc{font-size:18px;margin-bottom:20px;max-width:36em}
+.sys ul{list-style:none;display:grid;gap:10px;margin-bottom:28px}
+.sys li{display:flex;gap:14px;color:var(--ink)}
+.sys .acts{display:flex;flex-wrap:wrap;gap:12px}
+.sys .shots{grid-column:1/-1;display:flex;gap:20px;align-items:flex-end;background:var(--lilac);border-radius:16px;padding:32px 32px 0;overflow:hidden}
+.sys .shots .pc{flex:1;border-radius:10px 10px 0 0;overflow:hidden;box-shadow:0 -1px 0 var(--line),0 20px 40px -24px rgba(74,10,128,.45);background:#fff}
+.sys .shots .cel{width:22%;min-width:120px;border-radius:22px 22px 0 0;overflow:hidden;border:6px solid var(--ink);border-bottom:0;background:#fff}
+.sys .shots img{width:100%;height:auto}
+.more{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding:40px 0 0}
+.more p{font-size:18px;max-width:34em}
+
+/* ---------- about ---------- */
+.about{background:var(--lilac)}
+.about .grid{display:grid;grid-template-columns:5fr 7fr;gap:56px;align-items:start}
+.about .photo{aspect-ratio:4/5;border-radius:16px;overflow:hidden;background:var(--deep)}
+.about .photo img{width:100%;height:100%;object-fit:cover}
+.about .story h2{margin-bottom:26px}
+.about .story p{font-size:20px;line-height:1.6;margin-bottom:22px;max-width:34em}
+.about .story h2+p{font-family:var(--display);font-weight:700;font-size:clamp(24px,2.4vw,30px);line-height:1.3;letter-spacing:-.015em}
+.about .sign{margin-top:30px;font-weight:700}
+.about .sign span{display:block;font-weight:400;color:var(--muted);font-size:16px}
+.about .solo .story{max-width:780px}
+
+/* ---------- steps (real sequence) ---------- */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;counter-reset:step}
+.step{border-top:2px solid var(--ink);padding-top:22px}
+.step::before{counter-increment:step;content:counter(step);display:block;font-family:var(--display);font-weight:900;font-size:44px;line-height:1;color:var(--purple);margin-bottom:18px}
+.step h3{font-family:var(--display);font-weight:700;font-size:21px;margin-bottom:8px}
+.step p{color:var(--muted);font-size:16px}
+
+/* ---------- testimonials (only real ones) ---------- */
+.tlist{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:48px}
+.tq blockquote{font-family:var(--display);font-weight:700;font-size:23px;line-height:1.35;letter-spacing:-.01em;margin-bottom:20px}
+.tq figcaption{display:flex;align-items:center;gap:12px;font-size:15px;color:var(--muted)}
+.tq figcaption img{width:44px;height:44px;border-radius:50%;object-fit:cover}
+.tq figcaption b{display:block;color:var(--ink)}
+
+/* ---------- faq ---------- */
+.faq{display:grid;grid-template-columns:5fr 7fr;gap:56px}
+.faq details{border-bottom:1px solid var(--line)}
+.faq details:first-child{border-top:2px solid var(--ink)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px 0;font-family:var(--display);font-weight:700;font-size:20px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary svg.i{color:var(--purple);transition:transform .2s}
+.faq details[open] summary svg.i{transform:rotate(45deg)}
+.faq details p{padding:0 0 24px;color:var(--muted);max-width:38em}
+
+/* ---------- contact ---------- */
+.contact{background:var(--night);color:#fff}
+.contact .grid{display:grid;grid-template-columns:5fr 6fr;gap:64px;align-items:start}
+.contact h2{color:#fff}
+.contact .lead{color:rgba(255,255,255,.82);margin-bottom:34px}
+.contact .direct{display:grid;gap:14px;font-size:17px}
+.contact .direct a,.contact .direct div{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff}
+.contact .direct a:hover span{text-decoration:underline;text-underline-offset:4px}
+.qform{background:#fff;color:var(--ink);border-radius:16px;padding:36px}
+.qform h3{font-family:var(--display);font-weight:900;font-size:26px;letter-spacing:-.02em;margin-bottom:6px}
+.qform .sub{color:var(--muted);font-size:15px;margin-bottom:24px}
+.qform label{display:block;font-size:15px;font-weight:700;margin-bottom:16px}
+.qform input,.qform select,.qform textarea{display:block;width:100%;margin-top:6px;padding:13px 14px;border:1.5px solid var(--line);border-radius:8px;background:#fff;font-size:16px;font-weight:400;resize:vertical}
+.qform input:focus,.qform select:focus,.qform textarea:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 3px rgba(138,18,214,.18)}
+.qform .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.qform .btn{width:100%;margin-top:4px}
+.qform .err{display:none;color:#B42318;font-size:14px;font-weight:500;margin-bottom:12px}
+.qform .err.on{display:block}
+.qform .note{margin-top:12px;font-size:13px;color:var(--muted);text-align:center}
+
+/* ---------- footer ---------- */
+footer{background:var(--ink);color:#B9AFC6;padding:64px 0 32px;font-size:15px}
+.fgrid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.12)}
+footer .flogo{height:60px;width:auto;margin-bottom:18px}
+footer p{max-width:30em}
+footer h4{font-family:var(--display);font-weight:700;color:#fff;font-size:16px;margin-bottom:14px}
+footer ul{list-style:none;display:grid;gap:9px}
+footer a{text-decoration:none}
+footer a:hover{color:#fff;text-decoration:underline;text-underline-offset:4px}
+.fbot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:24px}
+
+/* ---------- responsive ---------- */
+@media (max-width:980px){
+  .sys,.about .grid,.faq,.contact .grid{grid-template-columns:1fr}
+  .sys{gap:18px}
+  .about .photo{max-width:380px}
+  .steps{grid-template-columns:1fr 1fr}
+  .fgrid{grid-template-columns:1fr 1fr}
+  .fgrid>div:first-child{grid-column:1/-1}
+}
+@media (max-width:760px){
+  body{font-size:16px}
+  .menu{display:none;position:absolute;top:76px;left:0;right:0;flex-direction:column;align-items:flex-start;gap:22px;padding:24px;background:#fff;color:var(--ink);box-shadow:0 1px 0 var(--line),0 20px 30px -20px rgba(26,18,34,.3)}
+  .menu.open{display:flex}
+  .hdr:not(.solid) .menu .btn-sm{background:var(--purple);color:#fff}
+  .burger{display:block}
+  .brand img{height:34px}
+  .lang .full{display:none}.lang .short{display:inline}
+  .lang button{padding:5px 10px}
+  .right{gap:6px}
+  .hero{padding:130px 0 96px}
+  .hero .mark{width:78vw;right:-22%;bottom:-6%;opacity:.35}
+  .hero .ctas .btn{flex:1 1 100%}
+  section{padding:80px 0}
+  .sec-head{margin-bottom:40px}
+  .sys{padding:36px 0}
+  .sys .acts .btn{flex:1 1 auto}
+  .sys .shots{padding:20px 20px 0}
+  .steps{grid-template-columns:1fr;gap:32px}
+  .qform{padding:26px 20px}
+  .qform .row{grid-template-columns:1fr;gap:0}
+  .fgrid{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="hdr" id="hdr">
+  <div class="wrap nav">
+    <a href="#inicio" class="brand" aria-label="Araújo Tech Sistemas">
+      <img class="w" src="img/logo-blanco.png" alt="Araújo Tech Sistemas">
+      <img class="c" src="img/logo.png" alt="">
+    </a>
+    <nav class="menu" id="menu">
+      <a href="#sistemas" data-t="n1">Sistemas</a>
+      <a href="#quienes" data-t="n2">Quiénes somos</a>
+      <a href="#como" data-t="n3">Cómo trabajamos</a>
+      <a href="#preguntas" data-t="n4">Preguntas</a>
+      <a href="#contacto" class="btn btn-solid btn-sm" data-t="n5">Pedir presupuesto</a>
+    </nav>
+    <div class="right">
+    <div class="lang" role="group" aria-label="Idioma / Idioma"><button data-lang="es" lang="es"><span class="full">Español</span><span class="short">ES</span></button><button data-lang="pt" lang="pt-BR"><span class="full">Português</span><span class="short">PT</span></button></div>
+    <button class="burger" id="burger" aria-label="Menú" aria-expanded="false"><svg class="i" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main>
+<div class="hero" id="inicio">
+  <img class="mark" src="img/simbolo-roxo.svg" alt="" aria-hidden="true">
+  <div class="wrap">
+    <h1 data-t="h1">Sistemas a la medida de su negocio</h1>
+    <p data-t="h_p">Hacemos aplicaciones y sistemas web para comercios, empresas de delivery e iglesias. Funcionan en el celular y en la computadora, en español y en portugués.</p>
+    <div class="ctas">
+      <a href="#" class="btn btn-white js-wa"><svg class="i" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-13.4 7.9L3 21l1.1-4.6A9 9 0 1 1 21 12Z"/></svg><span data-t="h_b1">Escribir por WhatsApp</span></a>
+      <a href="#sistemas" class="btn btn-line" data-t="h_b2">Ver los sistemas</a>
+    </div>
+    <div class="where" data-t="h_where">Desde Santa Rita, Alto Paraná, para Paraguay y Brasil.</div>
+  </div>
+</div>
+
+<section id="sistemas">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 data-t="s_h">Sistemas</h2>
+      <p class="lead" data-t="s_p">Cada uno nació para resolver un problema real y se usa todos los días. Todos se pueden adaptar a su negocio.</p>
+    </div>
+    <div class="sys-list" id="sysList"></div>
+    <div class="more">
+      <p data-t="s_more">¿Su negocio necesita algo que no está en esta lista? Cuéntenos qué le hace falta.</p>
+      <a href="#contacto" class="btn btn-ghost" data-t="s_more_b">Contar mi idea</a>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="quienes">
+  <div class="wrap">
+    <div class="grid" id="aboutGrid">
+      <div class="photo" id="aboutPhoto" hidden></div>
+      <div class="story">
+        <h2 data-t="a_h">Quiénes somos</h2>
+        <p data-t="a_p1">Araújo Tech empezó dentro de una empresa de delivery en Santa Rita.</p>
+        <p data-t="a_p2">Comencé Tu Delivery solo, con una moto. Cuando la empresa creció, controlar la caja y las comisiones de cada repartidor en papel ya no funcionaba, así que hice el sistema que necesitaba. Como pastor, hice lo mismo con mis sermones: así nació Meu Púlpito.</p>
+        <p data-t="a_p3">Hoy desarrollo esos sistemas para otros comercios, empresas e iglesias. Sé lo que es atender un negocio todos los días, y por eso cada sistema tiene que ser simple de usar.</p>
+        <div class="sign">Jean Carlos Borges de Araújo<span data-t="a_sign">Fundador de Araújo Tech</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="como">
+  <div class="wrap">
+    <div class="sec-head"><h2 data-t="c_h">Cómo trabajamos</h2></div>
+    <div class="steps">
+      <div class="step"><h3 data-t="c1">Conversamos</h3><p data-t="c1p">Usted nos cuenta cómo funciona su negocio y qué quiere resolver.</p></div>
+      <div class="step"><h3 data-t="c2">Le mostramos las pantallas</h3><p data-t="c2p">Antes de programar, aprueba cómo se va a ver cada pantalla.</p></div>
+      <div class="step"><h3 data-t="c3">Desarrollamos por etapas</h3><p data-t="c3p">Va probando cada parte con sus datos reales.</p></div>
+      <div class="step"><h3 data-t="c4">Publicamos y acompañamos</h3><p data-t="c4p">Le enseñamos a usarlo a usted y a su equipo, y seguimos mejorando.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="testimonios" hidden>
+  <div class="wrap">
+    <div class="sec-head"><h2 data-t="t_h">Lo que dicen nuestros clientes</h2></div>
+    <div class="tlist" id="tList"></div>
+  </div>
+</section>
+
+<section id="preguntas" style="padding-top:0">
+  <div class="wrap faq">
+    <div><h2 data-t="q_h">Preguntas frecuentes</h2></div>
+    <div id="faqList"></div>
+  </div>
+</section>
+
+<section class="contact" id="contacto">
+  <div class="wrap grid">
+    <div>
+      <h2 data-t="k_h">Hablemos de su negocio</h2>
+      <p class="lead" data-t="k_p">Cuéntenos qué necesita. Le respondemos por WhatsApp con una propuesta sin compromiso.</p>
+      <div class="direct">
+        <a href="#" class="js-wa"><svg class="i" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-13.4 7.9L3 21l1.1-4.6A9 9 0 1 1 21 12Z"/></svg><span id="waShow"></span></a>
+        <a href="#" class="js-mail"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span class="js-mailtxt"></span></a>
+        <a href="#" class="js-ig" target="_blank" rel="noopener"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></svg><span class="js-igtxt"></span></a>
+        <div><svg class="i" viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5"/></svg><span class="js-city"></span></div>
+      </div>
+    </div>
+    <form class="qform" id="qform" novalidate>
+      <h3 data-t="f_h">Pedir presupuesto</h3>
+      <p class="sub" data-t="f_sub">Al enviar, se abre WhatsApp con su mensaje listo.</p>
+      <div class="row">
+        <label><span data-t="f_n">Nombre</span><input name="n" autocomplete="name"></label>
+        <label><span data-t="f_e">Negocio o iglesia</span><input name="e" autocomplete="organization"></label>
+      </div>
+      <label><span data-t="f_s">¿Qué necesita?</span><select name="s" id="qsel"></select></label>
+      <label><span data-t="f_m">Cuéntenos su idea</span><textarea name="m" rows="4"></textarea></label>
+      <p class="err" id="qerr" role="alert" data-t="f_err">Escriba su nombre y su idea para enviar.</p>
+      <button class="btn btn-solid" type="submit"><svg class="i" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-13.4 7.9L3 21l1.1-4.6A9 9 0 1 1 21 12Z"/></svg><span data-t="f_b">Enviar por WhatsApp</span></button>
+      <p class="note" data-t="f_note">Usamos sus datos solo para responderle.</p>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <img class="flogo" src="img/logo-completo-blanco.png" alt="Araújo Tech Sistemas — Tecnología que transforma negocios">
+        <p data-t="ft_about">Sistemas y aplicaciones web para comercios, empresas e iglesias. Santa Rita, Paraguay.</p>
+      </div>
+      <div><h4 data-t="n1">Sistemas</h4><ul id="fSys"></ul></div>
+      <div><h4 data-t="ft_c">Contacto</h4><ul>
+        <li><a href="#" class="js-wa">WhatsApp</a></li>
+        <li><a href="#" class="js-ig" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="#" class="js-mail js-mailtxt"></a></li>
+        <li class="js-city"></li>
+      </ul></div>
+    </div>
+    <div class="fbot"><span>© <span id="yr">2026</span> Araújo Tech Sistemas</span><span data-t="ft_tag">Tecnología que transforma negocios</span></div>
+  </div>
+</footer>
+
+<script>
+/* =========================================================
+   1) CONTACTO
+   ========================================================= */
+const CONFIG = {
+  whatsapp:  "595983879344",          // número con código de país, sin + ni espacios (ej.: 595981123456)
+  email:     "contacto@araujotechsistemas.com",
+  instagram: "araujo_tech_sistemas",
+  ciudad:    "Santa Rita, Alto Paraná, Paraguay",
+  foto:      ""                       // foto de Jean Carlos para "Quiénes somos" (ej.: "img/jean-carlos.jpg")
+};
+
+/* =========================================================
+   2) SISTEMAS — para agregar uno, copie un bloco { ... } y cambie los datos.
+   status: "ok" (Disponible) | "dev" (En desarrollo)
+   link:   dirección del sistema ("" si no tiene)
+   pc / celular: capturas REALES de pantalla en img/ ("" mientras no haya)
+   ========================================================= */
+const SISTEMAS = [
+  { nombre:"Meu Púlpito", status:"ok", link:"https://meupulpito.com", linkTexto:"meupulpito.com", instagram:"meupulpito",
+    pc:"", celular:"",
+    es:{ para:"Para pastores y predicadores",
+         desc:"Un bloc de notas para escribir el sermón y leerlo en el púlpito sin perderse, con la Biblia al lado.",
+         puntos:["Modo Predicar: cada parte del sermón con su color, en letra grande","Biblia con varias versiones en español y portugués","Proyección para la iglesia y registro de miembros"] },
+    pt:{ para:"Para pastores e pregadores",
+         desc:"Um bloco de notas para escrever o sermão e lê-lo no púlpito sem se perder, com a Bíblia ao lado.",
+         puntos:["Modo Pregar: cada parte do sermão com sua cor, em letra grande","Bíblia com várias versões em português e espanhol","Projeção para a igreja e cadastro de membros"] } },
+
+  { nombre:"Tu Delivery Catálogos", status:"ok", link:"", pc:"", celular:"",
+    es:{ para:"Para restaurantes y comercios",
+         desc:"El menú o catálogo de su negocio en internet. El cliente arma el pedido y le llega listo a su WhatsApp.",
+         puntos:["Sin comisión por pedido: el pedido llega directo a usted","Productos con opciones, como pizza mitad y mitad","Delivery o retiro, con costo de envío por barrio"] },
+    pt:{ para:"Para restaurantes e comércios",
+         desc:"O cardápio ou catálogo do seu negócio na internet. O cliente monta o pedido e ele chega pronto no seu WhatsApp.",
+         puntos:["Sem comissão por pedido: o pedido chega direto para você","Produtos com opções, como pizza meio a meio","Delivery ou retirada, com taxa de entrega por bairro"] } },
+
+  { nombre:"Caja de Entregas", status:"ok", link:"", pc:"", celular:"",
+    es:{ para:"Para empresas de delivery",
+         desc:"Cada entrega anotada en el momento. Al cerrar el día, la caja cuadra sola y cada repartidor ve cuánto le toca.",
+         puntos:["Apertura y cierre de caja","Efectivo, transferencia y anotado separados por repartidor","Puntos y premios para los repartidores"] },
+    pt:{ para:"Para empresas de delivery",
+         desc:"Cada entrega anotada na hora. No fim do dia, o caixa fecha sozinho e cada entregador vê quanto tem a receber.",
+         puntos:["Abertura e fechamento de caixa","Efectivo, transferência e anotado separados por entregador","Pontos e prêmios para os entregadores"] } },
+
+  { nombre:"Sistema para Iglesias", status:"dev", link:"", pc:"", celular:"",
+    es:{ para:"Para iglesias", desc:"Una app para los miembros, con la agenda de cultos y los avisos, y una secretaría para el liderazgo.",
+         puntos:["Registro de miembros","Diezmos y ofrendas","Agenda, eventos y asistencia"] },
+    pt:{ para:"Para igrejas", desc:"Um app para os membros, com a agenda dos cultos e os avisos, e uma secretaria para a liderança.",
+         puntos:["Cadastro de membros","Dízimos e ofertas","Agenda, eventos e presença"] } }
+];
+
+/* =========================================================
+   3) TESTIMONIOS — solo reales y con autorización. La sección aparece sola.
+   { nombre:"Nombre", cargo:"Dueño de ...", foto:"img/...", texto:{es:"...", pt:"..."} },
+   ========================================================= */
+const TESTIMONIOS = [
+];
+
+/* =========================================================
+   4) TEXTOS
+   ========================================================= */
+const T = {
+es:{
+ title:"Araújo Tech Sistemas — Sistemas a medida en Santa Rita, Paraguay",
+ n1:"Sistemas",n2:"Quiénes somos",n3:"Cómo trabajamos",n4:"Preguntas",n5:"Pedir presupuesto",
+ h1:"Sistemas a la medida de su negocio",
+ h_p:"Hacemos aplicaciones y sistemas web para comercios, empresas de delivery e iglesias. Funcionan en el celular y en la computadora, en español y en portugués.",
+ h_b1:"Escribir por WhatsApp",h_b2:"Ver los sistemas",h_where:"Desde Santa Rita, Alto Paraná, para Paraguay y Brasil.",
+ s_h:"Sistemas",s_p:"Cada uno nació para resolver un problema real y se usa todos los días. Todos se pueden adaptar a su negocio.",
+ ok:"Disponible",dev:"En desarrollo",open:"Abrir",ask:"Pedir una demostración",soon:"Quiero saber más",
+ s_more:"¿Su negocio necesita algo que no está en esta lista? Cuéntenos qué le hace falta.",s_more_b:"Contar mi idea",
+ a_h:"Quiénes somos",
+ a_p1:"Araújo Tech empezó dentro de una empresa de delivery en Santa Rita.",
+ a_p2:"Comencé Tu Delivery solo, con una moto. Cuando la empresa creció, controlar la caja y las comisiones de cada repartidor en papel ya no funcionaba, así que hice el sistema que necesitaba. Como pastor, hice lo mismo con mis sermones: así nació Meu Púlpito.",
+ a_p3:"Hoy desarrollo esos sistemas para otros comercios, empresas e iglesias. Sé lo que es atender un negocio todos los días, y por eso cada sistema tiene que ser simple de usar.",
+ a_sign:"Fundador de Araújo Tech",
+ c_h:"Cómo trabajamos",
+ c1:"Conversamos",c1p:"Usted nos cuenta cómo funciona su negocio y qué quiere resolver.",
+ c2:"Le mostramos las pantallas",c2p:"Antes de programar, aprueba cómo se va a ver cada pantalla.",
+ c3:"Desarrollamos por etapas",c3p:"Va probando cada parte con sus datos reales.",
+ c4:"Publicamos y acompañamos",c4p:"Le enseñamos a usarlo a usted y a su equipo, y seguimos mejorando.",
+ t_h:"Lo que dicen nuestros clientes",
+ q_h:"Preguntas frecuentes",
+ faq:[["¿Cuánto cuesta un sistema?","Depende de lo que necesite. Después de conversar le enviamos un presupuesto claro, sin compromiso. Algunos sistemas se pagan por mes."],
+      ["¿Hay que instalar algo?","No. Se abren desde el navegador del celular, la tablet o la computadora."],
+      ["¿Puede llevar mi logo y mis colores?","Sí. Cada sistema se adapta a la marca y a los datos de su negocio."],
+      ["¿Y si después necesito un cambio?","Nos escribe por WhatsApp. Los sistemas se siguen mejorando junto con su negocio."],
+      ["¿Atienden en Brasil?","Sí. Trabajamos en español y portugués, con clientes en Paraguay y Brasil."]],
+ k_h:"Hablemos de su negocio",k_p:"Cuéntenos qué necesita. Le respondemos por WhatsApp con una propuesta sin compromiso.",
+ f_h:"Pedir presupuesto",f_sub:"Al enviar, se abre WhatsApp con su mensaje listo.",
+ f_n:"Nombre",f_e:"Negocio o iglesia",f_s:"¿Qué necesita?",f_m:"Cuéntenos su idea",f_b:"Enviar por WhatsApp",
+ f_err:"Escriba su nombre y su idea para enviar.",f_note:"Usamos sus datos solo para responderle.",
+ f_opts:["Un sistema a medida","Catálogo para mi comercio","Sistema para mi iglesia","Otra cosa"],
+ f_msg:"Hola, quiero pedir un presupuesto.",f_lab:["Nombre","Negocio","Necesito","Idea"],
+ ft_about:"Sistemas y aplicaciones web para comercios, empresas e iglesias. Santa Rita, Paraguay.",ft_c:"Contacto",ft_tag:"Tecnología que transforma negocios",
+ wa:"Hola, vi el sitio de Araújo Tech y quiero información sobre ",wag:"sus sistemas."
+},
+pt:{
+ title:"Araújo Tech Sistemas — Sistemas sob medida em Santa Rita, Paraguai",
+ n1:"Sistemas",n2:"Quem somos",n3:"Como trabalhamos",n4:"Perguntas",n5:"Pedir orçamento",
+ h1:"Sistemas sob medida para o seu negócio",
+ h_p:"Fazemos aplicativos e sistemas web para comércios, empresas de delivery e igrejas. Funcionam no celular e no computador, em português e em espanhol.",
+ h_b1:"Falar no WhatsApp",h_b2:"Ver os sistemas",h_where:"De Santa Rita, Alto Paraná, para o Paraguai e o Brasil.",
+ s_h:"Sistemas",s_p:"Cada um nasceu para resolver um problema real e é usado todos os dias. Todos podem ser adaptados ao seu negócio.",
+ ok:"Disponível",dev:"Em desenvolvimento",open:"Abrir",ask:"Pedir uma demonstração",soon:"Quero saber mais",
+ s_more:"Seu negócio precisa de algo que não está nesta lista? Conte o que está faltando.",s_more_b:"Contar minha ideia",
+ a_h:"Quem somos",
+ a_p1:"A Araújo Tech começou dentro de uma empresa de delivery em Santa Rita.",
+ a_p2:"Comecei a Tu Delivery sozinho, com uma moto. Quando a empresa cresceu, controlar o caixa e as comissões de cada entregador no papel já não funcionava, então fiz o sistema de que precisava. Como pastor, fiz o mesmo com os meus sermões: assim nasceu o Meu Púlpito.",
+ a_p3:"Hoje desenvolvo esses sistemas para outros comércios, empresas e igrejas. Sei o que é tocar um negócio todos os dias, e por isso cada sistema tem que ser simples de usar.",
+ a_sign:"Fundador da Araújo Tech",
+ c_h:"Como trabalhamos",
+ c1:"Conversamos",c1p:"Você conta como funciona o seu negócio e o que quer resolver.",
+ c2:"Mostramos as telas",c2p:"Antes de programar, você aprova como cada tela vai ficar.",
+ c3:"Desenvolvemos por etapas",c3p:"Você vai testando cada parte com os seus dados reais.",
+ c4:"Publicamos e acompanhamos",c4p:"Ensinamos você e sua equipe a usar, e seguimos melhorando.",
+ t_h:"O que dizem nossos clientes",
+ q_h:"Perguntas frequentes",
+ faq:[["Quanto custa um sistema?","Depende do que você precisa. Depois de conversar, enviamos um orçamento claro, sem compromisso. Alguns sistemas são pagos por mês."],
+      ["Precisa instalar alguma coisa?","Não. Eles abrem no navegador do celular, do tablet ou do computador."],
+      ["Pode ter o meu logo e as minhas cores?","Sim. Cada sistema é adaptado à marca e aos dados do seu negócio."],
+      ["E se depois eu precisar de uma mudança?","É só chamar no WhatsApp. Os sistemas continuam sendo melhorados junto com o seu negócio."],
+      ["Vocês atendem no Brasil?","Sim. Trabalhamos em português e espanhol, com clientes no Paraguai e no Brasil."]],
+ k_h:"Vamos falar do seu negócio",k_p:"Conte o que você precisa. Respondemos pelo WhatsApp com uma proposta sem compromisso.",
+ f_h:"Pedir orçamento",f_sub:"Ao enviar, o WhatsApp abre com a sua mensagem pronta.",
+ f_n:"Nome",f_e:"Negócio ou igreja",f_s:"Do que você precisa?",f_m:"Conte a sua ideia",f_b:"Enviar pelo WhatsApp",
+ f_err:"Escreva seu nome e sua ideia para enviar.",f_note:"Usamos seus dados só para responder você.",
+ f_opts:["Um sistema sob medida","Catálogo para o meu comércio","Sistema para a minha igreja","Outra coisa"],
+ f_msg:"Olá, quero pedir um orçamento.",f_lab:["Nome","Negócio","Preciso de","Ideia"],
+ ft_about:"Sistemas e aplicativos web para comércios, empresas e igrejas. Santa Rita, Paraguai.",ft_c:"Contato",ft_tag:"Tecnologia que transforma negócios",
+ wa:"Olá, vi o site da Araújo Tech e quero informações sobre ",wag:"seus sistemas."
+}};
+
+/* =========================================================
+   5) FUNCIONAMIENTO (no necesita cambiar)
+   ========================================================= */
+const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
+const ext='<svg class="i" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg>';
+const waI='<svg class="i" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-13.4 7.9L3 21l1.1-4.6A9 9 0 1 1 21 12Z"/></svg>';
+const igI='<svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></svg>';
+let lang="es";
+// El sitio siempre abre en español; el visitante cambia a portugués con el botón.
+const wa=txt=>`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(T[lang].wa+txt)}`;
+const fmtWa=n=>n.startsWith("595")&&n.length===12?`+595 ${n.slice(3,6)} ${n.slice(6,9)} ${n.slice(9)}`:"+"+n;
+
+function render(){
+ const t=T[lang];
+ document.documentElement.lang=lang==="pt"?"pt-BR":"es";
+ document.title=t.title;
+ $$("[data-t]").forEach(el=>{const v=t[el.dataset.t];if(typeof v==="string")el.textContent=v});
+ $$("[data-lang]").forEach(b=>{b.classList.toggle("on",b.dataset.lang===lang);b.setAttribute("aria-pressed",b.dataset.lang===lang)});
+
+ $("#sysList").innerHTML=SISTEMAS.map(s=>{
+  const d=s[lang];
+  const acts=(s.link?`<a class="btn btn-solid" href="${s.link}" target="_blank" rel="noopener">${t.open} ${s.linkTexto||""}${ext}</a>`:"")+
+   `<a class="btn ${s.link?"btn-ghost":"btn-solid"}" href="${wa(s.nombre)}" target="_blank" rel="noopener">${s.status==="dev"?t.soon:t.ask}</a>`+
+   (s.instagram?`<a class="btn btn-ghost" href="https://instagram.com/${s.instagram}" target="_blank" rel="noopener">${igI}@${s.instagram}</a>`:"");
+  const shots=(s.pc||s.celular)?`<div class="shots">${s.pc?`<div class="pc"><img src="${s.pc}" alt="${s.nombre} en la computadora" loading="lazy"></div>`:""}${s.celular?`<div class="cel"><img src="${s.celular}" alt="${s.nombre} en el celular" loading="lazy"></div>`:""}</div>`:"";
+  return `<article class="sys"><div><h3>${s.nombre}</h3><div class="for">${d.para}</div><div class="st ${s.status}">${t[s.status]}</div></div>
+   <div><p class="desc">${d.desc}</p><ul>${d.puntos.map(p=>`<li><span class="px"></span><span>${p}</span></li>`).join("")}</ul><div class="acts">${acts}</div></div>${shots}</article>`;
+ }).join("");
+
+ // about photo (only if provided)
+ const ph=$("#aboutPhoto");
+ ph.hidden=!CONFIG.foto; ph.innerHTML=CONFIG.foto?`<img src="${CONFIG.foto}" alt="Jean Carlos Borges de Araújo">`:"";
+ $("#aboutGrid").classList.toggle("solo",!CONFIG.foto);
+ if(!CONFIG.foto)$("#aboutGrid").style.gridTemplateColumns="1fr";
+
+ // testimonials
+ $("#testimonios").hidden=!TESTIMONIOS.length;
+ $("#tList").innerHTML=TESTIMONIOS.map(x=>`<figure class="tq"><blockquote>${x.texto[lang]||x.texto.es}</blockquote><figcaption>${x.foto?`<img src="${x.foto}" alt="">`:""}<div><b>${x.nombre}</b>${x.cargo||""}</div></figcaption></figure>`).join("");
+
+ // faq
+ $("#faqList").innerHTML=t.faq.map(([q,a])=>`<details><summary>${q}<svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></summary><p>${a}</p></details>`).join("");
+
+ // form options
+ const sel=$("#qsel"),prev=sel.selectedIndex;
+ sel.innerHTML=t.f_opts.map(o=>`<option>${o}</option>`).join("")+SISTEMAS.map(s=>`<option>${s.nombre}</option>`).join("");
+ if(prev>0)sel.selectedIndex=prev;
+
+ // contact + footer
+ $$(".js-wa").forEach(a=>{a.href=wa(t.wag);a.target="_blank";a.rel="noopener"});
+ $$(".js-mail").forEach(a=>a.href="mailto:"+CONFIG.email);
+ $$(".js-mailtxt").forEach(a=>a.textContent=CONFIG.email);
+ $$(".js-ig").forEach(a=>{a.href="https://instagram.com/"+CONFIG.instagram;a.hidden=!CONFIG.instagram});
+ $$(".js-igtxt").forEach(a=>a.textContent="@"+CONFIG.instagram);
+ $$(".js-city").forEach(a=>a.textContent=CONFIG.ciudad);
+ $("#waShow").textContent=fmtWa(CONFIG.whatsapp);
+ $("#fSys").innerHTML=SISTEMAS.map(s=>`<li><a href="${s.link||"#sistemas"}"${s.link?' target="_blank" rel="noopener"':""}>${s.nombre}</a></li>`).join("");
+ $("#yr").textContent=new Date().getFullYear();
+}
+
+document.addEventListener("click",e=>{
+ const l=e.target.closest("[data-lang]");
+ if(l){lang=l.dataset.lang;render()}
+ const b=e.target.closest("#burger");
+ if(b){const o=$("#menu").classList.toggle("open");b.setAttribute("aria-expanded",o)}
+ if(e.target.closest(".menu a")){$("#menu").classList.remove("open");$("#burger").setAttribute("aria-expanded","false")}
+});
+
+$("#qform").addEventListener("submit",e=>{
+ e.preventDefault();
+ const t=T[lang],f=e.target,n=f.n.value.trim(),m=f.m.value.trim(),err=$("#qerr");
+ if(!n||!m){err.classList.add("on");(n?f.m:f.n).focus();return}
+ err.classList.remove("on");
+ const L=t.f_lab,biz=f.e.value.trim();
+ const msg=`${t.f_msg}\n\n*${L[0]}:* ${n}`+(biz?`\n*${L[1]}:* ${biz}`:"")+`\n*${L[2]}:* ${f.s.value}\n*${L[3]}:* ${m}`;
+ window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`,"_blank","noopener");
+});
+
+const hdr=$("#hdr");
+const onS=()=>hdr.classList.toggle("solid",scrollY>30);
+addEventListener("scroll",onS,{passive:true});onS();
+render();
+</script>
+</body>
+</html>

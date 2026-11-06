@@ -1,8 +1,11 @@
-name: Publicar no site
+name: Publicar catálogo Fogão Mineiro
 
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'araujo-tech-site/**'
+      - '.github/workflows/site.yml'
   workflow_dispatch:
 
 jobs:
@@ -29,6 +32,6 @@ jobs:
             set net:timeout 30;
             open --env-password -u "$FTP_USERNAME" ftp://$FTP_SERVER;
             mirror --reverse --verbose --only-newer --parallel=3 \
-              --exclude-glob .git* --exclude-glob .git/ --exclude-glob .github/ --exclude-glob README.md \
+              --exclude-glob .git* --exclude-glob .git/ --exclude-glob .github/ --exclude-glob README.md --exclude-glob araujo-tech-site/ \
               ./ ./;
             bye"
