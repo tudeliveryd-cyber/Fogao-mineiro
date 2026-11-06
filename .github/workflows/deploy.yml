@@ -32,6 +32,6 @@ jobs:
             set net:timeout 30;
             open --env-password -u "$FTP_USERNAME" ftp://$FTP_SERVER;
             mirror --reverse --verbose --only-newer --parallel=3 \
-              --exclude-glob .git* --exclude-glob .git/ --exclude-glob .github/ --exclude-glob README.md --exclude-glob araujo-tech-site/ --exclude-glob tools/ \
+              --exclude-glob .git* --exclude-glob .git/ --exclude-glob .github/ --exclude-glob README.md --exclude-glob araujo-tech-site/ --exclude-glob tools/ --exclude-glob .nojekyll \
               ./ ./;
             bye"
