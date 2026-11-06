@@ -424,13 +424,22 @@ textarea.inp{resize:vertical;min-height:64px}
 .side-nav button[aria-current="page"]{background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent)}
 .side-foot{margin-top:auto;display:flex;flex-direction:column;gap:6px;padding-top:12px}
 .side-foot .btn{justify-content:center}
-@media (min-width:900px){
+@media (min-width:760px){
  .adm{display:grid;grid-template-columns:248px minmax(0,1fr);align-items:start}
  .side{display:flex;flex-direction:column;gap:6px;position:sticky;top:var(--topH,0px);height:calc(100vh - var(--topH,0px));padding:20px 14px;border-right:1px solid var(--line);background:var(--surface);overflow:auto}
  .bnav{display:none}
  .adm .admin-wrap{padding-bottom:40px;margin:0;max-width:1180px;width:100%}
  .m-only{display:none!important}.d-only{display:inline}
  .admin-credit{padding-bottom:28px!important}
+}
+@media (min-width:760px) and (max-width:1099px){
+ .adm{grid-template-columns:92px minmax(0,1fr)}
+ .side{padding:16px 8px}
+ .side-store{justify-content:center;padding:4px 0 14px}
+ .side-store>div:last-child{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+ .side-nav button{flex-direction:column;justify-content:center;align-items:center;gap:4px;padding:10px 4px;font-size:11.5px;line-height:1.15;text-align:center;min-height:56px}
+ .side-foot .dl-side{display:none}
+ .side-foot .btn{font-size:12px;padding:8px 4px;justify-content:center;min-height:44px}
 }
 /* tabelas viram cartões quando o espaço é pequeno */
 .card{container-type:inline-size}
@@ -520,7 +529,7 @@ textarea.inp{resize:vertical;min-height:64px}
       <button data-act="view" data-v="admin" id="vAdm"></button>
       <button data-act="view" data-v="platform" id="vPl"></button>
     </div>
-    <span class="urlpill">araujotechsistemas.com/fogao</span>
+    <span class="urlpill">fogaomineiro.araujotechsistemas.com</span>
     <span class="spacer"></span>
     <div class="seg" role="group" aria-label="Idioma">
       <button data-act="lang" data-l="es" id="lEs">ES</button>
@@ -2590,7 +2599,7 @@ function adminHTML(){
   <nav class="side-nav" aria-label="${t('nav_admin')}">${tabs.map(([k,i])=>`<button data-act="tab" data-t="${k}" aria-current="${ui.tab===k?'page':'false'}">${ic(i,18)}<span>${t('a_'+k)}</span></button>`).join('')}</nav>
   <div class="side-foot">${catBtn('')}<button class="btn" data-act="logout">${t('logout')}</button>${devLogoHTML('dl-side')}</div></aside>
  <div class="admin-wrap adm-main">
- <div class="ahead"><span class="m-only">${logo}</span><div style="min-width:0"><h2><span class="m-only">${esc(pub.store.name)}</span><span class="d-only">${t('a_'+ui.tab)}</span></h2><p><span class="m-only">${t('a_'+ui.tab)}</span><span class="d-only">${esc(pub.store.name)} · ${SHOP===FM?'araujotechsistemas.com/fogao':'araujotechsistemas.com/'+SHOP}</span></p></div><span class="spacer"></span>${syncPill()}<span class="m-only" style="display:flex;gap:6px">${catBtn('icon-btn')}<button class="btn icon-btn" data-act="logout" aria-label="${t('logout')}">${ic('x',16)}<span>${t('logout')}</span></button></span></div>
+ <div class="ahead"><span class="m-only">${logo}</span><div style="min-width:0"><h2><span class="m-only">${esc(pub.store.name)}</span><span class="d-only">${t('a_'+ui.tab)}</span></h2><p><span class="m-only">${t('a_'+ui.tab)}</span><span class="d-only">${esc(pub.store.name)} · ${SHOP===FM?'fogaomineiro.araujotechsistemas.com':SHOP+'.araujotechsistemas.com'}</span></p></div><span class="spacer"></span>${syncPill()}<span class="m-only" style="display:flex;gap:6px">${catBtn('icon-btn')}<button class="btn icon-btn" data-act="logout" aria-label="${t('logout')}">${ic('x',16)}<span>${t('logout')}</span></button></span></div>
  <div id="tabBody">${({resumo:tabResumo,custom:tabCustom,products:tabProducts,delivery:tabDelivery,ads:()=>`<div style="margin-top:16px">${adsCard()}</div>`,orders:tabOrders})[ui.tab]()}</div></div>
  <nav class="bnav" aria-label="${t('nav_admin')}">${tabs.map(([k,i])=>`<button data-act="tab" data-t="${k}" aria-current="${ui.tab===k?'page':'false'}">${ic(i,20)}<span>${t('s_'+k)}</span></button>`).join('')}</nav>
  </div>`}
@@ -2887,7 +2896,7 @@ function platformHTML(){const act=PL.shops.filter(s=>s.status!=='suspenso');cons
  </div>`}
 function shopCard(s){const[k,l]=shopState(s);const last=s.pays[s.pays.length-1];const lg=s.live?(SHOP===FM?pub.store.logo:LOGO):null;
  return `<div class="shop"><div class="shop-top"><div class="avatar">${lg?`<img src="${lg}" alt="">`:esc(initials(s.name))}</div><div style="min-width:0;flex:1"><b>${esc(s.name)}</b><small>${s.ramo?ic(ramoOf(s.ramo).i,13)+' ':''}${esc(tr(s.seg))}</small></div><span class="pill st-${k}">${l}</span></div>
- <dl class="kv"><dt>${t('address_l')}</dt><dd>${esc(s.live?'araujotechsistemas.com/fogao':(s.domain||'araujotechsistemas.com/'+s.id))}</dd><dt>${t('plan')}</dt><dd><select data-shop="${s.id}" data-f="plan" aria-label="${t('plan')}">${PL.plans.map(x=>`<option value="${x.id}" ${x.id===s.plan?'selected':''}>${esc(x.n)} · ${gs(x.price)}</option>`).join('')}</select></dd><dt>${t('due')}</dt><dd class="num">${fdate(s.due)}</dd><dt>${t('last_pay')}</dt><dd class="num">${last?fdate(last.date)+' · '+gs(last.v):'—'}</dd><dt>${t('access')}</dt><dd class="num">${esc(s.user||(s.live?'fogaomineiro':'—'))} · ${esc(s.pass||'—')}</dd></dl>
+ <dl class="kv"><dt>${t('address_l')}</dt><dd>${esc(s.live?'fogaomineiro.araujotechsistemas.com':(s.domain||s.id+'.araujotechsistemas.com'))}</dd><dt>${t('plan')}</dt><dd><select data-shop="${s.id}" data-f="plan" aria-label="${t('plan')}">${PL.plans.map(x=>`<option value="${x.id}" ${x.id===s.plan?'selected':''}>${esc(x.n)} · ${gs(x.price)}</option>`).join('')}</select></dd><dt>${t('due')}</dt><dd class="num">${fdate(s.due)}</dd><dt>${t('last_pay')}</dt><dd class="num">${last?fdate(last.date)+' · '+gs(last.v):'—'}</dd><dt>${t('access')}</dt><dd class="num">${esc(s.user||(s.live?'fogaomineiro':'—'))} · ${esc(s.pass||'—')}</dd></dl>
  <div class="actions">${s.status==='suspenso'?`<button class="btn sm pri" data-act="shoppay" data-sid="${s.id}">${ic('check',15)}${t('pay_reactivate')}</button>`:`<button class="btn sm pri" data-act="shoppay" data-sid="${s.id}">${ic('check',15)}${t('pay_reg')}</button><button class="btn sm danger" data-act="shopstatus" data-sid="${s.id}">${t('suspend')}</button>`}${shopLinks(s)}${s.ex?`<span class="pill ex">${t('example')}</span>`:''}</div></div>`}
 const rnorm=x=>String(x).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 function ramoFilter(){const q=rnorm((document.getElementById('ramoQ')||{}).value||'').trim();let any=false;document.querySelectorAll('.ramo-g').forEach(g=>{let vis=0;g.querySelectorAll('.ramo').forEach(b=>{const ok=!q||b.dataset.q.includes(q)||b.dataset.r==='otro';b.hidden=!ok;if(ok){vis++;if(b.dataset.r!=='otro')any=true}});g.hidden=!vis});const no=document.getElementById('ramoNone');if(no)no.hidden=any}
@@ -3005,7 +3014,7 @@ function render(){
  document.getElementById('bm').innerHTML='<img src="'+DEV_MARK+'" alt="">';
  document.getElementById('vCat').innerHTML=ic('store',15)+'<span>'+t('nav_catalog')+'</span>';document.getElementById('vAdm').innerHTML=ic('grid',15)+'<span>'+t('nav_admin')+'</span>';
  document.getElementById('vCat').setAttribute('aria-pressed',ui.view==='catalog');document.getElementById('vAdm').setAttribute('aria-pressed',ui.view==='admin');
- document.getElementById('top').hidden=MODE==='catalog';{const up=document.querySelector('.urlpill');if(up)up.textContent=SHOP===FM?'araujotechsistemas.com/fogao':'araujotechsistemas.com/'+SHOP}
+ document.getElementById('top').hidden=MODE==='catalog';{const up=document.querySelector('.urlpill');if(up)up.textContent=SHOP===FM?'fogaomineiro.araujotechsistemas.com':SHOP+'.araujotechsistemas.com'}
  if(MODE==='panel'||MODE==='platform'){document.getElementById('vCat').hidden=true;document.getElementById('navSeg').hidden=true;document.querySelector('.urlpill').hidden=true;if(ui.view==='catalog')ui.view=MODE==='platform'?'platform':'admin';if(MODE==='platform')ui.view='platform'}
  const vp=document.getElementById('vPl');vp.hidden=MODE==='platform'||!plVisible();if(ui.view==='platform'&&!plVisible()&&MODE!=='platform')ui.view=MODE==='panel'?'admin':'catalog';vp.innerHTML=ic('layers',15)+'<span>'+t('nav_platform')+'</span>';vp.setAttribute('aria-pressed',ui.view==='platform');
  document.getElementById('lPt').setAttribute('aria-pressed',lang==='pt');document.getElementById('lEs').setAttribute('aria-pressed',lang==='es');
