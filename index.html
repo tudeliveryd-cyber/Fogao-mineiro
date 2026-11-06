@@ -186,7 +186,7 @@ a.btn{text-decoration:none}
 .grp-h small{font-size:11px;letter-spacing:.06em;text-transform:uppercase;opacity:.6;font-weight:700}
 .opt{display:flex;align-items:center;gap:10px;padding:11px 12px;border:1px solid color-mix(in srgb,currentColor 14%,transparent);border-radius:12px;cursor:pointer}
 .opt:has(input:checked){border-color:var(--t-primary,var(--accent));background:color-mix(in srgb,var(--t-primary,var(--accent)) 7%,transparent)}
-.opt input{accent-color:var(--t-primary,var(--accent));width:18px;height:18px;margin:0}
+.opt input{-webkit-appearance:none;appearance:none;flex:none;width:20px;height:20px;margin:0;border:2px solid color-mix(in srgb,currentColor 32%,transparent);border-radius:50%;background:#fff;cursor:pointer}.opt input[type=checkbox]{border-radius:6px}.opt input:checked{border-color:var(--t-primary,var(--accent));background:var(--t-primary,var(--accent));box-shadow:inset 0 0 0 4px #fff}.opt input[type=checkbox]:checked{box-shadow:none;background:var(--t-primary,var(--accent)) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/14px no-repeat}.opt input:focus-visible{outline:2px solid var(--t-primary,var(--accent));outline-offset:2px}
 .opt span{flex:1}
 .opt em{font-style:normal;opacity:.7;font-variant-numeric:tabular-nums;font-size:14px}
 .fld{display:flex;flex-direction:column;gap:5px;min-width:0}
@@ -2597,8 +2597,8 @@ function sendOrder(){
  if(CLOUD_ON&&MODE==='catalog'&&!o._cloud){const b=document.querySelector('.sheet [data-act="send"]');if(b){b.disabled=true;b.textContent=t('sending')}
   const now=Date.now(),prep=(+pub.store.prep||30)*60e3,pad=(+pub.store.etaPad||25)*60e3;const tr={status:'recebido',mode:o.mode,date:o.date,sched:o.sched||'',etaA:new Date(now+prep).toISOString(),etaB:new Date(now+prep+(o.mode==='delivery'?pad:0)).toISOString()};
   const cartCopy=clone(cart);
-  CLOUD.init().then(api=>api.placeOrder(SHOP,o,tr,no=>{const x=Object.assign({},o,{no});x.msg=buildMessage(x);return JSON.parse(JSON.stringify(x))})).then(r=>{o.no=r.no;o.id=r.id;o._cloud=true;o.msg=buildMessage(o);S.set(K.last,{no:o.no,id:r.id,total:o.total,items:cartCopy});trackUnsub=null;TRACK=Object.assign({},tr,{no:o.no});watchTrackLast();finishOrder(o)})
-   .catch(e=>{console.warn(e);o._cloud=true;o.msg=buildMessage(o);S.set(K.last,{no:o.no,total:o.total,items:cartCopy});S.set(K.seq,seq+1);finishOrder(o)});return}
+  let fin=false,tmo=0;const done=f=>(...a)=>{if(fin)return;fin=true;clearTimeout(tmo);f(...a)};const fail=done(e=>{console.warn(e);o._cloud=true;o.msg=buildMessage(o);S.set(K.last,{no:o.no,total:o.total,items:cartCopy});S.set(K.seq,seq+1);finishOrder(o)});tmo=setTimeout(()=>fail(new Error('timeout')),9000);
+  CLOUD.init().then(api=>api.placeOrder(SHOP,o,tr,no=>{const x=Object.assign({},o,{no});x.msg=buildMessage(x);return JSON.parse(JSON.stringify(x))})).then(done(r=>{o.no=r.no;o.id=r.id;o._cloud=true;o.msg=buildMessage(o);S.set(K.last,{no:o.no,id:r.id,total:o.total,items:cartCopy});trackUnsub=null;TRACK=Object.assign({},tr,{no:o.no});watchTrackLast();finishOrder(o)})).catch(fail);return}
  o.msg=buildMessage(o);
  S.set(K.last,{no:o.no,total:o.total,items:clone(cart)});
  orders.unshift(o);S.set(K.orders,orders);S.set(K.seq,seq+1);finishOrder(o)}
