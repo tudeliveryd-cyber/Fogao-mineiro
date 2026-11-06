@@ -2344,7 +2344,7 @@ let ck=Object.assign({mode:'',name:'',phone:'',street:'',num:'',bairro:'',ref:''
 ck.mode='';ck.time='';ck.lat=null;ck.lng=null;ck.gps='';ck.coupon='';ck.couponIn='';
 
 const FOODY=()=>{const r=pub&&pub.store&&pub.store.ramo;return !r||ramoOf(r).food};
-const t=k=>{let v=T[lang][k]??T.pt[k]??k;if((k==='search'||k==='closed_info')&&!FOODY())v=k==='search'?(lang==='pt'?'Buscar produtos':'Buscar productos'):v.replace('o cardápio','o catálogo').replace('el menú','el catálogo');return v};
+const t=k=>{let v=T[lang][k]??T.pt[k]??k;if(k==='notes_ph'&&!FOODY())return lang==='pt'?'Ex.: cor, tamanho, marca preferida…':'Ej.: color, tamaño, marca preferida…';if((k==='search'||k==='closed_info')&&!FOODY())v=k==='search'?(lang==='pt'?'Buscar produtos':'Buscar productos'):v.replace('o cardápio','o catálogo').replace('el menú','el catálogo');return v};
 const tr=o=>o==null?'':(typeof o==='string'?o:(o[lang]||o.pt||''));
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const gs=n=>'Gs. '+Math.round(n||0).toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.');

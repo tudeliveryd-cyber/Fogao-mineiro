@@ -64,11 +64,61 @@ window.TDC_SEED=function(c){
 </script>
 """
 
-def main():
+
+FARM_LOGO_SVG = ("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'>"
+            "<rect width='300' height='200' rx='28' fill='#0B3B36'/>"
+            "<path d='M136 36h28v22h22v28h-22v22h-28V86h-22V58h22z' fill='none' stroke='#5EEAD4' stroke-width='7' stroke-linejoin='round'/>"
+            "<text x='150' y='152' text-anchor='middle' font-family='Georgia,serif' font-size='32' font-weight='700' fill='#F0FDFA' letter-spacing='3'>VIDA PLENA</text>"
+            "<text x='150' y='178' text-anchor='middle' font-family='Arial,sans-serif' font-size='13' fill='#5EEAD4' letter-spacing='6'>FARMACIA</text></svg>")
+
+FARM_SEED = r"""
+<script>
+window.TDC_SHOP='vida-plena';window.TDC_DEMO=true;window.TDC_SEED_V='vp1';
+window.TDC_SEED=function(c){
+ var P=function(pt,es){return {pt:pt,es:es}};
+ var U=function(id,w){return 'https://images.unsplash.com/'+id+'?auto=format&fit=crop&w='+(w||800)+'&q=70'};
+ var pr=function(id,cat,ptn,esn,ptd,esd,price,photo,o){o=o||{};return {id:id,cat:cat,n:P(ptn,esn),d:P(ptd,esd),price:price,promo:o.promo||0,on:true,feat:!!o.feat,best:!!o.best,rx:!!o.rx,photo:U(photo),g:o.g||[]}};
+ var talla=[{id:'tl',n:P('Tamanho','Talla'),type:'one',req:true,o:[{id:'p',n:P('P','P'),p:0},{id:'m',n:P('M','M'),p:0},{id:'g',n:P('G','G'),p:0},{id:'xg',n:P('XG','XG'),p:5000}]}];
+ var s=c.store;
+ s.name='Farmacia Vida Plena';s.slogan=P('Sua saúde em casa, com entrega rápida','Tu salud en casa, con delivery rápido');
+ s.logo='__LOGO__';s.cover=U('photo-1580281657529-557a6abb6387',1600);s.coverSet=true;s.ramo='farmacia';
+ s.address='Santa Rita, Alto Paraná';s.whatsapp='595983879344';s.prep=15;s.etaPad=20;s.minOrder=0;s.paused=false;s.allowSched=false;
+ s.days=[0,1,2,3,4,5,6].map(function(){return {on:true,a:['07:00','22:00'],b:['','']}});
+ s.ads=[];s.instagram='';s.facebook='';s.upsellCat='';s.loyalty={on:false,every:10};
+ s.coupons=[{code:'SALUD10',type:'pct',value:10,min:0,on:true}];
+ s.slides=[{title:P('Semana das vitaminas','Semana de las vitaminas'),sub:P('Vitaminas e suplementos com preço especial','Vitaminas y suplementos con precio especial'),pid:'v1',color:'#0B3B36',img:U('photo-1707129785947-ddc627a8bab9',1200)},
+           {title:P('Controle sua pressão em casa','Controlá tu presión en casa'),sub:P('Tensiômetro digital com desconto','Tensiómetro digital con descuento'),pid:'e2',color:'#134E4A',img:U('photo-1615486511484-92e172cc4fe0',1200)}];
+ c.theme={primary:'#0F766E',secondary:'#0B3B36',button:'#0B3B36',text:'#0F1F1D',bg:'#FFFFFF',price:'#0F766E',promo:'#16A34A',highlight:'#14B8A6',card:'#F3F8F7',header:'#0B3B36'};
+ c.layout=Object.assign({},c.layout,{cards:'list',cat:'chips',featured:true,banner:true});
+ c.cats=[{id:'med',n:P('Medicamentos','Medicamentos'),i:'pill'},{id:'vit',n:P('Vitaminas','Vitaminas'),i:'leaf'},{id:'cuid',n:P('Cuidado pessoal','Cuidado personal'),i:'drop'},{id:'bebe',n:P('Bebês','Bebés'),i:'gift'},{id:'aux',n:P('Primeiros socorros','Primeros auxilios'),i:'plus'},{id:'equ',n:P('Aparelhos','Equipos de salud'),i:'monitor'}];
+ c.products=[
+  pr('m1','med','Paracetamol 500 mg','Paracetamol 500 mg','Caixa com 20 comprimidos. Febre e dor.','Caja de 20 comprimidos. Fiebre y dolor.',12000,'photo-1584308666744-24d5c474f2ae',{best:true}),
+  pr('m2','med','Ibuprofeno 400 mg','Ibuprofeno 400 mg','Caixa com 10 comprimidos. Dor e inflamação.','Caja de 10 comprimidos. Dolor e inflamación.',15000,'photo-1762328494465-274a63177884',{promo:12000,feat:true}),
+  pr('m3','med','Amoxicilina 500 mg','Amoxicilina 500 mg','Caixa com 21 cápsulas. Antibiótico.','Caja de 21 cápsulas. Antibiótico.',38000,'photo-1587854692152-cbe660dbde88',{rx:true}),
+  pr('m4','med','Omeprazol 20 mg','Omeprazol 20 mg','Caixa com 14 cápsulas. Azia e gastrite.','Caja de 14 cápsulas. Acidez y gastritis.',22000,'photo-1607619056574-7b8d3ee536b2'),
+  pr('m5','med','Loratadina 10 mg','Loratadina 10 mg','Caixa com 10 comprimidos. Alergias.','Caja de 10 comprimidos. Alergias.',14000,'photo-1512069772995-ec65ed45afd6'),
+  pr('m6','med','Losartana 50 mg','Losartán 50 mg','Caixa com 30 comprimidos. Pressão arterial.','Caja de 30 comprimidos. Presión arterial.',35000,'photo-1714642764170-fb950305c397',{rx:true}),
+  pr('v1','vit','Vitamina C mastigável','Vitamina C masticable','Frasco com 60 unidades, sabor laranja.','Frasco de 60 unidades, sabor naranja.',45000,'photo-1648139347040-857f024f8da4',{feat:true,promo:39000}),
+  pr('v2','vit','Multivitamínico','Multivitamínico','Frasco com 30 cápsulas. Uma por dia.','Frasco de 30 cápsulas. Una por día.',58000,'photo-1562243061-204550d8a2c9'),
+  pr('c1','cuid','Álcool em gel 500 ml','Alcohol en gel 500 ml','70%, com dosador.','70%, con dosificador.',18000,'photo-1583947215259-38e31be8751f',{best:true}),
+  pr('c2','cuid','Protetor solar FPS 50','Protector solar FPS 50','Uso diário, rosto e corpo.','Uso diario, rostro y cuerpo.',85000,'photo-1598662972299-5408ddb8a3dc'),
+  pr('c3','cuid','Creme hidratante 200 g','Crema hidratante 200 g','Pele seca e sensível.','Piel seca y sensible.',48000,'photo-1763503834047-ac85c4105c0b'),
+  pr('b1','bebe','Fraldas x 30','Pañales x 30','Pacote com 30 unidades.','Paquete de 30 unidades.',75000,'photo-1695998575483-b215c8b2f619',{g:talla}),
+  pr('a1','aux','Kit de primeiros socorros','Botiquín de primeros auxilios','Gaze, esparadrapo, curativos e tesoura.','Gasas, cinta, curitas y tijera.',120000,'photo-1765996796562-ce301df337a0'),
+  pr('a2','aux','Curativos x 20','Curitas x 20','Caixa com 20 unidades, tamanhos variados.','Caja de 20 unidades, tamaños surtidos.',8000,'photo-1609840534277-88833ef3ddeb'),
+  pr('e1','equ','Termômetro digital','Termómetro digital','Leitura em 60 segundos, com alarme.','Lectura en 60 segundos, con alarma.',35000,'photo-1594790628624-9e563bea851d'),
+  pr('e2','equ','Tensiômetro digital de braço','Tensiómetro digital de brazo','Mede pressão e pulsação. Com estojo.','Mide presión y pulso. Con estuche.',280000,'photo-1615486511484-92e172cc4fe0',{feat:true,promo:240000})
+ ];
+ return c};
+</script>
+"""
+
+
+def build(seed_tpl, logo_svg, out, title, ogtitle, url, desc):
     s = open(SRC, encoding='utf-8').read()
     import urllib.parse
-    logo = "data:image/svg+xml," + urllib.parse.quote(LOGO_SVG, safe='')
-    seed = SEED.replace('__LOGO__', logo)
+    logo = "data:image/svg+xml," + urllib.parse.quote(logo_svg, safe='')
+    seed = seed_tpl.replace('__LOGO__', logo)
     n = 0
     def rep(a, b):
         nonlocal s, n
@@ -78,8 +128,8 @@ def main():
     rep("<script>window.TDC_MODE='catalog'</script>", seed)
     # sempre usa a loja de demonstração (e recomeça quando a demo muda)
     rep("let pub=S.get(K.pub,null)||initCfg(SHOP);",
-        "let pub=(window.TDC_SEED&&S.get('tdc_demo_v',0)!==window.TDC_SEED_V)?null:S.get(K.pub,null);"
-        "if(!pub){pub=window.TDC_SEED?window.TDC_SEED(initCfg(SHOP)):initCfg(SHOP);S.set(K.pub,pub);S.set(K.draft,clone(pub));S.set(K.cart,[]);if(window.TDC_SEED)S.set('tdc_demo_v',window.TDC_SEED_V)}")
+        "const DVK='tdc_demo_v_'+SHOP;let pub=(window.TDC_SEED&&S.get(DVK,0)!==window.TDC_SEED_V)?null:S.get(K.pub,null);"
+        "if(!pub){pub=window.TDC_SEED?window.TDC_SEED(initCfg(SHOP)):initCfg(SHOP);S.set(K.pub,pub);S.set(K.draft,clone(pub));S.set(K.cart,[]);if(window.TDC_SEED)S.set(DVK,window.TDC_SEED_V)}")
     # demo sempre aberta (os links ?prueba= continuam funcionando)
     rep("function openState0(st,now=new Date()){",
         "function openState0(st,now=new Date()){if(window.TDC_DEMO&&!(typeof QS!=='undefined'&&QS.get('prueba')))return{open:true};")
@@ -88,18 +138,25 @@ def main():
         "const sh=curShop(),cu=window.TDC_DEMO?'demo':((sh&&sh.user)||(SHOP===FM?'fogaomineiro':'')),cp=window.TDC_DEMO?'demo':((sh&&sh.pass)||'');")
     rep("<h2>${t('nav_admin')}</h2><p>${esc(st.name)} · ${t('login_sub')}</p></div>",
         "<h2>${t('nav_admin')}</h2><p>${esc(st.name)} · ${t('login_sub')}</p>${window.TDC_DEMO?`<p class=\"demo-hint\">${lang==='pt'?'Demonstração':'Demostración'} · ${lang==='pt'?'Usuário':'Usuario'}: <b>demo</b> · ${lang==='pt'?'Senha':'Contraseña'}: <b>demo</b></p>`:''}</div>")
-    rep("</style>", ".demo-hint{margin:6px 0 0;padding:8px 12px;border-radius:10px;background:#FFF4DE;color:#5C3A00;font-size:13px}\n</style>")
+    rep("</style>", ".urlpill{display:none!important}.demo-hint{margin:6px 0 0;padding:8px 12px;border-radius:10px;background:#FFF4DE;color:#5C3A00;font-size:13px}\n</style>")
     # dados do <head>
-    s = re.sub(r'<title>[^<]*</title>', '<title>Casa Brasa · Demostración · Araújo Tech</title>', s, count=1)
-    s = re.sub(r'<meta property="og:title" content="[^"]*">', '<meta property="og:title" content="Casa Brasa · Catálogo de demostración">', s, count=1)
-    s = re.sub(r'<meta property="og:url" content="[^"]*">', '<meta property="og:url" content="https://araujotechsistemas.com/demo/">', s, count=1)
+    s = re.sub(r'<title>[^<]*</title>', '<title>' + title + '</title>', s, count=1)
+    s = re.sub(r'<meta property="og:title" content="[^"]*">', '<meta property="og:title" content="' + ogtitle + '">', s, count=1)
+    s = re.sub(r'<meta property="og:url" content="[^"]*">', '<meta property="og:url" content="' + url + '">', s, count=1)
     s = re.sub(r'<meta property="og:image" content="[^"]*">', '<meta property="og:image" content="https://araujotechsistemas.com/img/og.jpg">', s, count=1)
-    s = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="Catálogo de demostración de Araújo Tech: así queda el menú digital de su negocio, con pedidos por WhatsApp.">', s, count=1)
+    s = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="' + desc + '">', s, count=1)
     s = re.sub(r'<link rel="manifest"[^>]*>\n?', '', s)
     s = s.replace('<head>', '<head>\n<meta name="robots" content="noindex">', 1)
-    os.makedirs(os.path.dirname(OUT), exist_ok=True)
-    open(OUT, 'w', encoding='utf-8').write(s)
-    print('ok', OUT, n, 'trocas')
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    open(out, 'w', encoding='utf-8').write(s)
+    print('ok', out, n, 'trocas')
+
+def main():
+    build(SEED, LOGO_SVG, OUT, 'Casa Brasa · Demostración · Araújo Tech', 'Casa Brasa · Catálogo de demostración',
+          'https://araujotechsistemas.com/demo/', 'Catálogo de demostración de Araújo Tech: así queda el menú digital de su negocio, con pedidos por WhatsApp.')
+    build(FARM_SEED, FARM_LOGO_SVG, os.path.join(ROOT, 'araujo-tech-site', 'demo-farmacia', 'index.html'),
+          'Farmacia Vida Plena · Demostración · Araújo Tech', 'Farmacia Vida Plena · Catálogo de demostración',
+          'https://araujotechsistemas.com/demo-farmacia/', 'Catálogo de demostración de Araújo Tech para farmacias: productos, recetas y delivery por WhatsApp.')
 
 if __name__ == '__main__':
     main()
