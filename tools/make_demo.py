@@ -21,7 +21,7 @@ LOGO_SVG = ("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'>"
 
 SEED = r"""
 <script>
-window.TDC_SHOP='casa-brasa';window.TDC_DEMO=true;window.TDC_SEED_V='cb3';
+window.TDC_SHOP='casa-brasa';window.TDC_DEMO=true;window.TDC_SEED_V='cb4';
 window.TDC_SEED=function(c){
  var P=function(pt,es){return {pt:pt,es:es}};
  var U=function(id,w){return 'https://images.unsplash.com/'+id+'?auto=format&fit=crop&w='+(w||800)+'&q=70'};
@@ -59,6 +59,7 @@ window.TDC_SEED=function(c){
   pr('s1','postres','Brownie com sorvete','Brownie con helado','Brownie de chocolate morno com uma bola de sorvete.','Brownie de chocolate tibio con una bocha de helado.',18000,'photo-1717768024023-73768e73f630')
  ];
  s.upsellCat='bebidas';
+ s.loyalty={on:true,every:5,cat:'burgers',prize:P('1 batata frita grátis','1 papas fritas gratis')};
  return c};
 </script>
 """
