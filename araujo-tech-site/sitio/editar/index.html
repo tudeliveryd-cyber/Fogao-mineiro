@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mi sitio web · Araújo Tech</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#ffffff">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6F6F8;--card:#fff;--ink:#16151C;--mute:#6B6A75;--line:#E4E3EA;--ac:#6D28D9;--ac2:#5B21B6;--ok:#15803D;--err:#B91C1C;--r:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,textarea,select{font:inherit;color:inherit}
+svg.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.top{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.top .in{max-width:860px;margin:0 auto;padding:0 18px;height:62px;display:flex;align-items:center;gap:12px}
+.top b{font-size:16px}.top small{color:var(--mute);display:block;font-size:12.5px;line-height:1.2}
+.top .sp{flex:1}
+.lang{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.lang button{border:0;background:none;padding:5px 9px;font-size:12px;font-weight:600;color:var(--mute);cursor:pointer}
+.lang button[aria-pressed=true]{background:var(--ink);color:#fff}
+.wrap{max-width:860px;margin:0 auto;padding:22px 18px 120px;display:flex;flex-direction:column;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:16px}
+.card h2{font-size:17px;display:flex;align-items:center;gap:10px}
+.card h2 svg{color:var(--ac)}
+.card .sub{color:var(--mute);font-size:13.5px;margin-top:-10px}
+.fld{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fld label,.lbl{font-size:13px;font-weight:600}
+.inp{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 13px;background:#fff;font-size:15px;outline:none;transition:border-color .15s,box-shadow .15s}
+.inp:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgb(109 40 217 / .14)}
+textarea.inp{resize:vertical;min-height:96px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.note{font-size:12.5px;color:var(--mute)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:42px;padding:0 16px;border-radius:10px;border:1px solid var(--line);background:#fff;font-weight:600;font-size:14px;cursor:pointer;white-space:nowrap;text-decoration:none;color:var(--ink)}
+.btn:hover{background:#FAFAFC}
+.btn.pri{background:var(--ac);border-color:var(--ac);color:#fff}.btn.pri:hover{background:var(--ac2)}
+.btn.sm{height:36px;padding:0 12px;font-size:13px}
+.btn.ic{width:36px;padding:0}
+.btn[disabled]{opacity:.55;cursor:default}
+.rows{display:flex;flex-direction:column;gap:8px}
+.r{display:grid;gap:8px;align-items:center}
+.r.svc{grid-template-columns:1fr 1.3fr 36px}
+.r.hr{grid-template-columns:.75fr 1.4fr 36px}
+.tpls{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.tpl{border:1.5px solid var(--line);border-radius:12px;padding:12px;background:#fff;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:8px}
+.tpl[aria-pressed=true]{border-color:var(--ac);box-shadow:0 0 0 3px rgb(109 40 217 / .12)}
+.tpl i{display:block;height:34px;border-radius:7px}
+.tpl b{font-size:13px}
+.photos{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start}
+.ph{position:relative;width:104px;height:104px;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#F1F0F5}
+.ph img{width:100%;height:100%;object-fit:cover}
+.ph.logo img{object-fit:contain;padding:8px;background:#fff}
+.ph button{position:absolute;top:6px;right:6px;width:28px;height:28px;border-radius:50%;border:0;background:rgba(0,0,0,.6);color:#fff;display:grid;place-items:center;cursor:pointer}
+.ph button svg{width:14px;height:14px}
+.add{width:104px;height:104px;border-radius:12px;border:1.5px dashed #C9C7D3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--mute);font-size:12.5px;font-weight:600;cursor:pointer;background:#fff;text-align:center;padding:6px}
+.add:hover{border-color:var(--ac);color:var(--ac)}
+.pill{font-size:12px;padding:3px 9px;border-radius:999px;background:#F1F0F5;color:var(--mute);font-weight:600}
+.pill.auto{background:#EEF2FF;color:#4338CA}
+.bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);z-index:10;padding:12px 18px calc(12px + env(safe-area-inset-bottom))}
+.bar .in{max-width:860px;margin:0 auto;display:flex;gap:10px;align-items:center}
+.bar .st{flex:1;font-size:13px;color:var(--mute);display:flex;align-items:center;gap:8px;min-width:0}
+.dot{width:8px;height:8px;border-radius:50%;background:#A3A3AD;flex:none}.dot.ok{background:var(--ok)}.dot.dirty{background:#D97706}
+.login{min-height:100vh;display:grid;place-items:center;padding:24px}
+.login form{width:100%;max-width:380px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:14px}
+.login h1{font-size:22px}.login p{color:var(--mute);font-size:14px;margin-top:-6px}
+.err{color:var(--err);font-size:13px;min-height:18px}
+.url{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px}
+.url a{color:var(--ac);font-weight:600;text-decoration:none;word-break:break-all}
+.toast{position:fixed;left:50%;bottom:86px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;font-weight:500;z-index:30;display:none}
+.toast.on{display:block}.toast.bad{background:var(--err)}
+.empty{text-align:center;padding:60px 20px;display:flex;flex-direction:column;gap:10px;align-items:center}
+.empty p{color:var(--mute);max-width:420px}
+@media (max-width:640px){.row2{grid-template-columns:1fr}.tpls{grid-template-columns:1fr 1fr}.r.svc{grid-template-columns:1fr 36px}.r.svc .d{grid-column:1}.r.svc .x{grid-row:1/3;grid-column:2}.bar .st span{display:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="toast" id="toast"></div>
+<script type="module">
+const FB_CFG={apiKey:"AIzaSyBCz2X9BOgO4UZKaXppxlGbiN59qBvUR_U",authDomain:"araujotech-catalogos.firebaseapp.com",projectId:"araujotech-catalogos",storageBucket:"araujotech-catalogos.firebasestorage.app",messagingSenderId:"501170505971",appId:"1:501170505971:web:fd3a1c1578b3e1b93bcf86"};
+const FBV='10.12.2',USER_DOMAIN='araujotechsistemas.com',SITE='https://araujotechsistemas.com/';
+const TX={es:{title:'Mi sitio web',by:'Araújo Tech Sistemas',login_t:'Editá tu sitio web',login_p:'Entrá con el mismo usuario y contraseña de tu panel.',user:'Usuario',pass:'Contraseña',enter:'Entrar',login_err:'Usuario o contraseña incorrectos.',logout:'Salir',no_site:'Tu plan todavía no tiene sitio web',no_site_p:'Consultá con Araújo Tech para agregar el sitio a tu plan.',no_shop:'Este usuario no está vinculado a ningún negocio.',your_url:'Tu sitio:',main:'Datos principales',name:'Nombre del negocio',city:'Ciudad',tag:'Frase principal',tag_ph:'Ej.: Comida casera desde 1998',about:'Sobre nosotros',about_ph:'Contá en pocas líneas quiénes son, desde cuándo y qué los diferencia.',svc:'Lo que ofrecen',svc_sub:'Productos, servicios o ministerios. Aparecen numerados en el sitio.',svc_t:'Título',svc_d:'Descripción corta (opcional)',add:'Agregar',hrs:'Horarios',hrs_sub:'Ej.: “Lun a Vie” · “08:00 - 18:00”.',day:'Días',hours:'Horario',contact:'Contacto y ubicación',wa:'WhatsApp',email:'E-mail',addr:'Dirección',maps:'Link de Google Maps (opcional)',maps_note:'En Google Maps tocá “Compartir” y pegá el link acá. Sin link usamos la dirección.',cat:'Link del catálogo o menú (opcional)',ig:'Instagram',fb:'Facebook',photos:'Fotos',hero:'Foto principal',hero_note:'La foto grande del inicio. Horizontal o vertical, bien iluminada.',logo:'Logo',logo_note:'Si tenés catálogo, el logo y la portada se copian solos.',gal:'Galería',gal_note:'Hasta 8 fotos. La primera aparece junto a “Sobre nosotros”.',up:'Subir foto',sample:'Foto de ejemplo',auto:'Del catálogo',look:'Apariencia',style:'Estilo',color:'Color principal',color_def:'Usar el del estilo',lang:'Idioma del sitio',view:'Ver sitio',save:'Guardar cambios',saving:'Guardando…',saved:'Todo guardado',dirty:'Cambios sin guardar',saved_t:'Cambios publicados',photo_ok:'Foto guardada',err:'No se pudo guardar. Revisá tu conexión.',big:'La foto es muy pesada, probá con otra.',leave:'Tenés cambios sin guardar.',tpl:{restaurante:'Restaurante',farmacia:'Farmacia / Salud',iglesia:'Iglesia',comercio:'Comercio / Servicios'},del:'Quitar'},
+ pt:{title:'Meu site',by:'Araújo Tech Sistemas',login_t:'Edite o seu site',login_p:'Entre com o mesmo usuário e senha do seu painel.',user:'Usuário',pass:'Senha',enter:'Entrar',login_err:'Usuário ou senha incorretos.',logout:'Sair',no_site:'Seu plano ainda não tem site',no_site_p:'Fale com a Araújo Tech para incluir o site no seu plano.',no_shop:'Este usuário não está ligado a nenhum negócio.',your_url:'Seu site:',main:'Dados principais',name:'Nome do negócio',city:'Cidade',tag:'Frase principal',tag_ph:'Ex.: Comida caseira desde 1998',about:'Quem somos',about_ph:'Conte em poucas linhas quem vocês são, desde quando e o que os diferencia.',svc:'O que oferecem',svc_sub:'Produtos, serviços ou ministérios. Aparecem numerados no site.',svc_t:'Título',svc_d:'Descrição curta (opcional)',add:'Adicionar',hrs:'Horários',hrs_sub:'Ex.: “Seg a Sex” · “08:00 - 18:00”.',day:'Dias',hours:'Horário',contact:'Contato e localização',wa:'WhatsApp',email:'E-mail',addr:'Endereço',maps:'Link do Google Maps (opcional)',maps_note:'No Google Maps toque em “Compartilhar” e cole o link aqui. Sem link usamos o endereço.',cat:'Link do catálogo ou cardápio (opcional)',ig:'Instagram',fb:'Facebook',photos:'Fotos',hero:'Foto principal',hero_note:'A foto grande do início. Horizontal ou vertical, bem iluminada.',logo:'Logo',logo_note:'Se você tem catálogo, o logo e a capa são copiados sozinhos.',gal:'Galeria',gal_note:'Até 8 fotos. A primeira aparece junto de “Quem somos”.',up:'Enviar foto',sample:'Foto de exemplo',auto:'Do catálogo',look:'Aparência',style:'Estilo',color:'Cor principal',color_def:'Usar a do estilo',lang:'Idioma do site',view:'Ver site',save:'Salvar alterações',saving:'Salvando…',saved:'Tudo salvo',dirty:'Alterações não salvas',saved_t:'Alterações publicadas',photo_ok:'Foto salva',err:'Não foi possível salvar. Confira sua conexão.',big:'A foto é muito pesada, tente outra.',leave:'Você tem alterações não salvas.',tpl:{restaurante:'Restaurante',farmacia:'Farmácia / Saúde',iglesia:'Igreja',comercio:'Comércio / Serviços'},del:'Remover'}};
+const TPLC={restaurante:['#FBF8F3','#9A3412'],farmacia:['#FFFFFF','#0F766E'],iglesia:['#FAFAF7','#3730A3'],comercio:['#FFFFFF','#1D4ED8']};
+const I={globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',edit:'<path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="m13.5 6.5 4 4"/>',list:'<path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',pin:'<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',img:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/>',brush:'<path d="M14 4 20 10l-8 8-6-6 8-8z"/><path d="M6 12 3 21l9-3"/>',x:'<path d="M6 6l12 12M18 6 6 18"/>',plus:'<path d="M12 5v14M5 12h14"/>',eye:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',out:'<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/>'};
+const ic=k=>`<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${I[k]}</svg>`;
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let lang=(()=>{try{return localStorage.getItem('at_site_lang')||'es'}catch(e){return'es'}})();const t=k=>TX[lang][k];
+const app=document.getElementById('app');
+let API=null,SHOP=null,site=null,imgs={},dirty=false,saving=false,addHr=false,lastEmpty=null;
+function toast(m,bad){const e=document.getElementById('toast');e.textContent=m;e.className='toast on'+(bad?' bad':'');clearTimeout(toast.t);toast.t=setTimeout(()=>e.className='toast',2600)}
+async function boot(){
+ if(window.TDC_FAKE_SITE_API){API=window.TDC_FAKE_SITE_API}else{
+  const b='https://www.gstatic.com/firebasejs/'+FBV+'/';const [A,F,U]=await Promise.all([import(b+'firebase-app.js'),import(b+'firebase-firestore.js'),import(b+'firebase-auth.js')]);
+  const fa=A.initializeApp(FB_CFG);const db=F.getFirestore(fa),auth=U.getAuth(fa);const {doc,getDoc,setDoc,deleteDoc}=F;
+  API={onAuth:cb=>U.onAuthStateChanged(auth,u=>cb(u?{uid:u.uid,email:u.email}:null)),login:(e,p)=>U.signInWithEmailAndPassword(auth,e,p),logout:()=>U.signOut(auth),
+   async myShop(uid){const s=await getDoc(doc(db,'shopUsers',uid));return s.exists()?s.data().shop:null},
+   async getShop(id){const s=await getDoc(doc(db,'shops',id));return s.exists()?s.data():null},
+   putSite(id,site){return setDoc(doc(db,'shops',id),{site},{merge:true})},
+   async getImg(id,k){try{const s=await getDoc(doc(db,'shops',id,'media',k));return s.exists()?s.data().m:null}catch(e){return null}},
+   putImg(id,k,m){return setDoc(doc(db,'shops',id,'media',k),{m})},delImg(id,k){return deleteDoc(doc(db,'shops',id,'media',k))}}}
+ API.onAuth(async u=>{if(!u){loginView();return}
+  app.innerHTML='';try{const q=new URLSearchParams(location.search).get('shop');SHOP=(await API.myShop(u.uid))||(u.email==='admin@'+USER_DOMAIN&&q)||null}catch(e){SHOP=null}
+  if(!SHOP){emptyView(t('no_shop'),'');return}
+  const d=await API.getShop(SHOP);if(!d||!d.site){emptyView(t('no_site'),t('no_site_p'));return}
+  site=d.site;site.svc=site.svc||[];site.ph=Object.assign({h:0,l:0,g:0},site.ph||{});
+  const keys=['sh','sl'].concat(Array.from({length:Math.min(+site.ph.g||0,8)},(_,i)=>'sg'+i));const vals=await Promise.all(keys.map(k=>(k==='sh'&&!site.ph.h)||(k==='sl'&&!site.ph.l)?null:API.getImg(SHOP,k)));
+  imgs={};keys.forEach((k,i)=>{if(vals[i])imgs[k]=vals[i]});render()})}
+function topBar(user){return `<div class="top"><div class="in"><div><b>${t('title')}</b><small>${t('by')}</small></div><span class="sp"></span><div class="lang">${['es','pt'].map(l=>`<button data-lang="${l}" aria-pressed="${lang===l}">${l.toUpperCase()}</button>`).join('')}</div>${user?`<button class="btn sm" data-act="logout">${ic('out')}${t('logout')}</button>`:''}</div></div>`}
+function loginView(){app.innerHTML=`${topBar(false)}<div class="login" style="min-height:calc(100vh - 62px)"><form id="lf"><h1>${t('login_t')}</h1><p>${t('login_p')}</p>
+ <div class="fld"><label for="lu">${t('user')}</label><input id="lu" class="inp" autocomplete="username" autocapitalize="off" required></div>
+ <div class="fld"><label for="lp">${t('pass')}</label><input id="lp" class="inp" type="password" autocomplete="current-password" required></div><span class="err" id="le"></span><button class="btn pri" style="height:48px">${t('enter')}</button></form></div>`;
+ document.getElementById('lf').addEventListener('submit',async e=>{e.preventDefault();const u=document.getElementById('lu').value.trim().toLowerCase(),p=document.getElementById('lp').value;const em=u.includes('@')?u:u+'@'+USER_DOMAIN;
+  try{await API.login(em,p)}catch(er){document.getElementById('le').textContent=t('login_err')}})}
+function emptyView(h,p){lastEmpty=[h,p];app.innerHTML=`${topBar(true)}<div class="empty"><h2>${esc(h)}</h2>${p?`<p>${esc(p)}</p>`:''}</div>`}
+const fld=(k,lbl,o={})=>`<div class="fld"><label for="f_${k}">${lbl}</label>${o.ta?`<textarea id="f_${k}" class="inp" data-f="${k}" rows="${o.ta}" placeholder="${esc(o.ph||'')}">${esc(site[k]||'')}</textarea>`:`<input id="f_${k}" class="inp" data-f="${k}" value="${esc(site[k]||'')}" placeholder="${esc(o.ph||'')}"${o.type?` type="${o.type}"`:''}${o.im?` inputmode="${o.im}"`:''}>`}${o.note?`<span class="note">${o.note}</span>`:''}</div>`;
+const hrsRows=()=>String(site.hours||'').split('\n').map(x=>x.trim()).filter(Boolean).map(x=>{const m=x.match(/^([^:]{2,40}):\s*(.+)$/);return m?[m[1],m[2]]:[x,'']});
+function photo(k,cls){const u=imgs[k];return u?`<div class="ph ${cls||''}"><img src="${u}" alt=""><button data-act="rmimg" data-k="${k}" aria-label="${t('del')}">${ic('x')}</button></div>`:''}
+function upBtn(k,lbl){return `<label class="add">${ic('plus')}${lbl}<input type="file" accept="image/*" data-up="${k}" hidden></label>`}
+function render(){const ph=site.ph;const url=SITE+site.slug;const hr=hrsRows();if(!hr.length||addHr)hr.push(['','']);addHr=false;const sv=site.svc.length?site.svc.map(x=>String(x).split('|').map(y=>y.trim())):[['','']];
+ app.innerHTML=`${topBar(true)}<div class="wrap">
+ <div class="card"><div class="url">${ic('globe')}<span>${t('your_url')}</span><a href="${url}" target="_blank" rel="noopener">${url.replace('https://','')}</a></div></div>
+ <div class="card"><h2>${ic('edit')}${t('main')}</h2>
+  <div class="row2">${fld('name',t('name'))}${fld('city',t('city'),{ph:'Santa Rita'})}</div>
+  ${fld('tag',t('tag'),{ph:t('tag_ph')})}${fld('about',t('about'),{ta:5,ph:t('about_ph')})}</div>
+ <div class="card"><h2>${ic('list')}${t('svc')}</h2><p class="sub">${t('svc_sub')}</p><div class="rows" id="svcRows">${sv.map((x,i)=>`<div class="r svc"><input class="inp" data-svc="${i}" data-p="0" value="${esc(x[0])}" placeholder="${t('svc_t')}" aria-label="${t('svc_t')}"><input class="inp d" data-svc="${i}" data-p="1" value="${esc(x[1]||'')}" placeholder="${t('svc_d')}" aria-label="${t('svc_d')}"><button class="btn ic x" data-act="rmsvc" data-i="${i}" aria-label="${t('del')}">${ic('x')}</button></div>`).join('')}</div><div><button class="btn sm" data-act="addsvc">${ic('plus')}${t('add')}</button></div></div>
+ <div class="card"><h2>${ic('clock')}${t('hrs')}</h2><p class="sub">${t('hrs_sub')}</p><div class="rows" id="hrRows">${hr.map((x,i)=>`<div class="r hr"><input class="inp" data-hr="${i}" data-p="0" value="${esc(x[0])}" placeholder="${lang==='pt'?'Seg a Sex':'Lun a Vie'}" aria-label="${t('day')}"><input class="inp" data-hr="${i}" data-p="1" value="${esc(x[1])}" placeholder="08:00 - 18:00" aria-label="${t('hours')}"><button class="btn ic" data-act="rmhr" data-i="${i}" aria-label="${t('del')}">${ic('x')}</button></div>`).join('')}</div><div><button class="btn sm" data-act="addhr">${ic('plus')}${t('add')}</button></div></div>
+ <div class="card"><h2>${ic('pin')}${t('contact')}</h2>
+  <div class="row2">${fld('wa',t('wa'),{ph:'0981 000 000',im:'tel'})}${fld('email',t('email'),{type:'email',ph:'nombre@email.com'})}</div>
+  ${fld('addr',t('addr'),{ph:'Calle, número, barrio'})}${fld('maps',t('maps'),{ph:'https://maps.app.goo.gl/…',note:t('maps_note')})}${fld('cat',t('cat'),{ph:'https://…'})}
+  <div class="row2">${fld('ig',t('ig'),{ph:'@usuario'})}${fld('fb',t('fb'),{ph:'facebook.com/…'})}</div></div>
+ <div class="card"><h2>${ic('img')}${t('photos')}</h2>
+  <div class="fld"><span class="lbl">${t('hero')} ${ph.h&&!ph.hc&&ph.hh?`<span class="pill auto">${t('auto')}</span>`:!ph.h?`<span class="pill">${t('sample')}</span>`:''}</span><div class="photos">${photo('sh')}${upBtn('sh',t('up'))}</div><span class="note">${t('hero_note')}</span></div>
+  <div class="fld"><span class="lbl">${t('logo')} ${ph.l&&!ph.lc&&ph.lh?`<span class="pill auto">${t('auto')}</span>`:''}</span><div class="photos">${photo('sl','logo')}${upBtn('sl',t('up'))}</div><span class="note">${t('logo_note')}</span></div>
+  <div class="fld"><span class="lbl">${t('gal')} <span class="pill">${+ph.g||0}/8</span></span><div class="photos">${Array.from({length:+ph.g||0},(_,i)=>photo('sg'+i)).join('')}${(+ph.g||0)<8?upBtn('sg',t('up')):''}</div><span class="note">${t('gal_note')}</span></div></div>
+ <div class="card"><h2>${ic('brush')}${t('look')}</h2>
+  <div class="fld"><span class="lbl">${t('style')}</span><div class="tpls">${Object.keys(TPLC).map(k=>`<button type="button" class="tpl" data-act="tpl" data-k="${k}" aria-pressed="${site.tpl===k}"><i style="background:linear-gradient(90deg,${TPLC[k][0]} 0 55%,${TPLC[k][1]} 55%);border:1px solid var(--line)"></i><b>${t('tpl')[k]}</b></button>`).join('')}</div></div>
+  <div class="row2"><div class="fld"><label for="f_color">${t('color')}</label><div style="display:flex;gap:10px;align-items:center"><input id="f_color" type="color" data-f="color" value="${esc(site.color||TPLC[site.tpl]?.[1]||'#1D4ED8')}" style="width:52px;height:42px;border:1px solid var(--line);border-radius:10px;padding:3px;background:#fff">${site.color?`<button class="btn sm" data-act="coldef">${t('color_def')}</button>`:''}</div></div>
+  <div class="fld"><label for="f_lang">${t('lang')}</label><select id="f_lang" class="inp" data-f="lang"><option value="es" ${site.lang!=='pt'?'selected':''}>Español</option><option value="pt" ${site.lang==='pt'?'selected':''}>Português</option></select></div></div></div>
+ </div>
+ <div class="bar"><div class="in"><div class="st"><i class="dot ${dirty?'dirty':'ok'}" id="stDot"></i><span id="stTxt">${saving?t('saving'):dirty?t('dirty'):t('saved')}</span></div><a class="btn" href="${url}" target="_blank" rel="noopener">${ic('eye')}${t('view')}</a><button class="btn pri" data-act="save" ${saving?'disabled':''}>${t('save')}</button></div></div>`}
+function setDirty(v){dirty=v;const d=document.getElementById('stDot'),x=document.getElementById('stTxt');if(d)d.className='dot '+(v?'dirty':'ok');if(x)x.textContent=saving?t('saving'):v?t('dirty'):t('saved')}
+function readSvc(){site.svc=[...document.querySelectorAll('#svcRows .r')].map(r=>{const a=r.querySelector('[data-p="0"]').value.trim(),b=r.querySelector('[data-p="1"]').value.trim();return a?(b?a+' | '+b:a):''}).filter(Boolean)}
+function readHr(){site.hours=[...document.querySelectorAll('#hrRows .r')].map(r=>{const a=r.querySelector('[data-p="0"]').value.trim(),b=r.querySelector('[data-p="1"]').value.trim();return a&&b?a+': '+b:a||b}).filter(Boolean).join('\n')}
+function resize(file,max,keepPng){return new Promise((res,rej)=>{const fr=new FileReader();fr.onerror=rej;fr.onload=()=>{const im=new Image();im.onerror=rej;im.onload=()=>{const sc=Math.min(1,max/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);const x=c.getContext('2d');if(!keepPng){x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height)}x.drawImage(im,0,0,c.width,c.height);
+  if(keepPng){const u=c.toDataURL('image/png');if(u.length<700000){res(u);return}}let q=.84,u;do{u=c.toDataURL('image/jpeg',q);q-=.1}while(u.length>850000&&q>.4);res(u)};im.src=fr.result};fr.readAsDataURL(file)})}
+const syncRows=()=>{if(document.getElementById('svcRows')){readSvc();readHr()}};
+async function upload(k,file){syncRows();try{const isLogo=k==='sl';const u=await resize(file,isLogo?500:k==='sh'?1800:1400,isLogo&&/png|svg|webp/.test(file.type));if(u.length>950000){toast(t('big'),true);return}
+ const ph=site.ph;let key=k;if(k==='sg'){if((+ph.g||0)>=8)return;key='sg'+(+ph.g||0)}
+ toast(t('saving'));await API.putImg(SHOP,key,u);imgs[key]=u;if(k==='sh'){ph.h=1;ph.hc=1}else if(k==='sl'){ph.l=1;ph.lc=1}else ph.g=(+ph.g||0)+1;ph.v=Date.now();
+ await API.putSite(SHOP,{ph});render();toast(t('photo_ok'))}catch(e){console.warn(e);toast(t('err'),true)}}
+async function removeImg(k){syncRows();const ph=site.ph;try{if(k.startsWith('sg')){const i=+k.slice(2),n=+ph.g||0;for(let j=i;j<n-1;j++){await API.putImg(SHOP,'sg'+j,imgs['sg'+(j+1)]);imgs['sg'+j]=imgs['sg'+(j+1)]}await API.delImg(SHOP,'sg'+(n-1));delete imgs['sg'+(n-1)];ph.g=n-1}
+ else{await API.delImg(SHOP,k);delete imgs[k];if(k==='sh'){ph.h=0;ph.hc=0;ph.hh=''}else{ph.l=0;ph.lc=0;ph.lh=''}}ph.v=Date.now();await API.putSite(SHOP,{ph});render()}catch(e){console.warn(e);toast(t('err'),true)}}
+async function save(){readSvc();readHr();saving=true;render();
+ const o={};['name','city','tag','about','svc','hours','wa','email','addr','maps','cat','ig','fb','color','lang','tpl'].forEach(k=>o[k]=site[k]==null?'':site[k]);o.updated=new Date().toISOString();o.by='cliente';
+ try{await API.putSite(SHOP,o);saving=false;dirty=false;render();toast(t('saved_t'))}catch(e){console.warn(e);saving=false;render();toast(t('err'),true)}}
+document.addEventListener('input',e=>{const el=e.target;if(el.dataset.f){site[el.dataset.f]=el.value;setDirty(true)}else if(el.dataset.svc!=null||el.dataset.hr!=null)setDirty(true)});
+document.addEventListener('change',async e=>{const el=e.target;if(el.dataset.up&&el.files&&el.files[0]){await upload(el.dataset.up,el.files[0]);el.value=''}else if(el.dataset.f==='color'){syncRows();render()}});
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-act],[data-lang]');if(!b)return;
+ if(b.dataset.lang){lang=b.dataset.lang;try{localStorage.setItem('at_site_lang',lang)}catch(er){}if(site){readSvc();readHr();render()}else if(lastEmpty)location.reload();else loginView();return}
+ const a=b.dataset.act;
+ if(a==='logout'){if(dirty&&!confirm(t('leave')))return;dirty=false;await API.logout();return}
+ if(a==='save'){save();return}
+ if(a==='addsvc'){syncRows();site.svc.push('');render();const r=document.querySelectorAll('#svcRows .r');r[r.length-1].querySelector('input').focus();setDirty(true);return}
+ if(a==='rmsvc'){readSvc();const rows=[...document.querySelectorAll('#svcRows .r')];rows[+b.dataset.i]?.remove();readSvc();render();setDirty(true);return}
+ if(a==='addhr'){syncRows();addHr=true;render();const r=document.querySelectorAll('#hrRows .r');r[r.length-1].querySelector('input').focus();return}
+ if(a==='rmhr'){const rows=[...document.querySelectorAll('#hrRows .r')];rows[+b.dataset.i]?.remove();readHr();render();setDirty(true);return}
+ if(a==='tpl'){syncRows();site.tpl=b.dataset.k;render();setDirty(true);return}
+ if(a==='coldef'){site.color='';render();setDirty(true);return}
+ if(a==='rmimg'){removeImg(b.dataset.k);return}});
+addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
+boot();
+</script>
+</body>
+</html>
