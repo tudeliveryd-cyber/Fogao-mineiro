@@ -7,6 +7,7 @@ on:
       - 'araujo-tech-site/**'
       - 'index.html'
       - 'tools/make_demo.py'
+      - 'admin/**'
       - '.github/workflows/site.yml'
   workflow_dispatch:
 

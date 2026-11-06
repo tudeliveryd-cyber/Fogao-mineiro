@@ -157,7 +157,17 @@ def build(seed_tpl, logo_svg, out, title, ogtitle, url, desc):
         open(os.path.join(ROOT, extra, 'index.html'), 'w', encoding='utf-8').write(s)
     print('ok', out, n, 'trocas')
 
+def copiar_admin():
+    """Painel da Araújo Tech também em araujotechsistemas.com/admin (mesmo arquivo do Fogão)."""
+    import shutil
+    dst = os.path.join(ROOT, 'araujo-tech-site', 'admin')
+    os.makedirs(dst, exist_ok=True)
+    for f in ('index.html', 'favicon.png', 'apple-touch-icon.png'):
+        shutil.copyfile(os.path.join(ROOT, 'admin', f), os.path.join(dst, f))
+    print('ok admin copiado')
+
 def main():
+    copiar_admin()
     build(SEED, LOGO_SVG, OUT, 'Casa Brasa · Demostración · Araújo Tech', 'Casa Brasa · Catálogo de demostración',
           'https://araujotechsistemas.com/demo/', 'Catálogo de demostración de Araújo Tech: así queda el menú digital de su negocio, con pedidos por WhatsApp.')
     build(FARM_SEED, FARM_LOGO_SVG, os.path.join(ROOT, 'araujo-tech-site', 'demo-farmacia', 'index.html'),
