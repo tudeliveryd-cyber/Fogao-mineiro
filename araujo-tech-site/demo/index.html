@@ -70,6 +70,7 @@ window.TDC_SEED=function(c){
 .feepend{display:flex;flex-direction:column;gap:8px;padding:12px 14px;border-radius:12px;background:#FFF4DE;color:#5C3A00;border:1px solid #F1D49A;margin:0 0 12px;font-size:14px}.feepend b{display:flex;align-items:center;gap:8px}.feepend ul{margin:0;padding-left:18px}.feepend .actions{display:flex;gap:8px;flex-wrap:wrap}
 .stbar{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:14px;margin:0 0 14px;font-size:14.5px;line-height:1.4}.stbar svg{flex:none;margin-top:1px}.stbar b{font-size:16px}.stbar.shut{background:#B42318;color:#fff}.stbar.soon{background:#FFF4DE;color:#5C3A00;border:1px solid #F1D49A}
 .ord-wa{display:flex;gap:8px;flex-wrap:wrap}.ord-wa .btn{text-decoration:none}
+.demo-hint{margin:6px 0 0;padding:8px 12px;border-radius:10px;background:#FFF4DE;color:#5C3A00;font-size:13px}
 </style>
 <title>Casa Brasa · Demostración · Araújo Tech</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -3009,7 +3010,7 @@ function newShopSheet(){const n=ui.ns;openSheet(`<div class="sh-top"><h2>${t('ne
  <div class="fld"><label for="ns_dom">${t('domain')}</label><input id="ns_dom" class="inp" data-ns="domain" value="${esc(n.domain)}" placeholder="minegocio.com"></div></div>
  <span class="err" id="nsErr"></span></div>
  <div class="sh-foot"><button class="btn-main" data-act="createshop">${t('create')}</button></div>`,true,'ns')}
-function loginHTML(){const st=pub.store;return `<div class="login"><form id="loginForm" novalidate><div class="lhead"><div class="logo">${st.logo?`<img src="${st.logo}" alt="">`:esc(initials(st.name))}</div><h2>${t('nav_admin')}</h2><p>${esc(st.name)} · ${t('login_sub')}</p></div>
+function loginHTML(){const st=pub.store;return `<div class="login"><form id="loginForm" novalidate><div class="lhead"><div class="logo">${st.logo?`<img src="${st.logo}" alt="">`:esc(initials(st.name))}</div><h2>${t('nav_admin')}</h2><p>${esc(st.name)} · ${t('login_sub')}</p>${window.TDC_DEMO?`<p class="demo-hint">${lang==='pt'?'Demonstração':'Demostración'} · ${lang==='pt'?'Usuário':'Usuario'}: <b>demo</b> · ${lang==='pt'?'Senha':'Contraseña'}: <b>demo</b></p>`:''}</div>
  <div class="fld"><label for="lg_user">${t('user_l')}</label><input id="lg_user" class="inp" autocomplete="username" autocapitalize="none" spellcheck="false"></div>
  <div class="fld"><label for="lg_pass">${t('pass_l')}</label><div class="pw"><input id="lg_pass" class="inp" type="password" autocomplete="current-password"><button type="button" data-act="showpw" aria-label="${t('show_pass')}">${ic('eye',18)}</button></div></div>
  ${cloudNote()}<span class="err" id="lgErr" role="alert"></span><button class="btn pri" type="submit" style="justify-content:center;padding:12px" ${CLOUD.loading?'disabled':''}>${t('enter')}</button></form>${devLogoHTML('lg')}</div>`}
@@ -3273,7 +3274,7 @@ function plVisible(){return S.get(K.plOn,false)||location.hash==='#plataforma'}
 let tapN=0,tapT=0;document.getElementById('brandTap').addEventListener('click',()=>{if(MODE!=='demo')return;const n=Date.now();tapN=n-tapT<1500?tapN+1:1;tapT=n;if(tapN>=5){tapN=0;const on=!S.get(K.plOn,false);S.set(K.plOn,on);if(!on&&ui.view==='platform'){ui.view='catalog';history.replaceState(null,'','#catalogo')}render();toast(on?(lang==='pt'?'Plataforma visível neste aparelho':'Plataforma visible en este dispositivo'):(lang==='pt'?'Plataforma oculta':'Plataforma oculta'))}});
 document.addEventListener('submit',e=>{if(e.target.id!=='loginForm')return;e.preventDefault();if(CLOUD_ON){cloudLogin(e.target);return}const u=document.getElementById('lg_user').value.trim().toLowerCase(),pw=document.getElementById('lg_pass').value;
  if(e.target.dataset.kind==='pl'){if(u==='araujotech'&&pw==='tech2026'){S.set(K.authPl,true);render();scrollTo(0,0)}else{document.getElementById('lgErr').textContent=t('login_err')}return}
- const sh=curShop(),cu=(sh&&sh.user)||(SHOP===FM?'fogaomineiro':''),cp=(sh&&sh.pass)||'';if(cu&&u===cu&&pw===cp){S.set(K.auth,true);render();scrollTo(0,0)}else{document.getElementById('lgErr').textContent=t('login_err')}});
+ const sh=curShop(),cu=window.TDC_DEMO?'demo':((sh&&sh.user)||(SHOP===FM?'fogaomineiro':'')),cp=window.TDC_DEMO?'demo':((sh&&sh.pass)||'');if(cu&&u===cu&&pw===cp){S.set(K.auth,true);render();scrollTo(0,0)}else{document.getElementById('lgErr').textContent=t('login_err')}});
 let spyRaf=0;window.addEventListener('scroll',()=>{if(spyRaf||ui.view!=='catalog')return;spyRaf=requestAnimationFrame(()=>{spyRaf=0;const nav=document.getElementById('cnav');if(!nav)return;const lim=nav.getBoundingClientRect().bottom+12;let cur=null;
  nav.querySelectorAll('a[data-c]').forEach(a=>{const sec=document.getElementById('sec-'+a.dataset.c);if(sec&&sec.getBoundingClientRect().top<=lim)cur=a});if(!cur)cur=nav.querySelector('a[data-c]');if(innerHeight+scrollY>=document.documentElement.scrollHeight-6){const all=nav.querySelectorAll('a[data-c]');cur=all[all.length-1]||cur}
  if(cur&&!cur.classList.contains('on')){nav.querySelectorAll('a').forEach(a=>a.classList.toggle('on',a===cur));nav.scrollTo({left:Math.max(0,cur.offsetLeft-16),behavior:'smooth'})}})},{passive:true});

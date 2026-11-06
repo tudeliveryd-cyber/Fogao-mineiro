@@ -82,6 +82,12 @@ def main():
     # demo sempre aberta (os links ?prueba= continuam funcionando)
     rep("function openState0(st,now=new Date()){",
         "function openState0(st,now=new Date()){if(window.TDC_DEMO&&!(typeof QS!=='undefined'&&QS.get('prueba')))return{open:true};")
+    # login do painel da demo: usuário demo / senha demo (aparece escrito na tela)
+    rep("const sh=curShop(),cu=(sh&&sh.user)||(SHOP===FM?'fogaomineiro':''),cp=(sh&&sh.pass)||'';",
+        "const sh=curShop(),cu=window.TDC_DEMO?'demo':((sh&&sh.user)||(SHOP===FM?'fogaomineiro':'')),cp=window.TDC_DEMO?'demo':((sh&&sh.pass)||'');")
+    rep("<h2>${t('nav_admin')}</h2><p>${esc(st.name)} · ${t('login_sub')}</p></div>",
+        "<h2>${t('nav_admin')}</h2><p>${esc(st.name)} · ${t('login_sub')}</p>${window.TDC_DEMO?`<p class=\"demo-hint\">${lang==='pt'?'Demonstração':'Demostración'} · ${lang==='pt'?'Usuário':'Usuario'}: <b>demo</b> · ${lang==='pt'?'Senha':'Contraseña'}: <b>demo</b></p>`:''}</div>")
+    rep("</style>", ".demo-hint{margin:6px 0 0;padding:8px 12px;border-radius:10px;background:#FFF4DE;color:#5C3A00;font-size:13px}\n</style>")
     # dados do <head>
     s = re.sub(r'<title>[^<]*</title>', '<title>Casa Brasa · Demostración · Araújo Tech</title>', s, count=1)
     s = re.sub(r'<meta property="og:title" content="[^"]*">', '<meta property="og:title" content="Casa Brasa · Catálogo de demostración">', s, count=1)
