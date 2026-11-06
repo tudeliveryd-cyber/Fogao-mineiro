@@ -18,8 +18,7 @@ jobs:
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         run: |
-          umask 077
-          printf 'machine %s login %s password %s\n' "$FTP_SERVER" "$FTP_USERNAME" "$FTP_PASSWORD" > ~/.netrc
+          export LFTP_PASSWORD="$FTP_PASSWORD"
           lftp -e "
             set ftp:ssl-force true;
             set ftp:ssl-protect-data true;
@@ -27,9 +26,8 @@ jobs:
             set ftp:passive-mode true;
             set net:max-retries 3;
             set net:timeout 30;
-            open ftp://$FTP_SERVER;
+            open --env-password -u "$FTP_USERNAME" ftp://$FTP_SERVER;
             mirror --reverse --verbose --only-newer --parallel=3 \
               --exclude-glob .git* --exclude-glob .git/ --exclude-glob .github/ --exclude-glob README.md \
               ./ ./;
             bye"
-          rm -f ~/.netrc
