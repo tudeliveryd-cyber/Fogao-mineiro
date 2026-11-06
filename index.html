@@ -470,7 +470,7 @@ textarea.inp{resize:vertical;min-height:64px}
 .ups-plus{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:999px;background:var(--t-button);color:var(--t-button-ink);display:grid;place-items:center}
 .orow.orow5{grid-template-columns:1fr 1fr 90px 96px 34px}
 @media (max-width:560px){.orow.orow5{grid-template-columns:1fr 1fr}}
-.devmark{display:inline-flex;gap:3px;font-family:var(--f-display);letter-spacing:.02em;vertical-align:baseline}
+.devmark{color:inherit;text-decoration:none;display:inline-flex;gap:3px;font-family:var(--f-display);letter-spacing:.02em;vertical-align:baseline}
 .devmark b{font-weight:800}.devmark .dm-t{color:#2F7BFF}
 .devlogo{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:22px;color:var(--muted);font-size:12px;font-weight:600;letter-spacing:.03em}
 .devlogo img{display:block;width:230px;max-width:100%;height:auto;background:#fff;border-radius:12px;padding:8px 12px;border:1px solid var(--line)}
@@ -479,6 +479,7 @@ textarea.inp{resize:vertical;min-height:64px}
 .tkprev{background:var(--soft);border-radius:12px;padding:16px;display:flex;justify-content:center;overflow-x:auto}
 .tkprev iframe{border:0;background:#fff;box-shadow:0 4px 16px rgb(0 0 0 / .18);height:520px;max-width:100%;flex:none}
 .opt .od{display:block;font-size:12px;opacity:.62;margin-top:2px;line-height:1.3}
+.devmark:hover{text-decoration:underline}.devlogo a{display:block;max-width:100%}
 </style>
 
 </head>
@@ -2440,7 +2441,7 @@ function poster(cb){const st=pub.store,th=pub.theme,W=1240,H=1754;const c=docume
   x.fillStyle=ink(th.header);x.font=`800 68px ${disp}`;x.fillText('Escaneá y pedí online',W/2,qy+qs+105);
   x.globalAlpha=.72;x.font=`600 46px ${body}`;x.fillText('Escaneie e peça online',W/2,qy+qs+170);x.globalAlpha=1;
   x.fillStyle=th.promo;x.font=`700 40px ${body}`;x.fillText('Delivery · Retiro · '+CAT_URL.replace(/^https?:\/\//,'').replace(/\/$/,''),W/2,qy+qs+245);
-  x.globalAlpha=.45;x.fillStyle=ink(th.header);x.font=`500 28px ${body}`;x.fillText('Desarrollado por Araújo Tech',W/2,H-60);x.globalAlpha=1;cb(c.toDataURL('image/png'))};
+  x.globalAlpha=.45;x.fillStyle=ink(th.header);x.font=`500 28px ${body}`;x.fillText('Desarrollado por Araújo Tech · www.araujotechsistemas.com',W/2,H-60);x.globalAlpha=1;cb(c.toDataURL('image/png'))};
  if(st.logo){const im=new Image();im.onload=()=>{const lw=440,lh=im.height*lw/im.width,cx=(W-lw)/2-28,cy=120;x.fillStyle='#fff';rrect2(x,cx,cy,lw+56,lh+56,36);x.fill();x.drawImage(im,cx+28,cy+28,lw,lh);finish(cy+lh+56)};im.onerror=()=>finish(260);im.src=st.logo}else finish(260)}
 function cartPanelHTML(){const bad=cart.some(it=>!cartOk(it)),st=pub.store;
  return `<h2>${ic('cart',20)}${t('cart')}</h2>${cart.length?`<div class="cp-items">${cart.map((it,i)=>{const p=prod(pub,it.pid);const ex=lineLabel(pub,it);return `<div class="cp-item"><div style="min-width:0;flex:1"><b>${esc(p?tr(p.n):'—')}</b>${ex.length?`<small>${esc(ex.join(' · '))}</small>`:''}${it.note?`<small>${esc(it.note)}</small>`:''}${cartOk(it)?'':`<small class="warn">${t('unavailable')}</small>`}<div class="cp-row"><div class="stepper sm"><button data-act="pcq" data-i="${i}" data-d="-1" aria-label="-">${it.q===1?ic('trash',14):ic('minus',14)}</button><span>${it.q}</span><button data-act="pcq" data-i="${i}" data-d="1" aria-label="+">${ic('plus',14)}</button></div><span class="price">${gs(lineUnit(pub,it)*it.q)}</span></div></div></div>`}).join('')}</div>
@@ -2450,8 +2451,9 @@ function cartPanelHTML(){const bad=cart.some(it=>!cartOk(it)),st=pub.store;
  ${bad?`<div class="info bad">${t('err_unavail')}</div>`:''}
  <button class="btn-main" data-act="checkout" ${bad?'disabled':''}>${t('checkout')}</button>`:`<div class="cp-empty">${ic('cart',30)}<p>${t('empty_cart')}</p></div>`}`}
 function labelTables(){document.querySelectorAll('.tbl').forEach(tb=>{const hs=[...tb.querySelectorAll('thead th')].map(th=>th.textContent.trim());tb.querySelectorAll('tbody tr').forEach(tr=>{[...tr.children].forEach((td,i)=>{const h=hs[i]||'';if(h)td.setAttribute('data-label',h);else td.classList.add('act');if(i===0&&td.querySelector('.pcell'))td.classList.add('full')})})})}
-function devMark(){return `<span class="devmark"><b>ARAÚJO</b><b class="dm-t">TECH</b></span>`}
-function devLogoHTML(cls){return `<div class="devlogo ${cls||''}"><span>${t('dev_by')}</span><img src="${DEV_LOGO}" alt="Araújo Tech Sistemas"></div>`}
+const DEV_URL='https://www.araujotechsistemas.com';
+function devMark(){return `<a class="devmark" href="${DEV_URL}" target="_blank" rel="noopener"><b>ARAÚJO</b><b class="dm-t">TECH</b></a>`}
+function devLogoHTML(cls){return `<div class="devlogo ${cls||''}"><span>${t('dev_by')}</span><a href="${DEV_URL}" target="_blank" rel="noopener" aria-label="Araújo Tech Sistemas"><img src="${DEV_LOGO}" alt="Araújo Tech Sistemas"></a></div>`}
 const TK={pt:{order:'PEDIDO Nº',client:'Cliente',tel:'Tel.',addr:'Endereço',bairro:'Bairro',ref:'Ref.',zone:'Zona',items:'PRODUTOS',sub:'Subtotal',fee:'Entrega',disc:'Desconto',total:'TOTAL',pay:'Pagamento',change:'Troco para',back:'Troco',deliv:'DELIVERY',pick:'RETIRADA NO LOCAL',time:'Retirar às',sched:'AGENDADO PARA',obs:'Obs',thanks:'Obrigado pela preferência!'},
  es:{order:'PEDIDO Nº',client:'Cliente',tel:'Tel.',addr:'Dirección',bairro:'Barrio',ref:'Ref.',zone:'Zona',items:'PRODUCTOS',sub:'Subtotal',fee:'Envío',disc:'Descuento',total:'TOTAL',pay:'Pago',change:'Vuelto para',back:'Vuelto',deliv:'DELIVERY',pick:'RETIRO EN EL LOCAL',time:'Retirar a las',sched:'PROGRAMADO PARA',obs:'Obs',thanks:'¡Gracias por su preferencia!'}};
 function ticketHTML(o){const st=pub.store,w=+st.ticketW||80,k=TK[lang]||TK.es,sm=w===58;const d=new Date(o.date),pad=n=>String(n).padStart(2,'0');
@@ -2480,7 +2482,7 @@ ${lines.map(l=>`<div class="it">${row(`<b>${l.q}x</b> ${esc(l.n)}`,gs(l.v))}${(l
 ${row(k.sub,gs(o.sub))}${row(k.fee,gs(o.fee||0))}${o.disc?row(k.disc+(o.coupon?' ('+esc(o.coupon)+')':''),'-'+gs(o.disc)):''}
 ${row(k.total,gs(o.total),'big')}<hr>
 <div><span class="b">${esc(k.pay)}:</span> ${esc(t(o.pay))}</div>${chg?`<div>${esc(k.change)}: ${gs(chg)}</div>${chg>o.total?`<div class="b">${esc(k.back)}: ${gs(chg-o.total)}</div>`:''}`:''}<hr>
-<div class="c b">${esc(k.thanks)}</div><div class="c s" style="margin-top:6px">Desarrollado por Araújo Tech</div>
+<div class="c b">${esc(k.thanks)}</div><div class="c s" style="margin-top:6px">Desarrollado por Araújo Tech<br>www.araujotechsistemas.com</div>
 </body></html>`}
 function ticketSheet(no){ui.tkNo=+no;const o=orders.find(x=>x.no===+no);if(!o)return;const w=+pub.store.ticketW||80;
  openSheet(`<div class="sh-top"><h2>${t('ticket')} · Nº ${o.no}</h2><button class="xbtn" data-act="close" aria-label="Fechar">${ic('x',18)}</button></div>
