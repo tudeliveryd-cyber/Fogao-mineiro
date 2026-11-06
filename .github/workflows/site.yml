@@ -49,3 +49,33 @@ jobs:
               --exclude-glob fogaomineiro/ \
               ./araujo-tech-site/ ./;
             bye"
+      - name: Endereços dos sites dos clientes (araujotechsistemas.com/nome)
+        if: env.SITE_FTP_USERNAME != '' && env.SITE_FTP_PASSWORD != ''
+        run: |
+          export LFTP_PASSWORD="$SITE_FTP_PASSWORD"
+          L="set ftp:ssl-force true; set ftp:ssl-protect-data true; set ssl:verify-certificate yes; set ssl:verify-certificate/CC:40:F0:6A:08:0C:63:04:01:05:A9:20:7B:23:53:CA:60:35:A7:05 no; set ftp:passive-mode true; set net:max-retries 3; set net:timeout 30; open --env-password -u $SITE_FTP_USERNAME ftp://$FTP_SERVER"
+          rm -f ht_old
+          # Baixa o .htaccess que já existe (o do cPanel) para não perder nada dele.
+          if ! lftp -e "$L; get .htaccess -o ht_old; bye"; then
+            if lftp -e "$L; cls -1 .htaccess; bye" 2>/dev/null | grep -q htaccess; then
+              echo "Existe .htaccess mas não deu para baixar. Não mexo nele."; exit 1
+            fi
+            : > ht_old
+          fi
+          # Tira o bloco antigo (se houver) e coloca o atual no fim.
+          awk '/^# BEGIN araujotech-sitios/{skip=1} !skip{print} /^# END araujotech-sitios/{skip=0}' ht_old > ht_new
+          cat >> ht_new <<'HT'
+          # BEGIN araujotech-sitios
+          <IfModule mod_rewrite.c>
+          RewriteEngine On
+          RewriteCond %{HTTP_HOST} ^(www\.)?araujotechsistemas\.com$ [NC]
+          RewriteCond %{REQUEST_FILENAME} !-f
+          RewriteCond %{REQUEST_FILENAME} !-d
+          RewriteRule ^([a-z0-9][a-z0-9-]+)/?$ /sitio/index.html [L]
+          </IfModule>
+          # END araujotech-sitios
+          HT
+          sed -i 's/^          //' ht_new
+          echo "----- .htaccess final -----"; cat ht_new
+          if cmp -s ht_old ht_new; then echo "Sem mudanças"; exit 0; fi
+          lftp -e "$L; put ht_new -o .htaccess; bye"
