@@ -2427,12 +2427,16 @@ function poster(cb){const st=pub.store,th=pub.theme,W=1240,H=1754;const c=docume
  x.fillStyle=th.header;x.fillRect(0,0,W,H);x.fillStyle=th.primary;x.fillRect(0,0,W,300);x.fillStyle='rgba(0,0,0,.13)';for(let i=0;i<W;i+=52)x.fillRect(i,0,26,300);
  const disp='"Bricolage Grotesque", "Arial Black", Arial, sans-serif',body='"Figtree", Arial, sans-serif';
  const finish=y0=>{x.textAlign='center';x.fillStyle=ink(th.header);x.font=`800 100px ${disp}`;x.fillText(st.name,W/2,y0+115);
-  const qs=660,qy=y0+170;x.fillStyle='#fff';rrect2(x,(W-qs)/2,qy,qs,qs,40);x.fill();const q=qrCanvas(720);x.imageSmoothingEnabled=false;x.drawImage(q,(W-620)/2,qy+20,620,620);
-  x.fillStyle=ink(th.header);x.font=`800 68px ${disp}`;x.fillText('Escaneá y pedí online',W/2,qy+qs+105);
-  x.globalAlpha=.72;x.font=`600 46px ${body}`;x.fillText('Escaneie e peça online',W/2,qy+qs+170);x.globalAlpha=1;
-  x.fillStyle=th.promo;x.font=`700 40px ${body}`;x.fillText('Delivery · Retiro · '+CAT_URL.replace(/^https?:\/\//,'').replace(/\/$/,''),W/2,qy+qs+245);
-  x.globalAlpha=.45;x.fillStyle=ink(th.header);x.font=`500 28px ${body}`;x.fillText('Desarrollado por Araújo Tech · www.araujotechsistemas.com',W/2,H-60);x.globalAlpha=1;cb(c.toDataURL('image/png'))};
- if(st.logo){const im=new Image();im.onload=()=>{const lw=440,lh=im.height*lw/im.width,cx=(W-lw)/2-28,cy=120;x.fillStyle='#fff';rrect2(x,cx,cy,lw+56,lh+56,36);x.fill();x.drawImage(im,cx+28,cy+28,lw,lh);finish(cy+lh+56)};im.onerror=()=>finish(260);im.src=st.logo}else finish(260)}
+  const qs=580,qy=y0+160;x.fillStyle='#fff';rrect2(x,(W-qs)/2,qy,qs,qs,40);x.fill();const q=qrCanvas(720);x.imageSmoothingEnabled=false;x.drawImage(q,(W-qs+40)/2,qy+20,qs-40,qs-40);
+  x.fillStyle=ink(th.header);x.font=`800 68px ${disp}`;x.fillText('Escaneá y pedí online',W/2,qy+qs+95);
+  x.globalAlpha=.72;x.font=`600 46px ${body}`;x.fillText('Escaneie e peça online',W/2,qy+qs+155);x.globalAlpha=1;
+  x.fillStyle=th.promo;x.font=`700 40px ${body}`;x.fillText('Delivery · Retiro · '+CAT_URL.replace(/^https?:\/\//,'').replace(/\/$/,''),W/2,qy+qs+222);
+  const dl=new Image(),devFoot=()=>{const lw=360,lh=dl.naturalWidth?dl.naturalHeight*lw/dl.naturalWidth:0,by=H-56-lh-28;
+   x.globalAlpha=.6;x.fillStyle=ink(th.header);x.font=`600 26px ${body}`;x.fillText('Desarrollado por',W/2,by-22);x.globalAlpha=1;
+   if(lh){x.fillStyle='#fff';rrect2(x,(W-lw)/2-22,by,lw+44,lh+28,18);x.fill();x.drawImage(dl,(W-lw)/2,by+14,lw,lh)}
+   x.globalAlpha=.5;x.fillStyle=ink(th.header);x.font=`500 24px ${body}`;x.fillText('www.araujotechsistemas.com',W/2,H-24);x.globalAlpha=1;cb(c.toDataURL('image/png'))};
+  dl.onload=devFoot;dl.onerror=devFoot;dl.src=DEV_LOGO};
+ if(st.logo){const im=new Image();im.onload=()=>{const lw=360,lh=im.height*lw/im.width,cx=(W-lw)/2-28,cy=96;x.fillStyle='#fff';rrect2(x,cx,cy,lw+56,lh+56,36);x.fill();x.drawImage(im,cx+28,cy+28,lw,lh);finish(cy+lh+56)};im.onerror=()=>finish(260);im.src=st.logo}else finish(260)}
 function cartPanelHTML(){const bad=cart.some(it=>!cartOk(it)),st=pub.store;
  return `<h2>${ic('cart',20)}${t('cart')}</h2>${cart.length?`<div class="cp-items">${cart.map((it,i)=>{const p=prod(pub,it.pid);const ex=lineLabel(pub,it);return `<div class="cp-item"><div style="min-width:0;flex:1"><b>${esc(p?tr(p.n):'—')}</b>${ex.length?`<small>${esc(ex.join(' · '))}</small>`:''}${it.note?`<small>${esc(it.note)}</small>`:''}${cartOk(it)?'':`<small class="warn">${t('unavailable')}</small>`}<div class="cp-row"><div class="stepper sm"><button data-act="pcq" data-i="${i}" data-d="-1" aria-label="-">${it.q===1?ic('trash',14):ic('minus',14)}</button><span>${it.q}</span><button data-act="pcq" data-i="${i}" data-d="1" aria-label="+">${ic('plus',14)}</button></div><span class="price">${gs(lineUnit(pub,it)*it.q)}</span></div></div></div>`}).join('')}</div>
  ${upsellHTML()}
