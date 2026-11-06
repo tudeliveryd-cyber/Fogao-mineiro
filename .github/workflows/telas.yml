@@ -1,0 +1,32 @@
+name: Capturar telas das demos (com fotos)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  capturar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Instalar Playwright
+        run: |
+          npm init -y >/dev/null
+          npm i playwright@1.47.2 >/dev/null
+          npx playwright install --with-deps chromium
+      - name: Gerar as demos atuais
+        run: python3 tools/make_demo.py
+      - name: Tirar as telas
+        run: node tools/capturar_telas.js
+      - name: Salvar no repositório
+        run: |
+          git config user.name "Araújo Tech (telas)"
+          git config user.email "actions@users.noreply.github.com"
+          git add araujo-tech-site/img/sistemas tools/telas
+          git diff --cached --quiet && echo "Nada mudou" || git commit -m "Telas das demos com fotos (automático)"
+          git push
