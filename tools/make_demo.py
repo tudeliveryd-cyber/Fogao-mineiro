@@ -114,6 +114,9 @@ window.TDC_SEED=function(c){
 """
 
 
+# cópias na raiz do repositório, para links curtos no GitHub Pages
+EXTRA = {'demo': ['restaurante'], 'demo-farmacia': ['farmacia']}
+
 def build(seed_tpl, logo_svg, out, title, ogtitle, url, desc):
     s = open(SRC, encoding='utf-8').read()
     import urllib.parse
@@ -149,6 +152,9 @@ def build(seed_tpl, logo_svg, out, title, ogtitle, url, desc):
     s = s.replace('<head>', '<head>\n<meta name="robots" content="noindex">', 1)
     os.makedirs(os.path.dirname(out), exist_ok=True)
     open(out, 'w', encoding='utf-8').write(s)
+    for extra in EXTRA.get(os.path.basename(os.path.dirname(out)), []):
+        os.makedirs(os.path.join(ROOT, extra), exist_ok=True)
+        open(os.path.join(ROOT, extra, 'index.html'), 'w', encoding='utf-8').write(s)
     print('ok', out, n, 'trocas')
 
 def main():
