@@ -135,10 +135,24 @@ h2{font-family:var(--display);font-weight:900;font-size:clamp(32px,4.2vw,54px);l
 .sys ul{list-style:none;display:grid;gap:10px;margin-bottom:28px}
 .sys li{display:flex;gap:14px;color:var(--ink)}
 .sys .acts{display:flex;flex-wrap:wrap;gap:12px}
-.sys .shots{grid-column:1/-1;display:flex;gap:20px;align-items:flex-end;background:var(--lilac);border-radius:16px;padding:32px 32px 0;overflow:hidden}
-.sys .shots .pc{flex:1;border-radius:10px 10px 0 0;overflow:hidden;box-shadow:0 -1px 0 var(--line),0 20px 40px -24px rgba(74,10,128,.45);background:#fff}
-.sys .shots .cel{width:22%;min-width:120px;border-radius:22px 22px 0 0;overflow:hidden;border:6px solid var(--ink);border-bottom:0;background:#fff}
-.sys .shots img{width:100%;height:auto}
+.sys .shots{grid-column:1/-1;background:radial-gradient(120% 90% at 50% 0%,#FFFFFF 0%,var(--lilac) 70%);border:1px solid var(--line);border-radius:20px;padding:48px 56px 56px}
+.sys .stage{position:relative;max-width:920px;margin:0 auto;padding-right:9%}
+.sys .stage.solo{padding-right:0}
+.sys .laptop{position:relative;width:100%;filter:drop-shadow(0 28px 36px rgba(42,8,80,.28))}
+.sys .laptop .lid{border-radius:2.2% 2.2% .6% .6%/3.4% 3.4% 1% 1%;padding:.55%;background:linear-gradient(180deg,#C9C6D3,#77737F 55%,#5B5865)}
+.sys .laptop .bezel{background:#08060C;border-radius:1.8% 1.8% .4% .4%/2.8% 2.8% .6% .6%;padding:2.2% 1.6% 2.6%;position:relative}
+.sys .laptop .bezel::before{content:"";position:absolute;top:.9%;left:50%;width:.7%;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;background:#1E2433}
+.sys .laptop .screen{position:relative;overflow:hidden;border-radius:2px;background:#fff}
+.sys .laptop .screen img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top}
+.sys .laptop .base{position:relative;height:0;padding-bottom:3%;margin:0 -7.5%;border-radius:0 0 18% 18%/0 0 100% 100%;background:linear-gradient(180deg,#ECEAF1 0%,#CBC8D4 40%,#8D8999 85%,#6A6676 100%)}
+.sys .laptop .base::before{content:"";position:absolute;left:42%;right:42%;top:0;height:40%;background:linear-gradient(180deg,#A9A5B4,#CAC7D2);border-radius:0 0 10px 10px}
+.sys .phone{position:absolute;right:0;bottom:-2%;width:23%;min-width:96px;aspect-ratio:390/844;border-radius:16%/7.4%;padding:1.6%;background:linear-gradient(135deg,#DAD7E2 0%,#77737F 25%,#2B2833 50%,#7D7989 78%,#CFCCD8 100%);filter:drop-shadow(0 24px 30px rgba(42,8,80,.35))}
+.sys .stage.solo .phone{position:relative;margin:0 auto;bottom:0;width:240px}
+.sys .phone .inner{width:100%;height:100%;background:#08060C;border-radius:14.5%/6.8%;padding:3.2%}
+.sys .phone .scr{position:relative;width:100%;height:100%;overflow:hidden;border-radius:12.5%/5.8%;background:#fff}
+.sys .phone .scr img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+.sys .phone .island{position:absolute;z-index:2;top:2.2%;left:50%;transform:translateX(-50%);width:30%;height:3.6%;border-radius:999px;background:#08060C}
+.sys .glare{position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,.04) 30%,rgba(255,255,255,0) 45%)}
 .more{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding:40px 0 0}
 .more p{font-size:18px;max-width:34em}
 
@@ -235,7 +249,9 @@ footer a:hover{color:#fff;text-decoration:underline;text-underline-offset:4px}
   .sec-head{margin-bottom:40px}
   .sys{padding:36px 0}
   .sys .acts .btn{flex:1 1 auto}
-  .sys .shots{padding:20px 20px 0}
+  .sys .shots{padding:28px 22px 30px;border-radius:16px}
+  .sys .stage{padding-right:12%}
+  .sys .phone{width:30%;min-width:0}
   .steps{grid-template-columns:1fr;gap:32px}
   .qform{padding:26px 20px}
   .qform .row{grid-template-columns:1fr;gap:0}
@@ -540,7 +556,7 @@ function render(){
   const acts=(s.link?`<a class="btn btn-solid" href="${s.link}" target="_blank" rel="noopener">${s.demo?t.demo:t.open+" "+(s.linkTexto||"")}${ext}</a>`:"")+
    `<a class="btn ${s.link?"btn-ghost":"btn-solid"}" href="${wa(s.nombre)}" target="_blank" rel="noopener">${s.status==="dev"?t.soon:s.demo?t.ask.replace(/una? demostraci[oó]n|uma demonstra[cç][aã]o/i,lang==="pt"?"o meu catálogo":"mi catálogo"):t.ask}</a>`+
    (s.instagram?`<a class="btn btn-ghost" href="https://instagram.com/${s.instagram}" target="_blank" rel="noopener">${igI}@${s.instagram}</a>`:"");
-  const shots=(s.pc||s.celular)?`<div class="shots">${s.pc?`<div class="pc"><img src="${s.pc}" alt="${s.nombre} en la computadora" loading="lazy"></div>`:""}${s.celular?`<div class="cel"><img src="${s.celular}" alt="${s.nombre} en el celular" loading="lazy"></div>`:""}</div>`:"";
+  const shots=(s.pc||s.celular)?`<div class="shots"><div class="stage${s.pc?"":" solo"}">${s.pc?`<div class="laptop"><div class="lid"><div class="bezel"><div class="screen"><img src="${s.pc}" alt="${s.nombre} en la computadora" loading="lazy" width="1280" height="800"><span class="glare"></span></div></div></div><div class="base"></div></div>`:""}${s.celular?`<div class="phone"><div class="inner"><div class="scr"><img src="${s.celular}" alt="${s.nombre} en el celular" loading="lazy" width="600" height="1298"><span class="glare"></span></div></div></div>`:""}</div></div>`:"";
   return `<article class="sys"><div><h3>${s.nombre}</h3><div class="for">${d.para}</div><div class="st ${s.status}">${t[s.status]}</div></div>
    <div><p class="desc">${d.desc}</p><ul>${d.puntos.map(p=>`<li><span class="px"></span><span>${p}</span></li>`).join("")}</ul><div class="acts">${acts}</div></div>${shots}</article>`;
  }).join("");
