@@ -411,7 +411,7 @@ const SISTEMAS = [
          desc:"Um bloco de notas para escrever o sermão e lê-lo no púlpito sem se perder, com a Bíblia ao lado.",
          puntos:["Modo Pregar: cada parte do sermão com sua cor, em letra grande","Bíblia com várias versões em português e espanhol","Projeção para a igreja e cadastro de membros"] } },
 
-  { nombre:"Tu Delivery Catálogos", status:"ok", link:"", pc:"", celular:"",
+  { nombre:"Tu Delivery Catálogos", status:"ok", link:"demo/", demo:true, pc:"", celular:"",
     es:{ para:"Para restaurantes y comercios",
          desc:"El menú o catálogo de su negocio en internet. El cliente arma el pedido y le llega listo a su WhatsApp.",
          puntos:["Sin comisión por pedido: el pedido llega directo a usted","Productos con opciones, como pizza mitad y mitad","Delivery o retiro, con costo de envío por barrio"] },
@@ -452,7 +452,7 @@ es:{
  h_p:"Hacemos aplicaciones y sistemas web para comercios, empresas de delivery e iglesias. Funcionan en el celular y en la computadora, en español y en portugués.",
  h_b1:"Escribir por WhatsApp",h_b2:"Ver los sistemas",h_where:"Desde Santa Rita, Alto Paraná, para Paraguay y Brasil.",
  s_h:"Sistemas",s_p:"Cada uno nació para resolver un problema real y se usa todos los días. Todos se pueden adaptar a su negocio.",
- ok:"Disponible",dev:"En desarrollo",open:"Abrir",ask:"Pedir una demostración",soon:"Quiero saber más",
+ ok:"Disponible",dev:"En desarrollo",open:"Abrir",demo:"Ver demostración",ask:"Pedir una demostración",soon:"Quiero saber más",
  s_more:"¿Su negocio necesita algo que no está en esta lista? Cuéntenos qué le hace falta.",s_more_b:"Contar mi idea",
  a_h:"Quiénes somos",
  a_p1:"Araújo Tech empezó dentro de una empresa de delivery en Santa Rita.",
@@ -487,7 +487,7 @@ pt:{
  h_p:"Fazemos aplicativos e sistemas web para comércios, empresas de delivery e igrejas. Funcionam no celular e no computador, em português e em espanhol.",
  h_b1:"Falar no WhatsApp",h_b2:"Ver os sistemas",h_where:"De Santa Rita, Alto Paraná, para o Paraguai e o Brasil.",
  s_h:"Sistemas",s_p:"Cada um nasceu para resolver um problema real e é usado todos os dias. Todos podem ser adaptados ao seu negócio.",
- ok:"Disponível",dev:"Em desenvolvimento",open:"Abrir",ask:"Pedir uma demonstração",soon:"Quero saber mais",
+ ok:"Disponível",dev:"Em desenvolvimento",open:"Abrir",demo:"Ver demonstração",ask:"Pedir uma demonstração",soon:"Quero saber mais",
  s_more:"Seu negócio precisa de algo que não está nesta lista? Conte o que está faltando.",s_more_b:"Contar minha ideia",
  a_h:"Quem somos",
  a_p1:"A Araújo Tech começou dentro de uma empresa de delivery em Santa Rita.",
@@ -537,8 +537,8 @@ function render(){
 
  $("#sysList").innerHTML=SISTEMAS.map(s=>{
   const d=s[lang];
-  const acts=(s.link?`<a class="btn btn-solid" href="${s.link}" target="_blank" rel="noopener">${t.open} ${s.linkTexto||""}${ext}</a>`:"")+
-   `<a class="btn ${s.link?"btn-ghost":"btn-solid"}" href="${wa(s.nombre)}" target="_blank" rel="noopener">${s.status==="dev"?t.soon:t.ask}</a>`+
+  const acts=(s.link?`<a class="btn btn-solid" href="${s.link}" target="_blank" rel="noopener">${s.demo?t.demo:t.open+" "+(s.linkTexto||"")}${ext}</a>`:"")+
+   `<a class="btn ${s.link?"btn-ghost":"btn-solid"}" href="${wa(s.nombre)}" target="_blank" rel="noopener">${s.status==="dev"?t.soon:s.demo?t.ask.replace(/una? demostraci[oó]n|uma demonstra[cç][aã]o/i,lang==="pt"?"o meu catálogo":"mi catálogo"):t.ask}</a>`+
    (s.instagram?`<a class="btn btn-ghost" href="https://instagram.com/${s.instagram}" target="_blank" rel="noopener">${igI}@${s.instagram}</a>`:"");
   const shots=(s.pc||s.celular)?`<div class="shots">${s.pc?`<div class="pc"><img src="${s.pc}" alt="${s.nombre} en la computadora" loading="lazy"></div>`:""}${s.celular?`<div class="cel"><img src="${s.celular}" alt="${s.nombre} en el celular" loading="lazy"></div>`:""}</div>`:"";
   return `<article class="sys"><div><h3>${s.nombre}</h3><div class="for">${d.para}</div><div class="st ${s.status}">${t[s.status]}</div></div>

@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'araujo-tech-site/**'
+      - 'index.html'
+      - 'tools/make_demo.py'
       - '.github/workflows/site.yml'
   workflow_dispatch:
 
@@ -24,6 +26,9 @@ jobs:
       - name: Instalar lftp
         if: env.SITE_FTP_USERNAME != '' && env.SITE_FTP_PASSWORD != ''
         run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+      - name: Gerar a demonstração (Casa Brasa) a partir do catálogo atual
+        if: env.SITE_FTP_USERNAME != '' && env.SITE_FTP_PASSWORD != ''
+        run: python3 tools/make_demo.py
       - name: Enviar arquivos para araujotechsistemas.com
         if: env.SITE_FTP_USERNAME != '' && env.SITE_FTP_PASSWORD != ''
         run: |
