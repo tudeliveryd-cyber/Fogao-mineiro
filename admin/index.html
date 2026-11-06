@@ -498,6 +498,7 @@ textarea.inp{resize:vertical;min-height:64px}
 .devmark:hover{text-decoration:underline}.devlogo a{display:block;max-width:100%}
 </style>
 
+<style id="fix-mobile">html,body{max-width:100%;overflow-x:hidden}@supports (overflow:clip){html,body{overflow-x:clip}}@media (max-width:1024px),(pointer:coarse){input,select,textarea{font-size:16px!important}}</style>
 </head>
 <body>
 <div class="top" id="top">
@@ -1781,7 +1782,7 @@ var QR=R('./index'),EC=R('./QRErrorCorrectLevel');window.qrMatrix=function(text)
 </script>
 <script>
 let MODE=window.TDC_MODE||'demo';{const v=new URLSearchParams(location.search).get('ver');if(MODE!=='catalog'&&v==='catalogo')MODE='catalog';else if(MODE!=='catalog'&&v==='painel')MODE='panel'}
-if(window.TDC_PATH){const sg=location.pathname.split('/').filter(Boolean).filter(x=>x.toLowerCase()!=='fogao-mineiro'&&x!=='index.html'&&x!=='404.html');window.TDC_SHOP=decodeURIComponent(sg[0]||'fogao-mineiro').toLowerCase();MODE=sg[1]==='painel'?'panel':'catalog'}
+if(window.TDC_PATH){const sg=location.pathname.split('/').filter(Boolean).filter(x=>x.toLowerCase()!=='fogao-mineiro'&&x.toLowerCase()!=='fogaomineiro'&&x!=='index.html'&&x!=='404.html');window.TDC_SHOP=decodeURIComponent(sg[0]||'fogao-mineiro').toLowerCase();MODE=sg[1]==='painel'?'panel':'catalog'}
 /* ===== Ícones de linha ===== */
 const ICONS={
 print:'<path d="M7 9V3h10v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M7 14h10v7H7z"/>',
@@ -2749,7 +2750,7 @@ function plSeed(){const n=Date.now(),d=k=>isoDay(n+k*DAY);
 const FB_CFG={apiKey:"AIzaSyBCz2X9BOgO4UZKaXppxlGbiN59qBvUR_U",authDomain:"araujotech-catalogos.firebaseapp.com",projectId:"araujotech-catalogos",storageBucket:"araujotech-catalogos.firebasestorage.app",messagingSenderId:"501170505971",appId:"1:501170505971:web:fd3a1c1578b3e1b93bcf86"};
 const FBV='10.12.2',USER_DOMAIN='araujotechsistemas.com';
 const CLOUD_ON=MODE!=='demo'||!!window.TDC_FAKE_CLOUD;
-const SITE_BASE=(()=>{try{const p=location.pathname.toLowerCase();return location.origin+(p.startsWith('/fogao-mineiro')?'/Fogao-mineiro/':'/')}catch(e){return 'https://www.araujotechsistemas.com/'}})();
+const SITE_BASE=(()=>{try{const p=location.pathname.toLowerCase();return location.origin+(p.startsWith('/fogao-mineiro')?'/Fogao-mineiro/':p.startsWith('/fogaomineiro')?'/fogaomineiro/':'/')}catch(e){return 'https://www.araujotechsistemas.com/'}})();
 const userEmail=u=>{u=String(u||'').trim().toLowerCase();return u.includes('@')?u:u+'@'+USER_DOMAIN};
 function realApi(A,F,U,app,db,auth){
  const {doc,getDoc,setDoc,updateDoc,deleteDoc,collection,getDocs,query,orderBy,limit,onSnapshot,runTransaction,writeBatch}=F;
@@ -2834,10 +2835,11 @@ let plSaveT=0;
 function cloudSavePL(){if(!CLOUD_ON||!CLOUD.admin||!CLOUD.plLoaded)return;clearTimeout(plSaveT);plSaveT=setTimeout(async()=>{try{await CLOUD.api.putPlatform({plans:PL.plans});
   for(const s of PL.shops){const d=JSON.parse(JSON.stringify(s));delete d.id;await CLOUD.api.putBilling(s.id,d);await CLOUD.api.putShop(s.id,{status:s.status,name:s.name})}}catch(e){console.warn(e);toast(t('sync_err'),true)}},700)}
 const pass6=()=>String(Math.floor(100000+Math.random()*900000));
-async function migrateToCloud(){const api=CLOUD.api;let n=0;const total=PL.shops.length;
- for(const s of PL.shops){n++;toast(t('mig_prog')+' '+n+'/'+total);
+const passStrong=()=>{const a='abcdefghjkmnpqrstuvwxyz23456789';const r=new Uint32Array(10);crypto.getRandomValues(r);return Array.from(r,x=>a[x%a.length]).join('')};
+async function migrateToCloud(){const api=CLOUD.api;let n=0;const REAL=PL.shops.filter(s=>!s.ex);const total=REAL.length;
+ for(const s of REAL){n++;toast(t('mig_prog')+' '+n+'/'+total);
   const kk=mkK(s.id);let cfg=S.get(kk.pub,null)||initCfg(s.id);cfg=migrate(cfg);
-  if(s.live){s.user='fogaomineiro';s.pass='fogao2026'}else if(!s.pass||String(s.pass).length<6)s.pass=pass6();
+  if(s.live){s.user=s.user||'fogaomineiro';if(!s.pass||String(s.pass).length<8)s.pass=passStrong()}else if(!s.pass||String(s.pass).length<6)s.pass=pass6();
   if(!s.created)s.created=new Date(Date.now()-n*1000).toISOString();
   await cloudSaveCfg(s.id,cfg,[]);try{await api.createShopUser(userEmail(s.user),s.pass,s.id)}catch(e){console.warn('user',s.id,e)}
   const d=JSON.parse(JSON.stringify(s));delete d.id;await api.putBilling(s.id,d);await api.putShop(s.id,{status:s.status})}
@@ -2874,7 +2876,7 @@ function platformHTML(){const act=PL.shops.filter(s=>s.status!=='suspenso');cons
  </div>`}
 function shopCard(s){const[k,l]=shopState(s);const last=s.pays[s.pays.length-1];const lg=s.live?(SHOP===FM?pub.store.logo:LOGO):null;
  return `<div class="shop"><div class="shop-top"><div class="avatar">${lg?`<img src="${lg}" alt="">`:esc(initials(s.name))}</div><div style="min-width:0;flex:1"><b>${esc(s.name)}</b><small>${s.ramo?ic(ramoOf(s.ramo).i,13)+' ':''}${esc(tr(s.seg))}</small></div><span class="pill st-${k}">${l}</span></div>
- <dl class="kv"><dt>${t('address_l')}</dt><dd>${esc(s.live?'araujotechsistemas.com/fogao':(s.domain||'araujotechsistemas.com/'+s.id))}</dd><dt>${t('plan')}</dt><dd><select data-shop="${s.id}" data-f="plan" aria-label="${t('plan')}">${PL.plans.map(x=>`<option value="${x.id}" ${x.id===s.plan?'selected':''}>${esc(x.n)} · ${gs(x.price)}</option>`).join('')}</select></dd><dt>${t('due')}</dt><dd class="num">${fdate(s.due)}</dd><dt>${t('last_pay')}</dt><dd class="num">${last?fdate(last.date)+' · '+gs(last.v):'—'}</dd><dt>${t('access')}</dt><dd class="num">${esc(s.live?'fogaomineiro':(s.user||'—'))} · ${esc(s.live?'fogao2026':(s.pass||'—'))}</dd></dl>
+ <dl class="kv"><dt>${t('address_l')}</dt><dd>${esc(s.live?'araujotechsistemas.com/fogao':(s.domain||'araujotechsistemas.com/'+s.id))}</dd><dt>${t('plan')}</dt><dd><select data-shop="${s.id}" data-f="plan" aria-label="${t('plan')}">${PL.plans.map(x=>`<option value="${x.id}" ${x.id===s.plan?'selected':''}>${esc(x.n)} · ${gs(x.price)}</option>`).join('')}</select></dd><dt>${t('due')}</dt><dd class="num">${fdate(s.due)}</dd><dt>${t('last_pay')}</dt><dd class="num">${last?fdate(last.date)+' · '+gs(last.v):'—'}</dd><dt>${t('access')}</dt><dd class="num">${esc(s.user||(s.live?'fogaomineiro':'—'))} · ${esc(s.pass||'—')}</dd></dl>
  <div class="actions">${s.status==='suspenso'?`<button class="btn sm pri" data-act="shoppay" data-sid="${s.id}">${ic('check',15)}${t('pay_reactivate')}</button>`:`<button class="btn sm pri" data-act="shoppay" data-sid="${s.id}">${ic('check',15)}${t('pay_reg')}</button><button class="btn sm danger" data-act="shopstatus" data-sid="${s.id}">${t('suspend')}</button>`}${shopLinks(s)}${s.ex?`<span class="pill ex">${t('example')}</span>`:''}</div></div>`}
 const rnorm=x=>String(x).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 function ramoFilter(){const q=rnorm((document.getElementById('ramoQ')||{}).value||'').trim();let any=false;document.querySelectorAll('.ramo-g').forEach(g=>{let vis=0;g.querySelectorAll('.ramo').forEach(b=>{const ok=!q||b.dataset.q.includes(q)||b.dataset.r==='otro';b.hidden=!ok;if(ok){vis++;if(b.dataset.r!=='otro')any=true}});g.hidden=!vis});const no=document.getElementById('ramoNone');if(no)no.hidden=any}
@@ -2899,7 +2901,7 @@ function mapsUrl(st){return `https://www.google.com/maps/search/?api=1&query=${e
 function linksHTML(st){const ig=st.instagram?(/^https?:/i.test(st.instagram)?st.instagram:'https://instagram.com/'+st.instagram.replace(/^@/,'').trim()):'';const fb=st.facebook?(/^https?:/i.test(st.facebook)?st.facebook:'https://'+st.facebook.replace(/^\/+/,'')):'';
  return `<div class="clinks"><a href="${esc(mapsUrl(st))}" target="_blank" rel="noopener">${ic('route',15)}${t('how_to_get')}</a>${ig?`<a href="${esc(ig)}" target="_blank" rel="noopener">${ic('instagram',15)}Instagram</a>`:''}${fb?`<a href="${esc(fb)}" target="_blank" rel="noopener">${ic('facebook',15)}Facebook</a>`:''}</div>`}
 
-const catUrlFor=id=>id===FM?(window.TDC_MODE==='panel'&&!window.TDC_PATH?new URL('../',location.href).href:'https://tudeliveryd-cyber.github.io/Fogao-mineiro/'):(CLOUD_ON?SITE_BASE+id+'/':'https://www.araujotechsistemas.com/'+id+'/');
+const catUrlFor=id=>id===FM?(window.TDC_MODE==='panel'&&!window.TDC_PATH?new URL('../',location.href).href:'https://fogaomineiro.araujotechsistemas.com/'):(CLOUD_ON?SITE_BASE+id+'/':'https://www.araujotechsistemas.com/'+id+'/');
 let CAT_URL=catUrlFor(SHOP);
 function shareCard(){return `<div class="card"><h3>${ic('qr',18)}${t('share_title')}</h3><p class="sub">${t('share_sub')}</p>
  <div class="share"><div class="qrbox" id="qrBox"></div><div class="share-r"><div class="fld"><span class="lbl">${t('cat_link')}</span><div style="display:flex;gap:8px;min-width:0"><input class="inp" id="shareUrl" readonly value="${esc(CAT_URL)}" aria-label="${t('cat_link')}"><button class="btn" data-act="copylink">${ic('copy',15)}${t('copy_link')}</button></div></div>
@@ -3146,7 +3148,7 @@ function plVisible(){return S.get(K.plOn,false)||location.hash==='#plataforma'}
 let tapN=0,tapT=0;document.getElementById('brandTap').addEventListener('click',()=>{if(MODE!=='demo')return;const n=Date.now();tapN=n-tapT<1500?tapN+1:1;tapT=n;if(tapN>=5){tapN=0;const on=!S.get(K.plOn,false);S.set(K.plOn,on);if(!on&&ui.view==='platform'){ui.view='catalog';history.replaceState(null,'','#catalogo')}render();toast(on?(lang==='pt'?'Plataforma visível neste aparelho':'Plataforma visible en este dispositivo'):(lang==='pt'?'Plataforma oculta':'Plataforma oculta'))}});
 document.addEventListener('submit',e=>{if(e.target.id!=='loginForm')return;e.preventDefault();if(CLOUD_ON){cloudLogin(e.target);return}const u=document.getElementById('lg_user').value.trim().toLowerCase(),pw=document.getElementById('lg_pass').value;
  if(e.target.dataset.kind==='pl'){if(u==='araujotech'&&pw==='tech2026'){S.set(K.authPl,true);render();scrollTo(0,0)}else{document.getElementById('lgErr').textContent=t('login_err')}return}
- const sh=curShop(),cu=SHOP===FM?'fogaomineiro':(sh&&sh.user),cp=SHOP===FM?'fogao2026':(sh&&sh.pass);if(cu&&u===cu&&pw===cp){S.set(K.auth,true);render();scrollTo(0,0)}else{document.getElementById('lgErr').textContent=t('login_err')}});
+ const sh=curShop(),cu=(sh&&sh.user)||(SHOP===FM?'fogaomineiro':''),cp=(sh&&sh.pass)||'';if(cu&&u===cu&&pw===cp){S.set(K.auth,true);render();scrollTo(0,0)}else{document.getElementById('lgErr').textContent=t('login_err')}});
 let spyRaf=0;window.addEventListener('scroll',()=>{if(spyRaf||ui.view!=='catalog')return;spyRaf=requestAnimationFrame(()=>{spyRaf=0;const nav=document.getElementById('cnav');if(!nav)return;const lim=nav.getBoundingClientRect().bottom+12;let cur=null;
  nav.querySelectorAll('a[data-c]').forEach(a=>{const sec=document.getElementById('sec-'+a.dataset.c);if(sec&&sec.getBoundingClientRect().top<=lim)cur=a});if(!cur)cur=nav.querySelector('a[data-c]');if(innerHeight+scrollY>=document.documentElement.scrollHeight-6){const all=nav.querySelectorAll('a[data-c]');cur=all[all.length-1]||cur}
  if(cur&&!cur.classList.contains('on')){nav.querySelectorAll('a').forEach(a=>a.classList.toggle('on',a===cur));nav.scrollTo({left:Math.max(0,cur.offsetLeft-16),behavior:'smooth'})}})},{passive:true});
