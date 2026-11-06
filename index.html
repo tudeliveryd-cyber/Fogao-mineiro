@@ -62,6 +62,13 @@ button{cursor:pointer}
 .seg button{border:0;background:transparent;padding:6px 12px;border-radius:8px;font-weight:600;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
 .seg button[aria-pressed="true"]{background:var(--surface);color:var(--fg);box-shadow:0 1px 2px rgb(0 0 0 / .12)}
 .spacer{flex:1}
+.sync{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--muted);padding:4px 10px;border:1px solid var(--line);border-radius:999px;white-space:nowrap}
+.sync.err{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 40%,transparent)}
+.track{background:var(--t-card);color:var(--t-text);border:1px solid color-mix(in srgb,var(--t-primary) 35%,transparent);border-radius:var(--t-r2,16px);padding:14px 16px;margin:0 0 14px;display:flex;flex-direction:column;gap:12px}
+.track-h{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:14px}.track-h span{font-weight:600;color:var(--t-primary)}
+.tsteps{display:flex;gap:6px}.tstep{flex:1;display:flex;flex-direction:column;gap:6px;font-size:11.5px;opacity:.55;min-width:0}
+.tstep i{height:5px;border-radius:5px;background:color-mix(in srgb,var(--t-text) 15%,transparent)}.tstep.on{opacity:1}.tstep.on i{background:var(--t-primary)}.tstep.cur span{font-weight:700}
+.track-eta{margin:0;display:flex;gap:6px;align-items:center;font-size:13.5px;font-weight:600}
 a.btn{text-decoration:none}
 .grid.t{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 @container (min-width:620px){.grid.t{grid-template-columns:repeat(3,minmax(0,1fr))}}
@@ -1785,6 +1792,7 @@ var QR=R('./index'),EC=R('./QRErrorCorrectLevel');window.qrMatrix=function(text)
 </script>
 <script>
 let MODE=window.TDC_MODE||'demo';{const v=new URLSearchParams(location.search).get('ver');if(MODE!=='catalog'&&v==='catalogo')MODE='catalog';else if(MODE!=='catalog'&&v==='painel')MODE='panel'}
+if(window.TDC_PATH){const sg=location.pathname.split('/').filter(Boolean).filter(x=>x.toLowerCase()!=='fogao-mineiro'&&x!=='index.html'&&x!=='404.html');window.TDC_SHOP=decodeURIComponent(sg[0]||'fogao-mineiro').toLowerCase();MODE=sg[1]==='painel'?'panel':'catalog'}
 /* ===== Ícones de linha ===== */
 const ICONS={
 print:'<path d="M7 9V3h10v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M7 14h10v7H7z"/>',
@@ -1857,7 +1865,7 @@ const ic=(n,s=20)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 2
 /* ===== Textos PT / ES ===== */
 const T={pt:{
 fee_mode:'Como cobrar a entrega',by_bairro:'Por bairro',by_zone:'Por distância (zonas)',bairros_sub:'O cliente escolhe o bairro na lista e a taxa aparece na hora.',from_store:'Valores da entrega saindo da loja:',bairro_name:'Bairro',add_bairro:'Adicionar bairro',choose_bairro:'Selecione seu bairro',bairro_out:'Meu bairro não está na lista',err_out_bairro:'Ainda não entregamos neste bairro. Escolha retirada ou fale com a loja.',pix_key:'Chave PIX',pix_name:'Nome do titular',pix_info:'Pague com PIX usando a chave abaixo e envie o comprovante pelo WhatsApp junto com o pedido.',pix_nokey:'A loja vai enviar a chave PIX pelo WhatsApp.',key_copied:'Chave copiada',pix_note:'enviar comprovante',
-dev_by:'Desenvolvido por',open_panel:'Painel da loja',access:'Acesso',ramo:'Ramo do negócio',ramo_search:'Buscar ramo (ex.: padaria, pet shop)',ramo_none:'Nenhum ramo encontrado. Escolha Outro e escreva o ramo.',ramo_custom:'Qual é o ramo?',ramo_custom_ph:'Ex.: Loja de bicicletas',ramo_note:'O catálogo já vem montado com categorias, produtos de exemplo, cores e desenho do ramo. Depois é só trocar pelos dados do cliente.',rx:'Com receita',rx_info:'Venda sob prescrição médica: apresente a receita na entrega ou envie a foto pelo WhatsApp.',rx_l:'Venda com receita',tiles_l:'Vitrine com fotos',sold_by:'Vendido por',unit_u:'Unidade',pl_title2:'Painel Araújo Tech',pl_login_sub:'Gestão de clientes e mensalidades',ticket:'Ticket',print:'Imprimir',paper:'Papel da impressora',print_note:'A impressão funciona no painel publicado, no computador com a impressora instalada.',from:'A partir de',best:'Mais pedido',best_l:'Mais pedido',upsell_title:'Que tal uma bebida?',upsell_cat:'Sugestão no carrinho',upsell_sub:'Os produtos desta categoria aparecem no carrinho como sugestão para o cliente.',none:'Nenhuma',sched_title:'Estamos fechados agora. Agende seu pedido:',sched_l:'Horário agendado',err_sched:'Escolha o horário do pedido agendado.',closed_info_sched:'A loja está fechada agora, mas você pode agendar seu pedido para quando abrir.',allow_sched:'Aceitar pedidos agendados quando estiver fechado',size_limit:'Limite de escolhas pelo tamanho',max_short:'Máx. sabores',sched_pill:'Agendado',choose_one:'Escolha 1',choose_upto:'Escolha até {n}',choose_range:'Escolha de {a} a {b}',choose_min:'Escolha pelo menos {n}',min_l2:'Mínimo',max_l2:'Máximo (0 = sem limite)',price_rule:'Como cobrar',rule_sum:'Somar todos',rule_max:'Cobrar o de maior valor',rule_avg:'Cobrar a média',rule_max_note:'É cobrado o sabor de maior valor.',rule_avg_note:'É cobrada a média dos sabores.',need_more:'Falta escolher: {g}',photos_title:'Fotos do comércio',photos_sub:'A portada aparece no topo do catálogo e o logo por cima dela, como na prévia. Para a portada, use uma foto na horizontal.',cover_l:'Portada (foto da fachada)',logo_l:'Logo do comércio',change_photo:'Trocar foto',add_photo:'Enviar foto',wa_chat:'Falar no WhatsApp',wa_hi:'Olá, {n}! Gostaria de tirar uma dúvida.',s_resumo:'Resumo',s_custom:'Visual',s_products:'Produtos',s_delivery:'Entrega',s_ads:'Anúncios',s_orders:'Pedidos',how_to_get:'Como chegar',share_title:'Compartilhar meu catálogo',share_sub:'Mande o link para os clientes ou imprima o QR Code para as mesas, o balcão e os panfletos.',cat_link:'Link do catálogo',copy_link:'Copiar',link_copied:'Link copiado',download_qr:'Baixar QR Code',download_poster:'Baixar cartaz para imprimir',dl_note:'Os botões de baixar funcionam no site publicado.',qr_fail:'Não foi possível gerar o QR Code agora. Verifique a internet e recarregue.',instagram_l:'Instagram (usuário ou link)',facebook_l:'Facebook (link da página)',login_sub:'Acesso exclusivo do estabelecimento',user_l:'Usuário',pass_l:'Senha',enter:'Entrar',login_err:'Usuário ou senha incorretos.',logout:'Sair',show_pass:'Mostrar senha',nav_catalog:'Catálogo',nav_admin:'Painel da loja',search:'Buscar no cardápio',featured:'Destaques',unavailable:'Indisponível',promo:'Promoção',
+dev_by:'Desenvolvido por',sync_ok:'Salvo na nuvem',sync_saving:'Salvando…',sync_err:'Erro ao salvar. Verifique a internet.',new_order:'Novo pedido',loading:'Carregando…',sending:'Enviando pedido…',email_l:'E-mail',cerr_noadmin:'Esta conta não é de administrador.',cerr_noshop:'Este usuário não tem acesso a esta loja.',cerr_net:'Sem conexão com a internet. Tente de novo.',cerr_load:'Não foi possível carregar os dados. Tente de novo.',mig_title:'Subir os seus clientes para a nuvem',mig_sub:'Os clientes e catálogos que estão neste aparelho vão para o banco de dados. Depois disso, cada link funciona em qualquer celular e os pedidos chegam no painel.',mig_btn:'Subir para a nuvem',mig_confirm:'Tocar de novo para confirmar',mig_prog:'Subindo',mig_done:'Tudo na nuvem',auto_print:'Imprimir ticket automaticamente',auto_print_sub:'Quando chegar um pedido novo, abre a impressão do ticket neste aparelho.',eta_pad:'Margem da entrega (min)',eta_pad_sub:'O cliente vê uma faixa de horário: preparo + esta margem.',track_info:'Você pode acompanhar o pedido no topo do catálogo.',tr_d_recebido:'Pedido recebido',tr_d_preparo:'Preparando e enviando',tr_d_entregue:'Entregue',tr_p_recebido:'Pedido recebido',tr_p_preparo:'Em preparação',tr_p_pronto:'Pronto para retirar',tr_p_entregue:'Retirado',tr_eta_d:'Chega entre',tr_and:'e',tr_eta_p:'Pronto por volta das',tr_sched:'Agendado para',tr_cancel:'Pedido cancelado',open_panel:'Painel da loja',access:'Acesso',ramo:'Ramo do negócio',ramo_search:'Buscar ramo (ex.: padaria, pet shop)',ramo_none:'Nenhum ramo encontrado. Escolha Outro e escreva o ramo.',ramo_custom:'Qual é o ramo?',ramo_custom_ph:'Ex.: Loja de bicicletas',ramo_note:'O catálogo já vem montado com categorias, produtos de exemplo, cores e desenho do ramo. Depois é só trocar pelos dados do cliente.',rx:'Com receita',rx_info:'Venda sob prescrição médica: apresente a receita na entrega ou envie a foto pelo WhatsApp.',rx_l:'Venda com receita',tiles_l:'Vitrine com fotos',sold_by:'Vendido por',unit_u:'Unidade',pl_title2:'Painel Araújo Tech',pl_login_sub:'Gestão de clientes e mensalidades',ticket:'Ticket',print:'Imprimir',paper:'Papel da impressora',print_note:'A impressão funciona no painel publicado, no computador com a impressora instalada.',from:'A partir de',best:'Mais pedido',best_l:'Mais pedido',upsell_title:'Que tal uma bebida?',upsell_cat:'Sugestão no carrinho',upsell_sub:'Os produtos desta categoria aparecem no carrinho como sugestão para o cliente.',none:'Nenhuma',sched_title:'Estamos fechados agora. Agende seu pedido:',sched_l:'Horário agendado',err_sched:'Escolha o horário do pedido agendado.',closed_info_sched:'A loja está fechada agora, mas você pode agendar seu pedido para quando abrir.',allow_sched:'Aceitar pedidos agendados quando estiver fechado',size_limit:'Limite de escolhas pelo tamanho',max_short:'Máx. sabores',sched_pill:'Agendado',choose_one:'Escolha 1',choose_upto:'Escolha até {n}',choose_range:'Escolha de {a} a {b}',choose_min:'Escolha pelo menos {n}',min_l2:'Mínimo',max_l2:'Máximo (0 = sem limite)',price_rule:'Como cobrar',rule_sum:'Somar todos',rule_max:'Cobrar o de maior valor',rule_avg:'Cobrar a média',rule_max_note:'É cobrado o sabor de maior valor.',rule_avg_note:'É cobrada a média dos sabores.',need_more:'Falta escolher: {g}',photos_title:'Fotos do comércio',photos_sub:'A portada aparece no topo do catálogo e o logo por cima dela, como na prévia. Para a portada, use uma foto na horizontal.',cover_l:'Portada (foto da fachada)',logo_l:'Logo do comércio',change_photo:'Trocar foto',add_photo:'Enviar foto',wa_chat:'Falar no WhatsApp',wa_hi:'Olá, {n}! Gostaria de tirar uma dúvida.',s_resumo:'Resumo',s_custom:'Visual',s_products:'Produtos',s_delivery:'Entrega',s_ads:'Anúncios',s_orders:'Pedidos',how_to_get:'Como chegar',share_title:'Compartilhar meu catálogo',share_sub:'Mande o link para os clientes ou imprima o QR Code para as mesas, o balcão e os panfletos.',cat_link:'Link do catálogo',copy_link:'Copiar',link_copied:'Link copiado',download_qr:'Baixar QR Code',download_poster:'Baixar cartaz para imprimir',dl_note:'Os botões de baixar funcionam no site publicado.',qr_fail:'Não foi possível gerar o QR Code agora. Verifique a internet e recarregue.',instagram_l:'Instagram (usuário ou link)',facebook_l:'Facebook (link da página)',login_sub:'Acesso exclusivo do estabelecimento',user_l:'Usuário',pass_l:'Senha',enter:'Entrar',login_err:'Usuário ou senha incorretos.',logout:'Sair',show_pass:'Mostrar senha',nav_catalog:'Catálogo',nav_admin:'Painel da loja',search:'Buscar no cardápio',featured:'Destaques',unavailable:'Indisponível',promo:'Promoção',
 view_cart:'Ver carrinho',cart:'Seu pedido',subtotal:'Subtotal',fee:'Taxa de entrega',total:'Total',empty_cart:'Seu carrinho está vazio.',
 notes:'Observações',notes_ph:'Ex.: sem cebola, ponto da carne…',required:'Obrigatório',optional:'Opcional',add_to_cart:'Adicionar',
 continue:'Continuar',remove:'Remover',keep_buying:'Adicionar mais itens',checkout:'Finalizar pedido',
@@ -1892,7 +1900,7 @@ st:{aguardando:'Aguardando confirmação',recebido:'Pedido recebido',aceito:'Ped
 c:{primary:'Principal',secondary:'Secundária',button:'Botões',text:'Textos',bg:'Fundo',price:'Preços',promo:'Promoções',highlight:'Destaques',card:'Cartões',header:'Cabeçalho'}
 },es:{
 fee_mode:'Cómo cobrar el envío',by_bairro:'Por barrio',by_zone:'Por distancia (zonas)',bairros_sub:'El cliente elige el barrio en la lista y el costo aparece al instante.',from_store:'Costos de envío saliendo del local:',bairro_name:'Barrio',add_bairro:'Agregar barrio',choose_bairro:'Seleccioná tu barrio',bairro_out:'Mi barrio no está en la lista',err_out_bairro:'Todavía no hacemos envíos a este barrio. Elegí retiro o hablá con el local.',pix_key:'Clave PIX',pix_name:'Nombre del titular',pix_info:'Pagá con PIX usando la clave de abajo y enviá el comprobante por WhatsApp junto con el pedido.',pix_nokey:'El local te enviará la clave PIX por WhatsApp.',key_copied:'Clave copiada',pix_note:'enviar comprobante',
-dev_by:'Desarrollado por',open_panel:'Panel del local',access:'Acceso',ramo:'Rubro del negocio',ramo_search:'Buscar rubro (ej.: panadería, pet shop)',ramo_none:'No se encontró el rubro. Elegí Otro y escribí el rubro.',ramo_custom:'¿Cuál es el rubro?',ramo_custom_ph:'Ej.: Tienda de bicicletas',ramo_note:'El catálogo ya viene armado con categorías, productos de ejemplo, colores y diseño del rubro. Después solo hay que cambiarlo por los datos del cliente.',rx:'Bajo receta',rx_info:'Venta bajo receta médica: presentá la receta al recibir o enviá la foto por WhatsApp.',rx_l:'Venta bajo receta',tiles_l:'Vitrina con fotos',sold_by:'Se vende por',unit_u:'Unidad',pl_title2:'Panel Araújo Tech',pl_login_sub:'Gestión de clientes y mensualidades',ticket:'Ticket',print:'Imprimir',paper:'Papel de la impresora',print_note:'La impresión funciona en el panel publicado, en la computadora con la impresora instalada.',from:'Desde',best:'Más pedido',best_l:'Más pedido',upsell_title:'¿Querés agregar una bebida?',upsell_cat:'Sugerencia en el carrito',upsell_sub:'Los productos de esta categoría aparecen en el carrito como sugerencia para el cliente.',none:'Ninguna',sched_title:'Estamos cerrados ahora. Programá tu pedido:',sched_l:'Horario programado',err_sched:'Elegí el horario del pedido programado.',closed_info_sched:'El local está cerrado ahora, pero podés programar tu pedido para cuando abra.',allow_sched:'Aceptar pedidos programados cuando esté cerrado',size_limit:'Límite de elecciones según tamaño',max_short:'Máx. sabores',sched_pill:'Programado',choose_one:'Elegí 1',choose_upto:'Elegí hasta {n}',choose_range:'Elegí de {a} a {b}',choose_min:'Elegí al menos {n}',min_l2:'Mínimo',max_l2:'Máximo (0 = sin límite)',price_rule:'Cómo cobrar',rule_sum:'Sumar todos',rule_max:'Cobrar el de mayor valor',rule_avg:'Cobrar el promedio',rule_max_note:'Se cobra el sabor de mayor valor.',rule_avg_note:'Se cobra el promedio de los sabores.',need_more:'Falta elegir: {g}',photos_title:'Fotos del local',photos_sub:'La portada aparece arriba del catálogo y el logo encima, como en la vista previa. Para la portada, usá una foto horizontal.',cover_l:'Portada (foto de la fachada)',logo_l:'Logo del local',change_photo:'Cambiar foto',add_photo:'Subir foto',wa_chat:'Hablar por WhatsApp',wa_hi:'¡Hola, {n}! Quería hacer una consulta.',s_resumo:'Resumen',s_custom:'Diseño',s_products:'Productos',s_delivery:'Envío',s_ads:'Anuncios',s_orders:'Pedidos',how_to_get:'Cómo llegar',share_title:'Compartir mi catálogo',share_sub:'Enviá el link a tus clientes o imprimí el código QR para mesas, mostrador y volantes.',cat_link:'Link del catálogo',copy_link:'Copiar',link_copied:'Link copiado',download_qr:'Descargar código QR',download_poster:'Descargar cartel para imprimir',dl_note:'Los botones de descarga funcionan en el sitio publicado.',qr_fail:'No se pudo generar el código QR ahora. Verificá internet y recargá.',instagram_l:'Instagram (usuario o link)',facebook_l:'Facebook (link de la página)',login_sub:'Acceso exclusivo del local',user_l:'Usuario',pass_l:'Contraseña',enter:'Ingresar',login_err:'Usuario o contraseña incorrectos.',logout:'Salir',show_pass:'Mostrar contraseña',nav_catalog:'Catálogo',nav_admin:'Panel del local',search:'Buscar en el menú',featured:'Destacados',unavailable:'No disponible',promo:'Promoción',
+dev_by:'Desarrollado por',sync_ok:'Guardado en la nube',sync_saving:'Guardando…',sync_err:'Error al guardar. Revisá la conexión.',new_order:'Nuevo pedido',loading:'Cargando…',sending:'Enviando pedido…',email_l:'Correo electrónico',cerr_noadmin:'Esta cuenta no es de administrador.',cerr_noshop:'Este usuario no tiene acceso a este local.',cerr_net:'Sin conexión a internet. Probá de nuevo.',cerr_load:'No se pudieron cargar los datos. Probá de nuevo.',mig_title:'Subir tus clientes a la nube',mig_sub:'Los clientes y catálogos de este aparato pasan a la base de datos. Después cada link funciona en cualquier celular y los pedidos llegan al panel.',mig_btn:'Subir a la nube',mig_confirm:'Tocá de nuevo para confirmar',mig_prog:'Subiendo',mig_done:'Todo en la nube',auto_print:'Imprimir ticket automáticamente',auto_print_sub:'Cuando llega un pedido nuevo, abre la impresión del ticket en este aparato.',eta_pad:'Margen de entrega (min)',eta_pad_sub:'El cliente ve una franja horaria: preparación + este margen.',track_info:'Podés seguir tu pedido arriba del catálogo.',tr_d_recebido:'Pedido recibido',tr_d_preparo:'Preparando y enviando',tr_d_entregue:'Entregado',tr_p_recebido:'Pedido recibido',tr_p_preparo:'En preparación',tr_p_pronto:'Listo para retirar',tr_p_entregue:'Retirado',tr_eta_d:'Llega entre',tr_and:'y',tr_eta_p:'Listo cerca de las',tr_sched:'Programado para',tr_cancel:'Pedido cancelado',open_panel:'Panel del local',access:'Acceso',ramo:'Rubro del negocio',ramo_search:'Buscar rubro (ej.: panadería, pet shop)',ramo_none:'No se encontró el rubro. Elegí Otro y escribí el rubro.',ramo_custom:'¿Cuál es el rubro?',ramo_custom_ph:'Ej.: Tienda de bicicletas',ramo_note:'El catálogo ya viene armado con categorías, productos de ejemplo, colores y diseño del rubro. Después solo hay que cambiarlo por los datos del cliente.',rx:'Bajo receta',rx_info:'Venta bajo receta médica: presentá la receta al recibir o enviá la foto por WhatsApp.',rx_l:'Venta bajo receta',tiles_l:'Vitrina con fotos',sold_by:'Se vende por',unit_u:'Unidad',pl_title2:'Panel Araújo Tech',pl_login_sub:'Gestión de clientes y mensualidades',ticket:'Ticket',print:'Imprimir',paper:'Papel de la impresora',print_note:'La impresión funciona en el panel publicado, en la computadora con la impresora instalada.',from:'Desde',best:'Más pedido',best_l:'Más pedido',upsell_title:'¿Querés agregar una bebida?',upsell_cat:'Sugerencia en el carrito',upsell_sub:'Los productos de esta categoría aparecen en el carrito como sugerencia para el cliente.',none:'Ninguna',sched_title:'Estamos cerrados ahora. Programá tu pedido:',sched_l:'Horario programado',err_sched:'Elegí el horario del pedido programado.',closed_info_sched:'El local está cerrado ahora, pero podés programar tu pedido para cuando abra.',allow_sched:'Aceptar pedidos programados cuando esté cerrado',size_limit:'Límite de elecciones según tamaño',max_short:'Máx. sabores',sched_pill:'Programado',choose_one:'Elegí 1',choose_upto:'Elegí hasta {n}',choose_range:'Elegí de {a} a {b}',choose_min:'Elegí al menos {n}',min_l2:'Mínimo',max_l2:'Máximo (0 = sin límite)',price_rule:'Cómo cobrar',rule_sum:'Sumar todos',rule_max:'Cobrar el de mayor valor',rule_avg:'Cobrar el promedio',rule_max_note:'Se cobra el sabor de mayor valor.',rule_avg_note:'Se cobra el promedio de los sabores.',need_more:'Falta elegir: {g}',photos_title:'Fotos del local',photos_sub:'La portada aparece arriba del catálogo y el logo encima, como en la vista previa. Para la portada, usá una foto horizontal.',cover_l:'Portada (foto de la fachada)',logo_l:'Logo del local',change_photo:'Cambiar foto',add_photo:'Subir foto',wa_chat:'Hablar por WhatsApp',wa_hi:'¡Hola, {n}! Quería hacer una consulta.',s_resumo:'Resumen',s_custom:'Diseño',s_products:'Productos',s_delivery:'Envío',s_ads:'Anuncios',s_orders:'Pedidos',how_to_get:'Cómo llegar',share_title:'Compartir mi catálogo',share_sub:'Enviá el link a tus clientes o imprimí el código QR para mesas, mostrador y volantes.',cat_link:'Link del catálogo',copy_link:'Copiar',link_copied:'Link copiado',download_qr:'Descargar código QR',download_poster:'Descargar cartel para imprimir',dl_note:'Los botones de descarga funcionan en el sitio publicado.',qr_fail:'No se pudo generar el código QR ahora. Verificá internet y recargá.',instagram_l:'Instagram (usuario o link)',facebook_l:'Facebook (link de la página)',login_sub:'Acceso exclusivo del local',user_l:'Usuario',pass_l:'Contraseña',enter:'Ingresar',login_err:'Usuario o contraseña incorrectos.',logout:'Salir',show_pass:'Mostrar contraseña',nav_catalog:'Catálogo',nav_admin:'Panel del local',search:'Buscar en el menú',featured:'Destacados',unavailable:'No disponible',promo:'Promoción',
 view_cart:'Ver carrito',cart:'Tu pedido',subtotal:'Subtotal',fee:'Costo de envío',total:'Total',empty_cart:'Tu carrito está vacío.',
 notes:'Observaciones',notes_ph:'Ej.: sin cebolla, punto de la carne…',required:'Obligatorio',optional:'Opcional',add_to_cart:'Agregar',
 continue:'Continuar',remove:'Quitar',keep_buying:'Agregar más productos',checkout:'Finalizar pedido',
@@ -2271,7 +2279,7 @@ function makeCfg(ramoId,meta){const R=ramoOf(ramoId);meta=meta||{};
 /* ===== Armazenamento ===== */
 const FM='fogao-mineiro',QS=new URLSearchParams(location.search);
 let SHOP=QS.get('loja')||window.TDC_SHOP||FM;
-function mkK(id){const p=id===FM?'fm':id;return {pub:`tdc_${p}_pub_v2`,draft:`tdc_${p}_draft_v2`,cart:`tdc_${p}_cart_v1`,orders:`tdc_${p}_orders_v1`,lang:'tdc_lang',seq:`tdc_${p}_seq`,cust:`tdc_${p}_cust`,last:`tdc_${p}_last`,pl:'tdc_pl_v1',plOn:'tdc_pl_on',auth:`tdc_${p}_auth`,authPl:'tdc_pl_auth'}}
+function mkK(id){const p=id===FM?'fm':id;return {pub:`tdc_${p}_pub_v2`,draft:`tdc_${p}_draft_v2`,cart:`tdc_${p}_cart_v1`,orders:`tdc_${p}_orders_v1`,lang:'tdc_lang',seq:`tdc_${p}_seq`,cust:`tdc_${p}_cust`,last:`tdc_${p}_last`,pl:'tdc_pl_v1',plOn:'tdc_pl_on',auth:`tdc_${p}_auth`,authPl:'tdc_pl_auth',status:`tdc_${p}_status`}}
 let K=mkK(SHOP);
 const localLink=(id,v)=>location.pathname+'?loja='+encodeURIComponent(id)+'&ver='+v;
 const S={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
@@ -2408,6 +2416,7 @@ function catalogHTML(cfg,live){
  <div class="cbody ${live?'live':''}"><div class="cmain">
   ${adSliderHTML(cfg,live)}
   ${live&&!openState(st).open?`<div class="info">${ic('clock',18)}<span><b>${esc(openLabel(st))}</b><br>${(canSched(st)?t('closed_info_sched'):t('closed_info'))}</span></div>`:''}
+  ${live&&CLOUD_ON?trackHTML():''}
   ${live?againHTML():''}
   ${live?`<label class="search">${ic('search',18)}<input id="q" type="search" placeholder="${t('search')}" value="${esc(ui.q)}" autocomplete="off"></label>`:''}
   <nav class="cnav ${lay.cat==='tabs'?'tabs':''}" id="cnav">${cfg.cats.filter(c=>cfg.products.some(p=>p.cat===c.id)).map((c,i)=>`<a href="#" data-act="${live?'jump':''}" data-c="${c.id}" class="${i===0?'on':''}">${esc(tr(c.n))}</a>`).join('')}</nav>
@@ -2551,9 +2560,15 @@ function sendOrder(){
  let maps='';if(ck.mode==='delivery'){if(ck.lat!=null)maps=`https://maps.google.com/?q=${ck.lat.toFixed(6)},${ck.lng.toFixed(6)}`;else if(/^https?:\/\//.test(ck.link.trim()))maps=ck.link.trim();else maps='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(`${ck.street} ${ck.num}, ${ck.bairro}, Santa Rita, Paraguay`)}
  const o={no:seq,date:new Date().toISOString(),lang:L,mode:ck.mode,name:ck.name.trim(),phone:ck.phone.trim(),lines,items:lines.map(l=>({q:l.q,n:l.n+(l.ex.length?' + '+l.ex.join(', '):''),v:l.v})),sub,fee:f,disc,coupon:disc?ck.coupon:'',total:Math.max(0,sub+f-disc),pay:ck.pay,change:ck.change,status:'aguardando',
   street:ck.street,num:ck.num,bairro:ck.bairro,ref:ck.ref,zone:ck.mode==='delivery'&&pub.store.feeMode!=='bairro'&&pub.zones[+ck.zone]?pub.zones[+ck.zone].name:'',maps,time:openState(pub.store).open?ck.time:'',sched:openState(pub.store).open?'':ck.sched,addr:ck.mode==='delivery'?`${ck.street} ${ck.num}, ${ck.bairro}`:''};
+ if(CLOUD_ON&&MODE==='catalog'&&!o._cloud){const b=document.querySelector('.sheet [data-act="send"]');if(b){b.disabled=true;b.textContent=t('sending')}
+  const now=Date.now(),prep=(+pub.store.prep||30)*60e3,pad=(+pub.store.etaPad||25)*60e3;const tr={status:'recebido',mode:o.mode,date:o.date,sched:o.sched||'',etaA:new Date(now+prep).toISOString(),etaB:new Date(now+prep+(o.mode==='delivery'?pad:0)).toISOString()};
+  const cartCopy=clone(cart);
+  CLOUD.init().then(api=>api.placeOrder(SHOP,o,tr,no=>{const x=Object.assign({},o,{no});x.msg=buildMessage(x);return JSON.parse(JSON.stringify(x))})).then(r=>{o.no=r.no;o.id=r.id;o._cloud=true;o.msg=buildMessage(o);S.set(K.last,{no:o.no,id:r.id,total:o.total,items:cartCopy});trackUnsub=null;TRACK=Object.assign({},tr,{no:o.no});watchTrackLast();finishOrder(o)})
+   .catch(e=>{console.warn(e);o._cloud=true;o.msg=buildMessage(o);S.set(K.last,{no:o.no,total:o.total,items:cartCopy});S.set(K.seq,seq+1);finishOrder(o)});return}
  o.msg=buildMessage(o);
- S.set(K.last,{no:o.no,total:o.total,items:clone(cart)});ck.coupon='';ck.couponIn='';
- orders.unshift(o);S.set(K.orders,orders);S.set(K.seq,seq+1);
+ S.set(K.last,{no:o.no,total:o.total,items:clone(cart)});
+ orders.unshift(o);S.set(K.orders,orders);S.set(K.seq,seq+1);finishOrder(o)}
+function finishOrder(o){ck.coupon='';ck.couponIn='';
  S.set(K.cust,{name:ck.name,phone:ck.phone,street:ck.street,num:ck.num,bairro:ck.bairro,ref:ck.ref,zone:ck.zone,pay:ck.pay});
  cart=[];saveCart();render();
  const wa=`https://wa.me/${pub.store.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(o.msg)}`;
@@ -2561,20 +2576,20 @@ function sendOrder(){
  <div class="sh-body" style="text-align:center"><div class="done-ic">${ic('check',28)}</div><div><h3 style="margin:4px 0 6px;font-family:var(--f-display);font-size:20px">${t('order_ready')}</h3><p style="margin:0;opacity:.75;font-size:14px">${t('order_ready_sub')}</p></div>
  <div class="msgbox" id="msgText" style="text-align:left">${esc(o.msg)}</div>
  <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn-main" href="${wa}" target="_blank" rel="noopener">${ic('msg',18)}${t('open_wa')}</a><button class="btn-ghost" data-act="copymsg">${ic('copy',16)}${t('copy_msg')}</button></div>
- <button class="btn-ghost" data-act="close">${t('back_catalog')}</button></div>`)}
+ ${o.id?`<p class="note" style="margin:0">${t('track_info')}</p>`:''}<button class="btn-ghost" data-act="close">${t('back_catalog')}</button></div>`)}
 
 /* ===== Painel ===== */
 function adminHTML(){
  const st=draft.store;
  const tabs=[['resumo','chart'],['custom','palette'],['products','box'],['delivery','map'],['ads','layers'],['orders','list']];
- const catBtn=(cls)=>MODE==='panel'?`<a class="btn ${cls}" href="${SHOP===FM?'../':localLink(SHOP,'catalogo')}" target="_blank" rel="noopener" style="text-decoration:none">${ic('eye',16)}<span>${t('nav_catalog')}</span></a>`:`<button class="btn ${cls}" data-act="view" data-v="catalog">${ic('eye',16)}<span>${t('nav_catalog')}</span></button>`;
+ const catBtn=(cls)=>MODE==='panel'?`<a class="btn ${cls}" href="${SHOP===FM?(window.TDC_PATH?SITE_BASE:'../'):(CLOUD_ON?SITE_BASE+SHOP+'/':localLink(SHOP,'catalogo'))}" target="_blank" rel="noopener" style="text-decoration:none">${ic('eye',16)}<span>${t('nav_catalog')}</span></a>`:`<button class="btn ${cls}" data-act="view" data-v="catalog">${ic('eye',16)}<span>${t('nav_catalog')}</span></button>`;
  const logo=`<div class="logo" style="background:${pub.theme.primary};color:${ink(pub.theme.primary)}">${pub.store.logo?`<img src="${pub.store.logo}" alt="">`:esc(initials(pub.store.name))}</div>`;
  return `<div class="adm">
  <aside class="side"><div class="side-store">${logo}<div style="min-width:0"><b>${esc(pub.store.name)}</b><small>${t('nav_admin')}</small></div></div>
   <nav class="side-nav" aria-label="${t('nav_admin')}">${tabs.map(([k,i])=>`<button data-act="tab" data-t="${k}" aria-current="${ui.tab===k?'page':'false'}">${ic(i,18)}<span>${t('a_'+k)}</span></button>`).join('')}</nav>
   <div class="side-foot">${catBtn('')}<button class="btn" data-act="logout">${t('logout')}</button>${devLogoHTML('dl-side')}</div></aside>
  <div class="admin-wrap adm-main">
- <div class="ahead"><span class="m-only">${logo}</span><div style="min-width:0"><h2><span class="m-only">${esc(pub.store.name)}</span><span class="d-only">${t('a_'+ui.tab)}</span></h2><p><span class="m-only">${t('a_'+ui.tab)}</span><span class="d-only">${esc(pub.store.name)} · ${SHOP===FM?'araujotechsistemas.com/fogao':'araujotechsistemas.com/'+SHOP}</span></p></div><span class="spacer"></span><span class="m-only" style="display:flex;gap:6px">${catBtn('icon-btn')}<button class="btn icon-btn" data-act="logout" aria-label="${t('logout')}">${ic('x',16)}<span>${t('logout')}</span></button></span></div>
+ <div class="ahead"><span class="m-only">${logo}</span><div style="min-width:0"><h2><span class="m-only">${esc(pub.store.name)}</span><span class="d-only">${t('a_'+ui.tab)}</span></h2><p><span class="m-only">${t('a_'+ui.tab)}</span><span class="d-only">${esc(pub.store.name)} · ${SHOP===FM?'araujotechsistemas.com/fogao':'araujotechsistemas.com/'+SHOP}</span></p></div><span class="spacer"></span>${syncPill()}<span class="m-only" style="display:flex;gap:6px">${catBtn('icon-btn')}<button class="btn icon-btn" data-act="logout" aria-label="${t('logout')}">${ic('x',16)}<span>${t('logout')}</span></button></span></div>
  <div id="tabBody">${({resumo:tabResumo,custom:tabCustom,products:tabProducts,delivery:tabDelivery,ads:()=>`<div style="margin-top:16px">${adsCard()}</div>`,orders:tabOrders})[ui.tab]()}</div></div>
  <nav class="bnav" aria-label="${t('nav_admin')}">${tabs.map(([k,i])=>`<button data-act="tab" data-t="${k}" aria-current="${ui.tab===k?'page':'false'}">${ic(i,20)}<span>${t('s_'+k)}</span></button>`).join('')}</nav>
  </div>`}
@@ -2647,7 +2662,8 @@ function tabDelivery(){const st=pub.store;
  <div class="card"><h3>${ic('bike',18)}${t('modalities')}</h3><p class="sub">${t('auto_saved')}</p>
   <label class="sw-row"><span>${t('delivery')} <span class="muted">· ${t('delivery_sub')}</span></span><input type="checkbox" class="tog" id="m_del" data-sx="delivery" ${st.delivery?'checked':''}></label>
   <label class="sw-row"><span>${t('pickup')} <span class="muted">· ${t('pickup_sub')}</span></span><input type="checkbox" class="tog" id="m_pk" data-sx="pickup" ${st.pickup?'checked':''}></label>
-  <div class="row2"><div class="fld"><label for="sx_prep">${t('prep_time')}</label><input id="sx_prep" class="inp num" data-sx="prep" inputmode="numeric" value="${st.prep}"></div><div class="fld"><label for="sx_min">${t('min_order_l')}</label><input id="sx_min" class="inp num" data-sx="minOrder" inputmode="numeric" value="${st.minOrder||''}" placeholder="—"></div></div>
+  <div class="row2"><div class="fld"><label for="sx_prep">${t('prep_time')}</label><input id="sx_prep" class="inp num" data-sx="prep" inputmode="numeric" value="${st.prep}"></div><div class="fld"><label for="sx_eta">${t('eta_pad')}</label><input id="sx_eta" class="inp num" data-sx="etaPad" inputmode="numeric" value="${st.etaPad||25}"><span class="note">${t('eta_pad_sub')}</span></div></div>
+  <div class="row2"><div class="fld"><label for="sx_min">${t('min_order_l')}</label><input id="sx_min" class="inp num" data-sx="minOrder" inputmode="numeric" value="${st.minOrder||''}" placeholder="—"></div></div>
   <div class="fld"><label for="sx_addr">${t('pickup_addr')}</label><input id="sx_addr" class="inp" data-sx="address" value="${esc(st.address)}"></div>
   <div class="fld"><label for="sx_wa">${t('whatsapp')}</label><input id="sx_wa" class="inp num" data-sx="whatsapp" inputmode="tel" value="${esc(st.whatsapp)}"><span class="note">595 + número sem o 0 inicial · ex.: 595982086171</span></div>
   <div class="row2"><div class="fld"><label for="sx_ig">${t('instagram_l')}</label><input id="sx_ig" class="inp" data-sx="instagram" value="${esc(st.instagram||'')}" placeholder="@fogaomineiro"></div><div class="fld"><label for="sx_fb">${t('facebook_l')}</label><input id="sx_fb" class="inp" data-sx="facebook" value="${esc(st.facebook||'')}" placeholder="facebook.com/…"></div></div>
@@ -2661,7 +2677,7 @@ function tabDelivery(){const st=pub.store;
   </tbody></table></div>
   <button class="btn sm" data-act="addzone" style="align-self:flex-start">${ic('plus',15)}${t('add_zone')}</button>
  </div>${couponsCard()}</div></div>`}
-function tabOrders(){return `<div style="display:flex;flex-direction:column;gap:10px;margin-top:16px">${orders.map(orderCard).join('')||`<p class="muted">${t('no_orders')}</p>`}</div>`}
+function tabOrders(){return `<div style="display:flex;flex-direction:column;gap:10px;margin-top:16px">${CLOUD_ON?`<div class="card"><label class="sw-row" style="margin:0"><span>${t('auto_print')}<br><span class="note">${t('auto_print_sub')}</span></span><input type="checkbox" class="tog" id="sx_ap" data-sx="autoPrint" ${pub.store.autoPrint?'checked':''}></label></div>`:''}${orders.map(orderCard).join('')||`<p class="muted">${t('no_orders')}</p>`}</div>`}
 
 function scheduleCard(){const st=pub.store;const order=[1,2,3,4,5,6,0];
  const tm=(i,f,v,on)=>`<input type="time" class="inp" id="dy_${i}_${f}" data-day="${i}" data-f="${f}" value="${v||''}" ${on?'':'disabled'} aria-label="${DAYN[lang][i]}">`;
@@ -2740,8 +2756,106 @@ function plSeed(){const n=Date.now(),d=k=>isoDay(n+k*DAY);
   {id:'mercado-bom-preco',name:'Mercado Bom Preço',seg:P('Mercado','Supermercado'),plan:'premium',due:d(9),status:'ativo',domain:'',ex:true,pays:[{date:d(-21),v:400000}]},
   {id:'pizzaria-central',name:'Pizzaria Central',seg:P('Pizzaria','Pizzería'),plan:'pro',due:d(-6),status:'suspenso',domain:'pizzariacentral.com',ex:true,pays:[{date:d(-36),v:250000}]}
  ]}}
+/* ===== Nuvem (Firebase) ===== */
+const FB_CFG={apiKey:"AIzaSyBCz2X9BOgO4UZKaXppxlGbiN59qBvUR_U",authDomain:"araujotech-catalogos.firebaseapp.com",projectId:"araujotech-catalogos",storageBucket:"araujotech-catalogos.firebasestorage.app",messagingSenderId:"501170505971",appId:"1:501170505971:web:fd3a1c1578b3e1b93bcf86"};
+const FBV='10.12.2',USER_DOMAIN='araujotechsistemas.com';
+const CLOUD_ON=MODE!=='demo'||!!window.TDC_FAKE_CLOUD;
+const SITE_BASE=(()=>{try{const p=location.pathname.toLowerCase();return location.origin+(p.startsWith('/fogao-mineiro')?'/Fogao-mineiro/':'/')}catch(e){return 'https://www.araujotechsistemas.com/'}})();
+const userEmail=u=>{u=String(u||'').trim().toLowerCase();return u.includes('@')?u:u+'@'+USER_DOMAIN};
+function realApi(A,F,U,app,db,auth){
+ const {doc,getDoc,setDoc,updateDoc,deleteDoc,collection,getDocs,query,orderBy,limit,onSnapshot,runTransaction,writeBatch}=F;
+ return {
+  onAuth(cb){return U.onAuthStateChanged(auth,u=>cb(u?{uid:u.uid,email:u.email}:null))},
+  async login(email,pass){const c=await U.signInWithEmailAndPassword(auth,email,pass);return {uid:c.user.uid,email:c.user.email}},
+  logout(){return U.signOut(auth)},
+  async isAdmin(){try{await getDoc(doc(db,'platform','config'));return true}catch(e){return false}},
+  async myShop(uid){try{const s=await getDoc(doc(db,'shopUsers',uid));return s.exists()?s.data().shop:null}catch(e){return null}},
+  async getShop(id){const s=await getDoc(doc(db,'shops',id));if(!s.exists())return null;const d=s.data();const n=d.mediaCount||0;
+   const packs=await Promise.all(Array.from({length:n},(_,i)=>getDoc(doc(db,'shops',id,'media','p'+i)).catch(()=>null)));const media={},sig=[];
+   packs.forEach((p,i)=>{const m=p&&p.exists()?(p.data().m||{}):{};Object.assign(media,m);sig[i]=Object.keys(m).sort().join(',')});return Object.assign({},d,{media,sig})},
+  putShop(id,data){return setDoc(doc(db,'shops',id),data,{merge:true})},
+  putMedia(id,i,m){return setDoc(doc(db,'shops',id,'media','p'+i),{m})},
+  delMedia(id,i){return deleteDoc(doc(db,'shops',id,'media','p'+i))},
+  async listBilling(){const q=await getDocs(collection(db,'billing'));return q.docs.map(d=>Object.assign({},d.data(),{id:d.id}))},
+  putBilling(id,data){return setDoc(doc(db,'billing',id),data)},
+  async getPlatform(){const s=await getDoc(doc(db,'platform','config'));return s.exists()?s.data():null},
+  putPlatform(d){return setDoc(doc(db,'platform','config'),d,{merge:true})},
+  async createShopUser(email,pass,shop){const sec=A.getApps().find(a=>a.name==='sec')||A.initializeApp(FB_CFG,'sec');const sa=U.getAuth(sec);let uid;
+   try{uid=(await U.createUserWithEmailAndPassword(sa,email,pass)).user.uid}catch(e){if(e&&e.code==='auth/email-already-in-use'){uid=(await U.signInWithEmailAndPassword(sa,email,pass)).user.uid}else throw e}
+   try{await U.signOut(sa)}catch(e){}await setDoc(doc(db,'shopUsers',uid),{shop,email});return uid},
+  async placeOrder(shop,o,tr,build){const ref=doc(collection(db,'shops',shop,'orders'));const cref=doc(db,'shops',shop,'meta','counter');
+   const no=await runTransaction(db,async t=>{const c=await t.get(cref);const n=c.exists()?(c.data().n||0)+1:1;if(c.exists())t.update(cref,{n});else t.set(cref,{n});const no=1000+n;
+    t.set(ref,build?build(no):Object.assign({},o,{no}));t.set(doc(db,'shops',shop,'track',ref.id),Object.assign({},tr,{no}));return no});return {id:ref.id,no}},
+  watchOrders(shop,cb,err){return onSnapshot(query(collection(db,'shops',shop,'orders'),orderBy('date','desc'),limit(150)),q=>cb(q.docs.map(d=>Object.assign({},d.data(),{id:d.id})),q.docChanges().filter(c=>c.type==='added').map(c=>c.doc.id)),err||(()=>{}))},
+  async updOrder(shop,id,p,tp){const b=writeBatch(db);b.update(doc(db,'shops',shop,'orders',id),p);if(tp)b.set(doc(db,'shops',shop,'track',id),tp,{merge:true});await b.commit()},
+  watchTrack(shop,id,cb){return onSnapshot(doc(db,'shops',shop,'track',id),s=>cb(s.exists()?s.data():null),()=>cb(null))}
+ }}
+const CLOUD={api:null,ready:null,user:null,admin:false,shopOk:false,loading:false,err:'',sig:[],unsubOrders:null,firstSnap:true,
+ init(){if(this.ready)return this.ready;this.ready=(async()=>{if(window.TDC_FAKE_CLOUD){this.api=window.TDC_FAKE_CLOUD;return this.api}
+  const b='https://www.gstatic.com/firebasejs/'+FBV+'/';const [A,F,U]=await Promise.all([import(b+'firebase-app.js'),import(b+'firebase-firestore.js'),import(b+'firebase-auth.js')]);
+  const app=A.initializeApp(FB_CFG);this.api=realApi(A,F,U,app,F.getFirestore(app),U.getAuth(app));return this.api})();return this.ready}};
+function hashStr(x){let h=2166136261;for(let i=0;i<x.length;i+=5){h^=x.charCodeAt(i);h=Math.imul(h,16777619)}return (h>>>0).toString(36)+x.length.toString(36)}
+const MEDIA_FIELDS=c=>[[c.store,'logo'],[c.store,'cover']].concat((c.store.slides||[]).map(x=>[x,'img']),(c.store.ads||[]).map(x=>[x,'img']),(c.products||[]).map(x=>[x,'photo']));
+function extractMedia(cfg){const c=JSON.parse(JSON.stringify(cfg)),m={};MEDIA_FIELDS(c).forEach(([o,k])=>{const v=o[k];if(typeof v==='string'&&v.startsWith('data:')){const h='m:'+hashStr(v);m[h]=v;o[k]=h}});return {c,m}}
+function injectMedia(c,m){MEDIA_FIELDS(c).forEach(([o,k])=>{const v=o[k];if(typeof v==='string'&&v.startsWith('m:'))o[k]=m[v]||null});return c}
+function packMedia(m){const packs=[];let cur={},size=0;Object.keys(m).sort().forEach(k=>{const l=m[k].length+k.length+8;if(size+l>850000&&Object.keys(cur).length){packs.push(cur);cur={};size=0}cur[k]=m[k];size+=l});if(Object.keys(cur).length)packs.push(cur);return packs}
+async function cloudSaveCfg(id,cfg,known){const api=await CLOUD.init();const {c,m}=extractMedia(cfg);const packs=packMedia(m);const sig=known||[];
+ for(let i=0;i<packs.length;i++){const s=Object.keys(packs[i]).sort().join(',');if(sig[i]!==s){await api.putMedia(id,i,packs[i]);sig[i]=s}}
+ for(let i=packs.length;i<sig.length;i++){try{await api.delMedia(id,i)}catch(e){}}sig.length=packs.length;
+ await api.putShop(id,{cfg:JSON.stringify(c),mediaCount:packs.length,name:cfg.store.name,ramo:cfg.store.ramo||'restaurante',updated:new Date().toISOString()});return sig}
+let cfgSaveT=0,cfgSaving=false,cfgAgain=false;
+function queueCloudSave(){if(!CLOUD_ON||!CLOUD.shopOk)return;clearTimeout(cfgSaveT);cfgSaveT=setTimeout(async()=>{if(cfgSaving){cfgAgain=true;return}cfgSaving=true;setSync('saving');
+ try{CLOUD.sig=await cloudSaveCfg(SHOP,pub,CLOUD.sig);setSync('ok')}catch(e){console.warn(e);setSync('err')}cfgSaving=false;if(cfgAgain){cfgAgain=false;queueCloudSave()}},900)}
+function setSync(st){CLOUD.sync=st;const el=document.getElementById('syncPill');if(el){el.className='sync '+st;el.innerHTML=syncInner()}}
+function syncInner(){const s=CLOUD.sync||'ok';return `<i class="sdot ${s==='err'?'off':'on'}"></i>${t(s==='saving'?'sync_saving':s==='err'?'sync_err':'sync_ok')}`}
+function syncPill(){return CLOUD_ON?`<span class="sync ${CLOUD.sync||'ok'}" id="syncPill">${syncInner()}</span>`:''}
+let SHOP_STATUS=null;
+async function cloudLoadShop(){const api=await CLOUD.init();const d=await api.getShop(SHOP);if(!d||!d.cfg)return false;
+ let c;try{c=JSON.parse(d.cfg)}catch(e){return false}c=migrate(injectMedia(c,d.media||{}));CLOUD.sig=d.sig||[];SHOP_STATUS=d.status||'ativo';
+ pub=c;draft=clone(c);try{S.set(K.pub,pub);S.set(K.draft,draft)}catch(e){}S.set(K.status,SHOP_STATUS);return true}
+function beep(){try{const a=new (window.AudioContext||window.webkitAudioContext)();[0,.25,.5].forEach((d,i)=>{const o=a.createOscillator(),g=a.createGain();o.frequency.value=i===2?1175:880;o.connect(g);g.connect(a.destination);g.gain.setValueAtTime(.0001,a.currentTime+d);g.gain.exponentialRampToValueAtTime(.4,a.currentTime+d+.02);g.gain.exponentialRampToValueAtTime(.0001,a.currentTime+d+.22);o.start(a.currentTime+d);o.stop(a.currentTime+d+.24)})}catch(e){}}
+function startOrders(){if(CLOUD.unsubOrders)return;CLOUD.firstSnap=true;CLOUD.api.watchOrders(SHOP,(list,added)=>{const first=CLOUD.firstSnap;CLOUD.firstSnap=false;orders=list;
+  if(!first&&added.length){beep();toast(t('new_order')+' Nº '+(list.find(o=>o.id===added[0])||{}).no);document.title='('+added.length+') '+t('new_order');setTimeout(()=>document.title=TITLE0,8000);
+   if(pub.store.autoPrint)added.forEach(id=>{const o=list.find(x=>x.id===id);if(o)printTicket(o.no)})}
+  if(ui.view==='admin'&&(ui.tab==='orders'||ui.tab==='resumo')&&!document.querySelector('.sheet'))render()},e=>{console.warn(e)});CLOUD.unsubOrders=true}
+const TITLE0=document.title;
+const TRACK_MAP={aguardando:'recebido',recebido:'recebido',aceito:'recebido',preparo:'preparo',entregador:'preparo',saiu:'preparo',pronto:'pronto',entregue:'entregue',retirado:'entregue',cancelado:'cancelado'};
+async function cloudBoot(){try{await CLOUD.init()}catch(e){console.warn(e);CLOUD.err='net';return}
+ if(MODE==='catalog'){try{if(await cloudLoadShop())render()}catch(e){console.warn(e)}const L=S.get(K.last,null);if(L&&L.id)watchTrackLast();return}
+ CLOUD.api.onAuth(async u=>{CLOUD.user=u;CLOUD.shopOk=false;CLOUD.admin=false;if(!u){CLOUD.loading=false;render();return}
+  CLOUD.loading=true;render();try{CLOUD.admin=await CLOUD.api.isAdmin();
+   if(MODE==='platform'){if(!CLOUD.admin){CLOUD.err='noadmin';await CLOUD.api.logout();return}await loadPlatformCloud()}
+   else{const my=await CLOUD.api.myShop(u.uid);if(my!==SHOP&&!CLOUD.admin){CLOUD.err='noshop';await CLOUD.api.logout();return}CLOUD.shopOk=true;orders=[];
+    const ok=await cloudLoadShop();if(!ok&&CLOUD.admin){CLOUD.sig=await cloudSaveCfg(SHOP,pub,[])}startOrders()}}
+  catch(e){console.warn(e);CLOUD.err='load'}CLOUD.loading=false;render()})}
+let trackUnsub=null,TRACK=null;
+function watchTrackLast(){const L=S.get(K.last,null);if(!L||!L.id||!CLOUD.api)return;if(trackUnsub)return;trackUnsub=CLOUD.api.watchTrack(SHOP,L.id,d=>{TRACK=d;if(d&&(d.status==='entregue'||d.status==='cancelado')&&Date.now()-new Date(d.date||0).getTime()>3*3600e3)TRACK=null;const b=document.getElementById('trackBox');if(b)b.outerHTML=trackHTML();else if(ui.view==='catalog'&&!document.querySelector('.sheet'))render()})}
+function hm(iso){return new Date(iso).toTimeString().slice(0,5)}
+function trackHTML(){const d=TRACK;if(!d)return '<div id="trackBox" hidden></div>';
+ const steps=d.mode==='delivery'?['recebido','preparo','entregue']:['recebido','preparo','pronto','entregue'];const cur=d.status==='cancelado'?-1:Math.max(0,steps.indexOf(d.status));
+ const lbl=k=>t(d.mode==='delivery'?'tr_d_'+k:'tr_p_'+k);
+ const eta=d.status==='entregue'||d.status==='cancelado'?'':d.sched?`${t('tr_sched')} ${esc(d.sched)}`:d.etaA?(d.mode==='delivery'?`${t('tr_eta_d')} ${hm(d.etaA)} ${t('tr_and')} ${hm(d.etaB)}`:`${t('tr_eta_p')} ${hm(d.etaA)}`):'';
+ return `<div class="track" id="trackBox"><div class="track-h"><b>${t('order')} Nº ${d.no}</b><span>${d.status==='cancelado'?`<span class="pill" style="color:var(--bad)">${t('tr_cancel')}</span>`:esc(lbl(steps[cur]))}</span></div>
+ ${d.status==='cancelado'?'':`<div class="tsteps">${steps.map((k,i)=>`<div class="tstep ${i<=cur?'on':''} ${i===cur?'cur':''}"><i></i><span>${esc(lbl(k))}</span></div>`).join('')}</div>`}
+ ${eta?`<p class="track-eta">${ic('clock',15)}${eta}</p>`:''}</div>`}
+async function loadPlatformCloud(){const api=CLOUD.api;const [cfg,list]=await Promise.all([api.getPlatform(),api.listBilling()]);
+ if(!list.length){PL.cloudEmpty=true;return}PL.cloudEmpty=false;
+ PL.shops=list.sort((a,b)=>(b.live?1:0)-(a.live?1:0)||String(b.created||'').localeCompare(String(a.created||'')));if(cfg&&cfg.plans)PL.plans=cfg.plans;CLOUD.plLoaded=true}
+let plSaveT=0;
+function cloudSavePL(){if(!CLOUD_ON||!CLOUD.admin||!CLOUD.plLoaded)return;clearTimeout(plSaveT);plSaveT=setTimeout(async()=>{try{await CLOUD.api.putPlatform({plans:PL.plans});
+  for(const s of PL.shops){const d=JSON.parse(JSON.stringify(s));delete d.id;await CLOUD.api.putBilling(s.id,d);await CLOUD.api.putShop(s.id,{status:s.status,name:s.name})}}catch(e){console.warn(e);toast(t('sync_err'),true)}},700)}
+const pass6=()=>String(Math.floor(100000+Math.random()*900000));
+async function migrateToCloud(){const api=CLOUD.api;let n=0;const total=PL.shops.length;
+ for(const s of PL.shops){n++;toast(t('mig_prog')+' '+n+'/'+total);
+  const kk=mkK(s.id);let cfg=S.get(kk.pub,null)||initCfg(s.id);cfg=migrate(cfg);
+  if(s.live){s.user='fogaomineiro';s.pass='fogao2026'}else if(!s.pass||String(s.pass).length<6)s.pass=pass6();
+  if(!s.created)s.created=new Date(Date.now()-n*1000).toISOString();
+  await cloudSaveCfg(s.id,cfg,[]);try{await api.createShopUser(userEmail(s.user),s.pass,s.id)}catch(e){console.warn('user',s.id,e)}
+  const d=JSON.parse(JSON.stringify(s));delete d.id;await api.putBilling(s.id,d);await api.putShop(s.id,{status:s.status})}
+ await api.putPlatform({plans:PL.plans});await loadPlatformCloud();render();toast(t('mig_done'))}
+
 let PL=S.get(K.pl,null);if(!PL){PL=plSeed();S.set(K.pl,PL)}
-const savePL=()=>S.set(K.pl,PL);
+const savePL=()=>{S.set(K.pl,PL);if(typeof cloudSavePL==='function')cloudSavePL()};
 function defAds(){const n=Date.now(),d=k=>isoDay(n+k*DAY);return [
  {adv:'Tu Delivery',title:P('Precisa de entregas? A gente leva.','¿Necesitás envíos? Nosotros llevamos.'),sub:P('Peça pelo WhatsApp 0982 086 171','Pedí por WhatsApp 0982 086 171'),link:'0982086171',color:'#C2410C',img:null,target:'all',start:d(-30),end:d(335),price:0,on:true},
  {adv:'Ótica Visão Clara',title:P('Exame de vista grátis em novembro','Examen de vista gratis en noviembre'),sub:P('Na compra de óculos completos','En la compra de lentes completos'),link:'',color:'#1F4E8C',img:null,target:'all',start:d(-5),end:d(25),price:100000,on:true,ex:true},
@@ -2754,7 +2868,7 @@ if(!PL.ramoV1){const RM0={'boi-de-ouro':'restaurante','acai-da-praca':'heladeria
  PL.shops.forEach(s=>{if(!s.live&&!s.user){s.user=s.id.replace(/-/g,'').slice(0,14);s.pass=String(1000+((s.id.length*7919)%9000))}});PL.ramoV1=true;savePL()}
 function useShop(id){if(id===SHOP)return;SHOP=id;K=mkK(id);pub=migrate(S.get(K.pub,null)||initCfg(id));S.set(K.pub,pub);draft=migrate(S.get(K.draft,null)||clone(pub));S.set(K.draft,draft);cart=S.get(K.cart,[]);orders=S.get(K.orders,null);if(!orders){orders=id===FM?seedOrders():[];S.set(K.orders,orders)}
  ck=Object.assign({mode:'',name:'',phone:'',street:'',num:'',bairro:'',ref:'',zone:'',lat:null,lng:null,link:'',time:'',pay:'',change:'',gps:''},S.get(K.cust,{}));CAT_URL=catUrlFor(id);Object.assign(ui,{q:'',tab:'resumo',state:'pub',confirmPub:false,edit:null});closeSheet()}
-function shopLinks(s){if(MODE==='platform'){const root=location.pathname.toLowerCase().startsWith('/fogao-mineiro');const cat=s.live?(root?'../':'/fogao/'):localLink(s.id,'catalogo'),pan=s.live?(root?'../painel/':'/fogao/painel/'):localLink(s.id,'painel');
+function shopLinks(s){if(MODE==='platform'){const root=location.pathname.toLowerCase().startsWith('/fogao-mineiro');const cat=CLOUD_ON?(s.live?SITE_BASE:SITE_BASE+s.id+'/'):s.live?(root?'../':'/fogao/'):localLink(s.id,'catalogo'),pan=CLOUD_ON?(s.live?SITE_BASE+'painel/':SITE_BASE+s.id+'/painel/'):s.live?(root?'../painel/':'/fogao/painel/'):localLink(s.id,'painel');
   return `<a class="btn sm" href="${cat}" target="_blank" rel="noopener">${ic('eye',15)}${t('open_cat')}</a><a class="btn sm" href="${pan}" target="_blank" rel="noopener">${ic('monitor',15)}${t('open_panel')}</a>`}
  return `<button class="btn sm" data-act="openshop" data-sid="${s.id}" data-v="catalog">${ic('eye',15)}${t('open_cat')}</button><button class="btn sm" data-act="openshop" data-sid="${s.id}" data-v="admin">${ic('monitor',15)}${t('open_panel')}</button>`}
 function daysTo(iso){const a=new Date(iso+'T12:00:00'),b=new Date();b.setHours(12,0,0,0);return Math.round((a-b)/DAY)}
@@ -2765,7 +2879,7 @@ function slugify(x){return String(x).normalize('NFD').replace(/[̀-ͯ]/g,'').toL
 function platformHTML(){const act=PL.shops.filter(s=>s.status!=='suspenso');const mrr=act.reduce((a,s)=>a+planOf(s).price,0);const soon=act.filter(s=>{const d=daysTo(s.due);return d>=0&&d<=7}).length;
  return `<div class="admin-wrap">
  <div class="ahead"><div class="brand-mark" style="width:44px;height:44px;border-radius:12px">${ic('layers',22)}</div><div><h2>${MODE==='platform'?t('pl_title2'):t('pl_title')}</h2><p>${t('pl_sub')}</p></div><span class="spacer"></span>${MODE==='platform'?`<button class="btn" data-act="logoutpl">${t('logout')}</button>`:''}<button class="btn pri" data-act="newshop">${ic('plus',16)}${t('new_shop')}</button></div>
- <div class="stats"><div class="stat"><small>${t('active_shops')}</small><b>${act.length}</b></div><div class="stat"><small>${t('mrr')}</small><b>${gs(mrr)}</b></div><div class="stat"><small>${t('due_soon')}</small><b>${soon}</b></div><div class="stat"><small>${t('suspended_n')}</small><b>${PL.shops.length-act.length}</b></div></div>
+ ${cloudNote()}${CLOUD_ON&&PL.cloudEmpty?`<div class="card" style="margin-bottom:16px;border-color:var(--accent)"><h3>${ic('layers',18)}${t('mig_title')}</h3><p class="sub">${t('mig_sub')}</p><div><button class="btn pri" data-act="migrate">${t('mig_btn')}</button></div></div>`:''}<div class="stats"><div class="stat"><small>${t('active_shops')}</small><b>${act.length}</b></div><div class="stat"><small>${t('mrr')}</small><b>${gs(mrr)}</b></div><div class="stat"><small>${t('due_soon')}</small><b>${soon}</b></div><div class="stat"><small>${t('suspended_n')}</small><b>${PL.shops.length-act.length}</b></div></div>
  <div class="card"><h3>${ic('store',18)}${t('shops')}</h3><div class="shops">${PL.shops.map(shopCard).join('')}</div></div>
  <div class="card"><h3>${ic('tag',18)}${t('plans')}</h3><p class="sub">${t('example_values')}</p><div class="plans">${PL.plans.map((p,i)=>`<div class="plan"><input class="inp" id="pln_${i}" data-plan="${i}" data-f="n" value="${esc(p.n)}" style="font-weight:700" aria-label="${t('plan')}"><div class="fld"><label for="plp_${i}">${t('monthly')} (Gs.)</label><input class="inp num" id="plp_${i}" data-plan="${i}" data-f="price" inputmode="numeric" value="${p.price}"></div><div class="fld"><label for="plm_${i}">${t('max_prod')}</label><input class="inp num" id="plm_${i}" data-plan="${i}" data-f="max" inputmode="numeric" value="${p.max||''}" placeholder="${t('unlimited')}"></div><span class="note">${PL.shops.filter(s=>s.plan===p.id).length} ${t('shops').toLowerCase()}</span></div>`).join('')}</div></div>
  </div>`}
@@ -2791,11 +2905,12 @@ function newShopSheet(){const n=ui.ns;openSheet(`<div class="sh-top"><h2>${t('ne
 function loginHTML(){const st=pub.store;return `<div class="login"><form id="loginForm" novalidate><div class="lhead"><div class="logo">${st.logo?`<img src="${st.logo}" alt="">`:esc(initials(st.name))}</div><h2>${t('nav_admin')}</h2><p>${esc(st.name)} · ${t('login_sub')}</p></div>
  <div class="fld"><label for="lg_user">${t('user_l')}</label><input id="lg_user" class="inp" autocomplete="username" autocapitalize="none" spellcheck="false"></div>
  <div class="fld"><label for="lg_pass">${t('pass_l')}</label><div class="pw"><input id="lg_pass" class="inp" type="password" autocomplete="current-password"><button type="button" data-act="showpw" aria-label="${t('show_pass')}">${ic('eye',18)}</button></div></div>
- <span class="err" id="lgErr" role="alert"></span><button class="btn pri" type="submit" style="justify-content:center;padding:12px">${t('enter')}</button></form>${devLogoHTML('lg')}</div>`}
+ ${cloudNote()}<span class="err" id="lgErr" role="alert"></span><button class="btn pri" type="submit" style="justify-content:center;padding:12px" ${CLOUD.loading?'disabled':''}>${t('enter')}</button></form>${devLogoHTML('lg')}</div>`}
 function mapsUrl(st){return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(st.name+', '+st.address)}`}
 function linksHTML(st){const ig=st.instagram?(/^https?:/i.test(st.instagram)?st.instagram:'https://instagram.com/'+st.instagram.replace(/^@/,'').trim()):'';const fb=st.facebook?(/^https?:/i.test(st.facebook)?st.facebook:'https://'+st.facebook.replace(/^\/+/,'')):'';
  return `<div class="clinks"><a href="${esc(mapsUrl(st))}" target="_blank" rel="noopener">${ic('route',15)}${t('how_to_get')}</a>${ig?`<a href="${esc(ig)}" target="_blank" rel="noopener">${ic('instagram',15)}Instagram</a>`:''}${fb?`<a href="${esc(fb)}" target="_blank" rel="noopener">${ic('facebook',15)}Facebook</a>`:''}</div>`}
-const catUrlFor=id=>id===FM?(window.TDC_MODE==='panel'?new URL('../',location.href).href:'https://tudeliveryd-cyber.github.io/Fogao-mineiro/'):'https://www.araujotechsistemas.com/'+id+'/';
+
+const catUrlFor=id=>id===FM?(window.TDC_MODE==='panel'&&!window.TDC_PATH?new URL('../',location.href).href:'https://tudeliveryd-cyber.github.io/Fogao-mineiro/'):(CLOUD_ON?SITE_BASE+id+'/':'https://www.araujotechsistemas.com/'+id+'/');
 let CAT_URL=catUrlFor(SHOP);
 function shareCard(){return `<div class="card"><h3>${ic('qr',18)}${t('share_title')}</h3><p class="sub">${t('share_sub')}</p>
  <div class="share"><div class="qrbox" id="qrBox"></div><div class="share-r"><div class="fld"><span class="lbl">${t('cat_link')}</span><div style="display:flex;gap:8px;min-width:0"><input class="inp" id="shareUrl" readonly value="${esc(CAT_URL)}" aria-label="${t('cat_link')}"><button class="btn" data-act="copylink">${ic('copy',15)}${t('copy_link')}</button></div></div>
@@ -2868,14 +2983,21 @@ function ticketSheet(no){ui.tkNo=+no;const o=orders.find(x=>x.no===+no);if(!o)re
  const fr=document.querySelector('.tkprev iframe');if(fr)fr.addEventListener('load',()=>{try{fr.style.height=(fr.contentDocument.documentElement.scrollHeight+8)+'px'}catch(e){}})}
 function printTicket(no){const o=orders.find(x=>x.no===+no);if(!o)return;const f=document.createElement('iframe');f.setAttribute('aria-hidden','true');f.style.cssText='position:fixed;right:0;bottom:0;width:1px;height:1px;border:0;opacity:0';document.body.appendChild(f);
  const d=f.contentWindow.document;d.open();d.write(ticketHTML(o));d.close();setTimeout(()=>{try{f.contentWindow.focus();f.contentWindow.print()}catch(e){toast(t('print_note'),true)}setTimeout(()=>f.remove(),3000)},300)}
+async function cloudLogin(f){const u=document.getElementById('lg_user').value.trim(),pw=document.getElementById('lg_pass').value;const er=document.getElementById('lgErr');CLOUD.err='';
+ const b=f.querySelector('button[type=submit]');if(b){b.disabled=true;b.textContent=t('loading')}
+ try{const api=await CLOUD.init();await api.login(f.dataset.kind==='pl'?u.toLowerCase():userEmail(u),pw)}catch(e){console.warn(e);if(er)er.textContent=e&&e.code==='auth/network-request-failed'?t('cerr_net'):t('login_err');if(b){b.disabled=false;b.textContent=t('enter')}}}
 function loginPlHTML(){return `<div class="login"><form id="loginForm" data-kind="pl" novalidate><div class="lhead"><img src="${DEV_LOGO}" alt="Araújo Tech Sistemas" style="width:250px;max-width:100%;border-radius:12px;background:#fff;padding:8px 12px;border:1px solid var(--line)"><h2>${t('pl_title2')}</h2><p>${t('pl_login_sub')}</p></div>
- <div class="fld"><label for="lg_user">${t('user_l')}</label><input id="lg_user" class="inp" autocomplete="username" autocapitalize="none" spellcheck="false"></div>
+ <div class="fld"><label for="lg_user">${CLOUD_ON?t('email_l'):t('user_l')}</label><input id="lg_user" class="inp" ${CLOUD_ON?'type="email" inputmode="email"':''} autocomplete="username" autocapitalize="none" spellcheck="false"></div>
  <div class="fld"><label for="lg_pass">${t('pass_l')}</label><div class="pw"><input id="lg_pass" class="inp" type="password" autocomplete="current-password"><button type="button" data-act="showpw" aria-label="${t('show_pass')}">${ic('eye',18)}</button></div></div>
- <span class="err" id="lgErr" role="alert"></span><button class="btn pri" type="submit" style="justify-content:center;padding:12px">${t('enter')}</button></form></div>`}
+ ${cloudNote()}<span class="err" id="lgErr" role="alert"></span><button class="btn pri" type="submit" style="justify-content:center;padding:12px">${t('enter')}</button></form></div>`}
 function shopUrl(s){return s.url||(s.domain?'https://'+s.domain:'')}
 function suspendedHTML(){const st=pub.store;return `<div class="catwrap" style="${themeStyle(pub)}"><div class="susp-wrap"><div class="logo">${st.logo?`<img src="${st.logo}" alt="">`:esc(initials(st.name))}</div><h1>${t('suspended_cat')}</h1><p>${t('suspended_cat_sub')}</p></div></div>`}
 
 /* ===== Render geral ===== */
+const panelAuthed=()=>CLOUD_ON?CLOUD.shopOk:S.get(K.auth,false);
+const plAuthed=()=>CLOUD_ON?CLOUD.admin&&!CLOUD.loading:S.get(K.authPl,false);
+const shopSuspended=()=>CLOUD_ON&&MODE==='catalog'?(SHOP_STATUS||S.get(K.status,null))==='suspenso':!!(curShop()&&curShop().status==='suspenso');
+function cloudNote(){if(!CLOUD_ON)return '';if(CLOUD.loading)return `<div class="info" style="margin-bottom:12px">${ic('clock',18)}<span>${t('loading')}</span></div>`;const e=CLOUD.err;return e?`<div class="info bad" style="margin-bottom:12px">${ic('x',18)}<span>${t('cerr_'+e)}</span></div>`:''}
 function render(){
  document.documentElement.lang=lang==='pt'?'pt-BR':'es-PY';
  document.getElementById('bm').innerHTML='<img src="'+DEV_MARK+'" alt="">';
@@ -2886,7 +3008,7 @@ function render(){
  const vp=document.getElementById('vPl');vp.hidden=MODE==='platform'||!plVisible();if(ui.view==='platform'&&!plVisible()&&MODE!=='platform')ui.view=MODE==='panel'?'admin':'catalog';vp.innerHTML=ic('layers',15)+'<span>'+t('nav_platform')+'</span>';vp.setAttribute('aria-pressed',ui.view==='platform');
  document.getElementById('lPt').setAttribute('aria-pressed',lang==='pt');document.getElementById('lEs').setAttribute('aria-pressed',lang==='es');
  const app=document.getElementById('app');
- app.innerHTML=(ui.view==='catalog'?((curShop()&&curShop().status==='suspenso')?suspendedHTML():catalogHTML(pub,true)):ui.view==='admin'?(S.get(K.auth,false)?adminHTML():loginHTML()):(MODE==='platform'&&!S.get(K.authPl,false)?loginPlHTML():platformHTML()))+(ui.view==='catalog'||(ui.view==='admin'&&!S.get(K.auth,false))||(MODE==='platform'&&!S.get(K.authPl,false))?'':`<footer class="credit admin-credit" style="padding-bottom:28px">${t('dev_by')} ${devMark()}</footer>`);
+ app.innerHTML=(ui.view==='catalog'?(shopSuspended()?suspendedHTML():catalogHTML(pub,true)):ui.view==='admin'?(panelAuthed()?adminHTML():loginHTML()):(MODE==='platform'&&!plAuthed()?loginPlHTML():platformHTML()))+(ui.view==='catalog'||(ui.view==='admin'&&!panelAuthed())||(MODE==='platform'&&!plAuthed())?'':`<footer class="credit admin-credit" style="padding-bottom:28px">${t('dev_by')} ${devMark()}</footer>`);
  document.documentElement.style.setProperty('--topH',document.getElementById('top').offsetHeight+'px');
  if(MODE==='catalog')document.body.style.setProperty('--band',pub.theme.header);
  if(document.getElementById('qrBox'))makeQR();
@@ -2895,7 +3017,7 @@ function render(){
 }
 function refreshPreview(){const pv=document.getElementById('pv');if(pv)pv.innerHTML=catalogHTML(draft,false);const b=document.getElementById('stBadge');if(b)b.outerHTML=stateBadge()}
 function toast(msg,bad){const r=document.getElementById('toastRoot');r.innerHTML=`<div class="toast ${bad?'bad':''}">${ic(bad?'x':'check',16)}${esc(msg)}</div>`;clearTimeout(toast._t);toast._t=setTimeout(()=>r.innerHTML='',2200)}
-function savePub(){S.set(K.pub,pub);S.set(K.draft,draft)}
+function savePub(){S.set(K.pub,pub);S.set(K.draft,draft);queueCloudSave()}
 function applyBoth(fn){fn(pub);fn(draft);savePub()}
 function dirty(){ui.state='dirty';ui.confirmPub=false;refreshPreview();const b=document.querySelector('[data-act="publish"]');if(b){b.className='btn pri';b.textContent=t('publish')}}
 function resizeImg(file,max,cb){const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{const s=Math.min(1,max/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext('2d').drawImage(im,0,0,c.width,c.height);cb(c.toDataURL('image/jpeg',.82))};im.src=fr.result};fr.readAsDataURL(file)}
@@ -2959,8 +3081,9 @@ const acts={
  openshop(el){if(MODE==='demo')S.set(K.plOn,true);useShop(el.dataset.sid);const v=el.dataset.v;if(v==='admin')S.set(K.auth,true);ui.view=v;history.replaceState(null,'',v==='admin'?'#painel':'#catalogo');render();scrollTo(0,0)},
  createshop(){const n=ui.ns;if(n.name.trim().length<2){document.getElementById('nsErr').textContent=t('err_shop_name');return}
   const base=slugify(n.name)||'loja';let id=base,k=2;while(PL.shops.some(x=>x.id===id))id=base+'-'+(k++);const p=PL.plans.find(x=>x.id===n.plan)||PL.plans[0];
-  PL.shops.unshift({id,name:n.name.trim(),ramo:n.ramo,seg:n.ramo==='otro'&&(n.segc||'').trim()?P(n.segc.trim(),n.segc.trim()):clone(ramoOf(n.ramo).n),user:id.replace(/-/g,'').slice(0,14),pass:String(Math.floor(1000+Math.random()*9000)),plan:p.id,due:isoDay(Date.now()+30*DAY),status:'ativo',domain:n.domain.trim().toLowerCase(),wa:n.wa.replace(/\D/g,''),pays:[{date:isoDay(Date.now()),v:p.price}]});
-  {const kk=mkK(id),cfg=makeCfg(n.ramo,{name:n.name.trim(),wa:n.wa.replace(/\D/g,'')});S.set(kk.pub,cfg);S.set(kk.draft,cfg)}savePL();closeSheet();render();toast(t('shop_created'))},
+  PL.shops.unshift({id,name:n.name.trim(),ramo:n.ramo,seg:n.ramo==='otro'&&(n.segc||'').trim()?P(n.segc.trim(),n.segc.trim()):clone(ramoOf(n.ramo).n),user:id.replace(/-/g,'').slice(0,14),pass:pass6(),created:new Date().toISOString(),plan:p.id,due:isoDay(Date.now()+30*DAY),status:'ativo',domain:n.domain.trim().toLowerCase(),wa:n.wa.replace(/\D/g,''),pays:[{date:isoDay(Date.now()),v:p.price}]});
+  {const kk=mkK(id),cfg=makeCfg(n.ramo,{name:n.name.trim(),wa:n.wa.replace(/\D/g,'')});S.set(kk.pub,cfg);S.set(kk.draft,cfg);
+   if(CLOUD_ON&&CLOUD.plLoaded){const sh=PL.shops[0];toast(t('loading'));(async()=>{try{await cloudSaveCfg(id,cfg,[]);await CLOUD.api.createShopUser(userEmail(sh.user),sh.pass,id);savePL();toast(t('shop_created'))}catch(e){console.warn(e);toast(t('sync_err'),true)}})()}}savePL();closeSheet();render();if(!CLOUD_ON)toast(t('shop_created'))},
  shoppay(el){const x=PL.shops.find(z=>z.id===el.dataset.sid);if(!x)return;const base=Math.max(new Date(x.due+'T12:00:00').getTime(),Date.now());x.due=isoDay(base+30*DAY);x.status='ativo';x.pays.push({date:isoDay(Date.now()),v:planOf(x).price});savePL();render();toast(t('pay_ok'))},
  shopstatus(el){const x=PL.shops.find(z=>z.id===el.dataset.sid);if(!x)return;x.status='suspenso';savePL();render()},
  feemode(el){const m=el.dataset.m;applyBoth(c=>c.store.feeMode=m);render()},
@@ -2975,9 +3098,10 @@ const acts={
  ticket(el){ticketSheet(el.dataset.no)},
  tkw(el){const w=+el.dataset.w;applyBoth(c=>c.store.ticketW=w);ticketSheet(ui.tkNo)},
  printtk(){printTicket(ui.tkNo)},
- logoutpl(){S.set(K.authPl,false);render()},
+ logoutpl(){if(CLOUD_ON){CLOUD.api&&CLOUD.api.logout().then(()=>location.reload());return}S.set(K.authPl,false);render()},
+ migrate(el){if(!CLOUD.api)return;if(!el.dataset.ok){el.dataset.ok='1';el.textContent=t('mig_confirm');return}el.disabled=true;migrateToCloud().catch(e=>{console.warn(e);toast(t('sync_err'),true);el.disabled=false})},
  showpw(){const i=document.getElementById('lg_pass');if(i)i.type=i.type==='password'?'text':'password'},
- logout(){S.set(K.auth,false);if(MODE==='panel'){ui.view='admin'}else{ui.view='catalog';history.replaceState(null,'','#catalogo')}render()},
+ logout(){if(CLOUD_ON){CLOUD.api&&CLOUD.api.logout().then(()=>location.reload());return}S.set(K.auth,false);if(MODE==='panel'){ui.view='admin'}else{ui.view='catalog';history.replaceState(null,'','#catalogo')}render()},
  addad(){const a={adv:'',title:P('',''),sub:P('',''),link:'',color:'#1A1714',img:null,start:isoDay(Date.now()),end:isoDay(Date.now()+30*DAY),price:100000,on:false};applyBoth(c=>c.store.ads.unshift(clone(a)));render()},
  delad(el){const i=+el.dataset.i;applyBoth(c=>c.store.ads.splice(i,1));render()},
  adrmimg(el){const i=+el.dataset.i;applyBoth(c=>{if(c.store.ads[i])c.store.ads[i].img=null});render()},
@@ -3000,7 +3124,7 @@ function onField(e){const el=e.target,d=el.dataset;if(el.id==='ramoQ'){ui.nsq=el
  if(d.th){draft.theme[d.th]=el.value;const c=document.getElementById('cv_'+d.th);if(c)c.textContent=el.value.toUpperCase();dirty();return}
  if(d.lay){draft.layout[d.lay]=el.checked;dirty();return}
  if(d.id){setPath(draft.store,d.id,el.value);dirty();return}
- if(d.sx){const k=d.sx;let v=el.type==='checkbox'?el.checked:el.value;if(k==='prep'||k==='minOrder')v=toInt(v);applyBoth(c=>c.store[k]=v);return}
+ if(d.sx){const k=d.sx;let v=el.type==='checkbox'?el.checked:el.value;if(k==='prep'||k==='minOrder'||k==='etaPad')v=toInt(v);applyBoth(c=>c.store[k]=v);return}
  if(d.pay){applyBoth(c=>c.store.pay[d.pay]=el.checked);if(d.pay==='pix'&&e.type==='change')render();return}
  if(d.br!=null&&d.br!==''){const i=+d.br,f=d.f;const v=f==='fee'?toInt(el.value):el.value;applyBoth(c=>{if(c.store.bairros[i])c.store.bairros[i][f]=v});return}
  if(d.pp){const f=d.f;let v=el.type==='checkbox'?el.checked:toInt(el.value);applyBoth(c=>{const p=c.products.find(x=>x.id===d.pp);if(p)p[f]=v});return}
@@ -3017,7 +3141,7 @@ function onField(e){const el=e.target,d=el.dataset;if(el.id==='ramoQ'){ui.nsq=el
  if(d.sl!=null&&d.sl!==''){const x=draft.store.slides[+d.sl];if(!x)return;setPath(x,d.f,el.value);if(d.f==='color'){const c=el.parentElement.querySelector('code');if(c)c.textContent=el.value.toUpperCase()}dirty();return}
  if(d.edb){ui.edit[d.edb]=el.checked;return}
  if(d.ed){let v=el.value;if(d.ed==='price'||d.ed==='promo')v=toInt(v);setPath(ui.edit,d.ed,v);return}
- if(d.os&&e.type==='change'){const o=orders.find(x=>x.no===+d.os);if(o){o.status=el.value;S.set(K.orders,orders)}return}
+ if(d.os&&e.type==='change'){const o=orders.find(x=>x.no===+d.os);if(o){o.status=el.value;if(CLOUD_ON&&o.id&&CLOUD.api){CLOUD.api.updOrder(SHOP,o.id,{status:o.status},{status:TRACK_MAP[o.status]||'recebido'}).catch(er=>{console.warn(er);toast(t('sync_err'),true)})}else S.set(K.orders,orders)}return}
 }
 document.addEventListener('input',onField);
 document.addEventListener('change',e=>{const el=e.target;
@@ -3031,7 +3155,7 @@ document.addEventListener('change',e=>{const el=e.target;
 });
 function plVisible(){return S.get(K.plOn,false)||location.hash==='#plataforma'}
 let tapN=0,tapT=0;document.getElementById('brandTap').addEventListener('click',()=>{if(MODE!=='demo')return;const n=Date.now();tapN=n-tapT<1500?tapN+1:1;tapT=n;if(tapN>=5){tapN=0;const on=!S.get(K.plOn,false);S.set(K.plOn,on);if(!on&&ui.view==='platform'){ui.view='catalog';history.replaceState(null,'','#catalogo')}render();toast(on?(lang==='pt'?'Plataforma visível neste aparelho':'Plataforma visible en este dispositivo'):(lang==='pt'?'Plataforma oculta':'Plataforma oculta'))}});
-document.addEventListener('submit',e=>{if(e.target.id!=='loginForm')return;e.preventDefault();const u=document.getElementById('lg_user').value.trim().toLowerCase(),pw=document.getElementById('lg_pass').value;
+document.addEventListener('submit',e=>{if(e.target.id!=='loginForm')return;e.preventDefault();if(CLOUD_ON){cloudLogin(e.target);return}const u=document.getElementById('lg_user').value.trim().toLowerCase(),pw=document.getElementById('lg_pass').value;
  if(e.target.dataset.kind==='pl'){if(u==='araujotech'&&pw==='tech2026'){S.set(K.authPl,true);render();scrollTo(0,0)}else{document.getElementById('lgErr').textContent=t('login_err')}return}
  const sh=curShop(),cu=SHOP===FM?'fogaomineiro':(sh&&sh.user),cp=SHOP===FM?'fogao2026':(sh&&sh.pass);if(cu&&u===cu&&pw===cp){S.set(K.auth,true);render();scrollTo(0,0)}else{document.getElementById('lgErr').textContent=t('login_err')}});
 let spyRaf=0;window.addEventListener('scroll',()=>{if(spyRaf||ui.view!=='catalog')return;spyRaf=requestAnimationFrame(()=>{spyRaf=0;const nav=document.getElementById('cnav');if(!nav)return;const lim=nav.getBoundingClientRect().bottom+12;let cur=null;
@@ -3040,6 +3164,7 @@ let spyRaf=0;window.addEventListener('scroll',()=>{if(spyRaf||ui.view!=='catalog
 window.addEventListener('hashchange',()=>{if(MODE!=='demo')return;const v=viewFromHash();if(v!==ui.view){ui.view=v;closeSheet();render()}});
 window.addEventListener('resize',()=>document.documentElement.style.setProperty('--topH',document.getElementById('top').offsetHeight+'px'));
 render();
+if(CLOUD_ON)cloudBoot();
 </script>
 
 </body>
