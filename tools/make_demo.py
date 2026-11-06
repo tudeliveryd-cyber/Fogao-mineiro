@@ -165,6 +165,22 @@ def copiar_admin():
     for f in ('index.html', 'favicon.png', 'apple-touch-icon.png'):
         shutil.copyfile(os.path.join(ROOT, 'admin', f), os.path.join(dst, f))
     print('ok admin copiado')
+    # Painel do local também em araujotechsistemas.com/painel/?loja=<id>: mesmo domínio do /admin,
+    # então o administrador já logado entra direto, sem digitar usuário e senha.
+    pd = os.path.join(ROOT, 'araujo-tech-site', 'painel')
+    os.makedirs(pd, exist_ok=True)
+    h = open(os.path.join(ROOT, 'painel', 'index.html'), encoding='utf-8').read()
+    for a, b in (('href="/apple-touch-icon.png"', 'href="/painel/apple-touch-icon.png"'), ('href="/favicon.png"', 'href="/painel/favicon.png"'), ('href="/icon-192.png"', 'href="/painel/icon-192.png"')):
+        h = h.replace(a, b)
+    open(os.path.join(pd, 'index.html'), 'w', encoding='utf-8').write(h)
+    import json
+    mf = json.load(open(os.path.join(ROOT, 'painel', 'manifest.json'), encoding='utf-8'))
+    mf['name'] = 'Panel del local'; mf['short_name'] = 'Panel'
+    for ic in mf.get('icons', []): ic['src'] = '/painel' + ic['src']
+    json.dump(mf, open(os.path.join(pd, 'manifest.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    for f in ('favicon.png', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png'):
+        shutil.copyfile(os.path.join(ROOT, 'admin', f), os.path.join(pd, f))
+    print('ok painel copiado')
 
 def main():
     copiar_admin()
