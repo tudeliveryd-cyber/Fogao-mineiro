@@ -151,7 +151,7 @@ def seed_js(d):
             f"window.TDC_SHOP='{d['shop']}';window.TDC_DEMO=true;window.TDC_SEED_V='{d['ver']}';\n"
             "window.TDC_SEED=function(c){var D=" + data + ";\n"
             " var s=c.store;s.name=D.name;s.slogan=D.slogan;s.logo='__LOGO__';s.cover=D.cover;s.coverSet=true;s.ramo=D.ramo;\n"
-            " s.address='Santa Rita, Alto Paraná';s.whatsapp='595983879344';s.prep=D.prep;s.etaPad=20;s.minOrder=D.minOrder;s.paused=false;s.allowSched=D.sched;\n"
+            " s.address='Santa Rita, Alto Paraná';s.whatsapp='595982086171';s.prep=D.prep;s.etaPad=20;s.minOrder=D.minOrder;s.paused=false;s.allowSched=D.sched;\n"
             " s.days=[0,1,2,3,4,5,6].map(function(i){return {on:D.sun||i!==0,a:D.hours,b:['','']}});\n"
             " s.ads=[];s.instagram='';s.facebook='';s.upsellCat='';s.loyalty={on:false,every:10};\n"
             " s.coupons=[{code:D.coupon,type:'pct',value:10,min:0,on:true}];s.slides=D.slides;\n"

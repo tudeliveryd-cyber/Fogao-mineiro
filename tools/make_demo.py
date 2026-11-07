@@ -34,7 +34,7 @@ window.TDC_SEED=function(c){
  var s=c.store;
  s.name='Casa Brasa';s.slogan=P('Churrasco, hambúrgueres e pizzas no forno','Parrilla, hamburguesas y pizzas al horno');
  s.logo='__LOGO__';s.cover=U('photo-1644447381290-85358ae625cb',1600);s.coverSet=true;
- s.address='Santa Rita, Alto Paraná';s.whatsapp='595983879344';s.prep=30;s.etaPad=20;s.minOrder=0;s.paused=false;s.allowSched=false;
+ s.address='Santa Rita, Alto Paraná';s.whatsapp='595982086171';s.prep=30;s.etaPad=20;s.minOrder=0;s.paused=false;s.allowSched=false;
  s.days=[0,1,2,3,4,5,6].map(function(){return {on:true,a:['10:00','15:00'],b:['18:00','00:00']}});
  s.ads=[];s.instagram='';s.facebook='';
  s.coupons=[{code:'BIENVENIDO10',type:'pct',value:10,min:0,on:true}];
@@ -82,7 +82,7 @@ window.TDC_SEED=function(c){
  var s=c.store;
  s.name='Farmacia Vida Plena';s.slogan=P('Sua saúde em casa, com entrega rápida','Tu salud en casa, con delivery rápido');
  s.logo='__LOGO__';s.cover=U('photo-1580281657529-557a6abb6387',1600);s.coverSet=true;s.ramo='farmacia';
- s.address='Santa Rita, Alto Paraná';s.whatsapp='595983879344';s.prep=15;s.etaPad=20;s.minOrder=0;s.paused=false;s.allowSched=false;
+ s.address='Santa Rita, Alto Paraná';s.whatsapp='595982086171';s.prep=15;s.etaPad=20;s.minOrder=0;s.paused=false;s.allowSched=false;
  s.days=[0,1,2,3,4,5,6].map(function(){return {on:true,a:['07:00','22:00'],b:['','']}});
  s.ads=[];s.instagram='';s.facebook='';s.upsellCat='';s.loyalty={on:false,every:10};
  s.coupons=[{code:'SALUD10',type:'pct',value:10,min:0,on:true}];
