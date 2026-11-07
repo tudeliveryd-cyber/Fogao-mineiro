@@ -104,6 +104,7 @@ svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stro
 .hero h1{font-family:var(--display);font-weight:900;font-size:clamp(42px,6.6vw,88px);line-height:.98;letter-spacing:-.035em;max-width:11ch;margin-bottom:30px}
 .hero p{font-size:clamp(18px,1.6vw,21px);line-height:1.55;max-width:34em;color:rgba(255,255,255,.88);margin-bottom:40px}
 .hero .ctas{display:flex;flex-wrap:wrap;gap:14px}
+.hero-feat{display:inline-flex;align-items:center;gap:16px;margin-top:34px;padding:14px 20px 14px 14px;border-radius:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);color:#fff;text-decoration:none;max-width:640px;backdrop-filter:blur(6px);transition:background .15s,transform .15s}.hero-feat:hover{background:rgba(255,255,255,.16);transform:translateY(-1px)}.hf-tag{flex:none;background:#fff;color:var(--deep,#2A0F5C);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:6px 10px;border-radius:999px}.hf-txt{display:flex;flex-direction:column;gap:3px;min-width:0}.hf-txt b{font-size:16px;line-height:1.3}.hf-txt span{font-size:14px;color:rgba(255,255,255,.8);line-height:1.35}.hero-feat .i{flex:none;width:20px;height:20px;opacity:.85}@media (max-width:600px){.hero-feat{align-items:flex-start;padding:14px}.hero-feat .i{display:none}}
 .hero .mark{position:absolute;right:-6%;bottom:-14%;width:min(58vw,820px);z-index:0;opacity:.85}
 .hero .where{margin-top:64px;font-size:15px;color:rgba(255,255,255,.75)}
 @media (prefers-reduced-motion:no-preference){
@@ -166,6 +167,7 @@ h2{font-family:var(--display);font-weight:900;font-size:clamp(32px,4.2vw,54px);l
 .about .story h2+p{font-family:var(--display);font-weight:700;font-size:clamp(24px,2.4vw,30px);line-height:1.3;letter-spacing:-.015em}
 .about .sign{margin-top:30px;font-weight:700}
 .about .sign span{display:block;font-weight:400;color:var(--muted);font-size:16px}
+.backed{display:flex;align-items:center;gap:20px;margin-top:34px;padding:20px 22px;border-radius:16px;background:#fff;border:1px solid rgba(76,29,149,.12);max-width:640px}.backed img{height:76px;width:auto;flex:none}.backed b{display:block;font-size:17px;margin-bottom:4px}.backed span{font-size:15px;line-height:1.5;color:var(--muted)}@media (max-width:600px){.backed{flex-direction:column;align-items:flex-start;gap:14px}}
 .about .solo .story{max-width:780px}
 
 /* ---------- steps (real sequence) ---------- */
@@ -293,8 +295,13 @@ footer{text-align:center}footer .flogo{display:block;margin:0 auto 16px}footer p
     <p data-t="h_p">Hacemos aplicaciones y sistemas web para comercios, empresas de delivery e iglesias. Funcionan en el celular y en la computadora, en español y en portugués.</p>
     <div class="ctas">
       <a href="#" class="btn btn-white js-wa"><svg class="i" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-13.4 7.9L3 21l1.1-4.6A9 9 0 1 1 21 12Z"/></svg><span data-t="h_b1">Escribir por WhatsApp</span></a>
-      <a href="#sistemas" class="btn btn-line" data-t="h_b2">Ver los sistemas</a>
+      <a href="catalogo-digital/" class="btn btn-line" data-t="h_b2">Ver el catálogo digital</a>
     </div>
+    <a class="hero-feat" href="catalogo-digital/#rubros">
+      <span class="hf-tag" data-t="hf_tag">Nuevo</span>
+      <span class="hf-txt"><b data-t="hf_t">Catálogo digital con pedidos por WhatsApp</b><span data-t="hf_p">Para restaurantes, tiendas, farmacias y todo tipo de comercio · 30 ejemplos para probar</span></span>
+      <svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
   </div>
 </div>
 
@@ -322,6 +329,7 @@ footer{text-align:center}footer .flogo{display:block;margin:0 auto 16px}footer p
         <p data-t="a_p2">Comencé Tu Delivery solo, con una moto. Cuando la empresa creció, controlar la caja y las comisiones de cada repartidor en papel ya no funcionaba, así que hice el sistema que necesitaba. Como pastor, hice lo mismo con mis sermones: así nació Meu Púlpito.</p>
         <p data-t="a_p3">Hoy desarrollo esos sistemas para otros comercios, empresas e iglesias. Sé lo que es atender un negocio todos los días, y por eso cada sistema tiene que ser simple de usar.</p>
         <div class="sign">Jean Carlos Borges de Araújo<span data-t="a_sign">Fundador de Araújo Tech</span></div>
+        <div class="backed"><img src="img/tu-delivery.png" alt="Tu Delivery"><div><b data-t="bk_t">Con el respaldo de Tu Delivery</b><span data-t="bk_p">Araújo Tech forma parte del grupo de Tu Delivery, empresa de entregas de Santa Rita. Cada sistema se usa primero en un negocio real antes de ofrecerlo.</span></div></div>
       </div>
     </div>
   </div>
@@ -468,7 +476,7 @@ es:{
  n1:"Sistemas",n2:"Quiénes somos",n3:"Cómo trabajamos",n4:"Preguntas",n5:"Pedir presupuesto",
  h1:"Sistemas a la medida de su negocio",
  h_p:"Hacemos aplicaciones y sistemas web para comercios, empresas de delivery e iglesias. Funcionan en el celular y en la computadora, en español y en portugués.",
- h_b1:"Escribir por WhatsApp",h_b2:"Ver los sistemas",h_where:"Desde Santa Rita, Alto Paraná, para Paraguay y Brasil.",
+ h_b1:"Escribir por WhatsApp",h_b2:"Ver el catálogo digital",hf_tag:"Nuevo",hf_t:"Catálogo digital con pedidos por WhatsApp",hf_p:"Para restaurantes, tiendas, farmacias y todo tipo de comercio · 30 ejemplos para probar",hf_tag:"Nuevo",hf_t:"Catálogo digital con pedidos por WhatsApp",hf_p:"Para restaurantes, tiendas, farmacias y todo tipo de comercio · 30 ejemplos para probar",h_where:"Desde Santa Rita, Alto Paraná, para Paraguay y Brasil.",
  s_h:"Sistemas",s_p:"Cada uno nació para resolver un problema real y se usa todos los días. Todos se pueden adaptar a su negocio.",
  ok:"Disponible",dev:"En desarrollo",open:"Abrir",demo:"Ver demostración",mas:"Ver todas las funciones",ask:"Pedir una demostración",soon:"Quiero saber más",
  s_more:"¿Su negocio necesita algo que no está en esta lista? Cuéntenos qué le hace falta.",s_more_b:"Contar mi idea",
@@ -476,7 +484,7 @@ es:{
  a_p1:"Araújo Tech empezó dentro de una empresa de delivery en Santa Rita.",
  a_p2:"Comencé Tu Delivery solo, con una moto. Cuando la empresa creció, controlar la caja y las comisiones de cada repartidor en papel ya no funcionaba, así que hice el sistema que necesitaba. Como pastor, hice lo mismo con mis sermones: así nació Meu Púlpito.",
  a_p3:"Hoy desarrollo esos sistemas para otros comercios, empresas e iglesias. Sé lo que es atender un negocio todos los días, y por eso cada sistema tiene que ser simple de usar.",
- a_sign:"Fundador de Araújo Tech",
+ a_sign:"Fundador de Araújo Tech",bk_t:"Con el respaldo de Tu Delivery",bk_p:"Araújo Tech forma parte del grupo de Tu Delivery, empresa de entregas de Santa Rita. Cada sistema se usa primero en un negocio real antes de ofrecerlo.",
  c_h:"Cómo trabajamos",
  c1:"Conversamos",c1p:"Usted nos cuenta cómo funciona su negocio y qué quiere resolver.",
  c2:"Le mostramos las pantallas",c2p:"Antes de programar, aprueba cómo se va a ver cada pantalla.",
@@ -503,7 +511,7 @@ pt:{
  n1:"Sistemas",n2:"Quem somos",n3:"Como trabalhamos",n4:"Perguntas",n5:"Pedir orçamento",
  h1:"Sistemas sob medida para o seu negócio",
  h_p:"Fazemos aplicativos e sistemas web para comércios, empresas de delivery e igrejas. Funcionam no celular e no computador, em português e em espanhol.",
- h_b1:"Falar no WhatsApp",h_b2:"Ver os sistemas",h_where:"De Santa Rita, Alto Paraná, para o Paraguai e o Brasil.",
+ h_b1:"Falar no WhatsApp",h_b2:"Ver o catálogo digital",hf_tag:"Novo",hf_t:"Catálogo digital com pedidos pelo WhatsApp",hf_p:"Para restaurantes, lojas, farmácias e todo tipo de comércio · 30 exemplos para testar",h_where:"De Santa Rita, Alto Paraná, para o Paraguai e o Brasil.",
  s_h:"Sistemas",s_p:"Cada um nasceu para resolver um problema real e é usado todos os dias. Todos podem ser adaptados ao seu negócio.",
  ok:"Disponível",dev:"Em desenvolvimento",open:"Abrir",demo:"Ver demonstração",mas:"Ver todas as funções",ask:"Pedir uma demonstração",soon:"Quero saber mais",
  s_more:"Seu negócio precisa de algo que não está nesta lista? Conte o que está faltando.",s_more_b:"Contar minha ideia",
@@ -511,7 +519,7 @@ pt:{
  a_p1:"A Araújo Tech começou dentro de uma empresa de delivery em Santa Rita.",
  a_p2:"Comecei a Tu Delivery sozinho, com uma moto. Quando a empresa cresceu, controlar o caixa e as comissões de cada entregador no papel já não funcionava, então fiz o sistema de que precisava. Como pastor, fiz o mesmo com os meus sermões: assim nasceu o Meu Púlpito.",
  a_p3:"Hoje desenvolvo esses sistemas para outros comércios, empresas e igrejas. Sei o que é tocar um negócio todos os dias, e por isso cada sistema tem que ser simples de usar.",
- a_sign:"Fundador da Araújo Tech",
+ a_sign:"Fundador da Araújo Tech",bk_t:"Com o respaldo da Tu Delivery",bk_p:"A Araújo Tech faz parte do grupo da Tu Delivery, empresa de entregas de Santa Rita. Cada sistema é usado primeiro em um negócio real antes de ser oferecido.",
  c_h:"Como trabalhamos",
  c1:"Conversamos",c1p:"Você conta como funciona o seu negócio e o que quer resolver.",
  c2:"Mostramos as telas",c2p:"Antes de programar, você aprova como cada tela vai ficar.",
