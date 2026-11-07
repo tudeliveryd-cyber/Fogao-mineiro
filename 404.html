@@ -3091,6 +3091,7 @@ const plansFor=sys=>PL.plans.filter(p=>(p.sys||'catalogo')===sys);
 const perMonth=p=>p?(p.per==='ano'?Math.round((+p.price||0)/12):(+p.price||0)):0;
 function seedSysPlans(){let ch=false;const add=(o)=>{if(!PL.plans.some(p=>p.id===o.id)){PL.plans.push(o);ch=true}};
  if(!PL.plans.some(p=>p.id==='prof')){const B=PL.plans.find(p=>p.id==='basico'),Pr=PL.plans.find(p=>p.id==='pro'),Pm=PL.plans.find(p=>p.id==='premium');if(B){if(B.n==='Básico')B.n='Esencial';B.siteMode='none';B.site=false}if(Pr){if(/^Profiss?ional$/.test(Pr.n))Pr.n='Crecimiento';Pr.siteMode='none';Pr.site=false}const np={id:'prof',n:'Profesional',price:350000,max:300,siteMode:'incl',site:true};const ip=Pm?PL.plans.indexOf(Pm):PL.plans.length;PL.plans.splice(ip,0,np);if(Pm){Pm.siteMode='incl';Pm.site=true}ch=true}
+ {const pf=PL.plans.find(p=>p.id==='prof'),pm=PL.plans.find(p=>p.id==='premium');if(pm&&!pm.nv){if(pm.n==='Premium')pm.n='VIP';pm.nv=2;if(pf&&pf.n==='Profesional')pf.n='Premium';ch=true}}
  add({id:'pul-mes',sys:'pulpito',n:'Premium Mensual',price:45000,max:0});add({id:'pul-ano',sys:'pulpito',n:'Premium Anual',price:350000,max:0,per:'ano'});add({id:'pul-igl',sys:'pulpito',n:'Premium Iglesia Anual',price:600000,max:0,per:'ano'});
  add({id:'caja-mes',sys:'caja',n:'Mensual',price:0,max:0});add({id:'igl-mes',sys:'iglesia',n:'Mensual',price:0,max:0});return ch}
 function sysChips(){const f=ui.sysf||'all';const cnt=id=>PL.shops.filter(s=>id==='all'||sysOf(s)===id).length;
