@@ -71,7 +71,7 @@ jobs:
           RewriteCond %{HTTP_HOST} ^(www\.)?araujotechsistemas\.com$ [NC]
           RewriteCond %{REQUEST_FILENAME} !-f
           RewriteCond %{REQUEST_FILENAME} !-d
-          RewriteRule ^([a-z0-9][a-z0-9-]+)/?$ /sitio/index.html [L]
+          RewriteRule ^([a-z0-9][a-z0-9-]+)/?$ /sitio/index.php [L]
           </IfModule>
           # END araujotech-sitios
           HT
