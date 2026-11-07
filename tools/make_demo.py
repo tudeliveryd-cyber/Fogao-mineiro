@@ -211,6 +211,16 @@ def main():
           'Farmacia Vida Plena · Demostración · Araújo Tech', 'Farmacia Vida Plena · Catálogo de demostración',
           'https://araujotechsistemas.com/demo-farmacia/', 'Catálogo de demostración de Araújo Tech para farmacias: productos, recetas y delivery por WhatsApp.')
 
+def rubros():
+    import sys
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from demos_rubros import DEMOS, seed_js
+    for d in DEMOS:
+        build(seed_js(d), d['logo'], os.path.join(ROOT, 'araujo-tech-site', d['folder'], 'index.html'),
+              d['title'], d['name'] + ' · Catálogo de demostración',
+              'https://araujotechsistemas.com/' + d['folder'] + '/', d['desc'])
+
 if __name__ == '__main__':
     main()
     casofarma()
+    rubros()
