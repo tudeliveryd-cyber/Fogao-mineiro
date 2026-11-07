@@ -141,6 +141,12 @@ def build(seed_tpl, logo_svg, out, title, ogtitle, url, desc):
         "const sh=curShop(),cu=window.TDC_DEMO?'demo':((sh&&sh.user)||(SHOP===FM?'fogaomineiro':'')),cp=window.TDC_DEMO?'demo':((sh&&sh.pass)||'');")
     rep("<h2>${t('nav_admin')}</h2><p>${esc(st.name)} · ${t('login_sub')}</p></div>",
         "<h2>${t('nav_admin')}</h2><p>${esc(st.name)} · ${t('login_sub')}</p>${window.TDC_DEMO?`<p class=\"demo-hint\">${lang==='pt'?'Demonstração':'Demostración'} · ${lang==='pt'?'Usuário':'Usuario'}: <b>demo</b> · ${lang==='pt'?'Senha':'Contraseña'}: <b>demo</b></p>`:''}</div>")
+    # demo: botões para voltar aos exemplos e ao início do site
+    rep('<span class="spacer"></span>',
+        '<span class="spacer"></span><nav class="dnav">'
+        '<a href="/catalogo-digital/#rubros" class="dn" aria-label="Ver más ejemplos" title="Ver más ejemplos"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span class="dn-t" data-es="Ejemplos" data-pt="Exemplos"></span></a>'
+        '<a href="/" class="dn" aria-label="Inicio" title="Inicio"><svg viewBox="0 0 24 24"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg><span class="dn-t" data-es="Inicio" data-pt="Início"></span></a></nav>')
+    rep("</style>", ".dnav{display:flex;gap:6px}.dn{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px;border-radius:999px;border:1px solid var(--line);color:inherit;text-decoration:none;font-size:13.5px;font-weight:600;white-space:nowrap}.dn:hover{background:var(--line)}.dn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.dn-t::after{content:attr(data-es)}html[lang^=pt] .dn-t::after{content:attr(data-pt)}@media (max-width:520px){.dn{padding:0;width:36px;justify-content:center}.dn-t{display:none}.dnav{gap:4px}}\n</style>")
     rep("</style>", ".urlpill{display:none!important}.demo-hint{margin:6px 0 0;padding:8px 12px;border-radius:10px;background:#FFF4DE;color:#5C3A00;font-size:13px}\n</style>")
     # dados do <head>
     s = re.sub(r'<title>[^<]*</title>', '<title>' + title + '</title>', s, count=1)

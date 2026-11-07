@@ -43,6 +43,7 @@ window.TDC_SEED=function(c){var D={"name": "Lava Ya", "slogan": {"pt": "Lavander
 .daychips{display:flex;gap:6px;flex-wrap:wrap}.busycard.on{border-color:#F1D49A;background:#FFF8EA}.loycard{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:14px;margin:0 0 14px;background:color-mix(in srgb,var(--t-primary,#C2410C) 8%,#fff);border:1px solid color-mix(in srgb,var(--t-primary,#C2410C) 25%,transparent);font-size:14px}.loycard svg{flex:none;color:var(--t-primary,#C2410C)}.loycard>div{flex:1;display:flex;flex-direction:column;gap:6px}.loybar{height:8px;border-radius:99px;background:color-mix(in srgb,currentColor 12%,transparent);overflow:hidden}.loybar i{display:block;height:100%;background:var(--t-primary,#C2410C);border-radius:99px}
 .fxbar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:12px 14px;border-radius:12px;background:color-mix(in srgb,var(--accent,#7C3AED) 7%,transparent);border:1px solid var(--line,#e5e5e5);margin:0 0 14px}.fxbar>div:first-child{display:flex;flex-direction:column;gap:2px;flex:1;min-width:220px}.fxgs{display:flex;flex-direction:column;gap:4px;padding:6px 0}.fxgs small{font-size:12px;opacity:.7}.fxgs b{font-size:18px}
 .sysplans{margin:0 0 18px}.sysplans-h{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:15px}
+.dnav{display:flex;gap:6px}.dn{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px;border-radius:999px;border:1px solid var(--line);color:inherit;text-decoration:none;font-size:13.5px;font-weight:600;white-space:nowrap}.dn:hover{background:var(--line)}.dn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.dn-t::after{content:attr(data-es)}html[lang^=pt] .dn-t::after{content:attr(data-pt)}@media (max-width:520px){.dn{padding:0;width:36px;justify-content:center}.dn-t{display:none}.dnav{gap:4px}}
 .urlpill{display:none!important}.demo-hint{margin:6px 0 0;padding:8px 12px;border-radius:10px;background:#FFF4DE;color:#5C3A00;font-size:13px}
 </style>
 <title>Lava Ya · Demostración · Araújo Tech</title>
@@ -555,7 +556,7 @@ textarea.inp{resize:vertical;min-height:64px}
       <button data-act="view" data-v="platform" id="vPl"></button>
     </div>
     <span class="urlpill">fogaomineiro.araujotechsistemas.com</span>
-    <span class="spacer"></span>
+    <span class="spacer"></span><nav class="dnav"><a href="/catalogo-digital/#rubros" class="dn" aria-label="Ver más ejemplos" title="Ver más ejemplos"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span class="dn-t" data-es="Ejemplos" data-pt="Exemplos"></span></a><a href="/" class="dn" aria-label="Inicio" title="Inicio"><svg viewBox="0 0 24 24"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg><span class="dn-t" data-es="Inicio" data-pt="Início"></span></a></nav>
     <div class="seg" role="group" aria-label="Idioma">
       <button data-act="lang" data-l="es" id="lEs">ES</button>
       <button data-act="lang" data-l="pt" id="lPt">PT</button>

@@ -23,11 +23,18 @@ COLOR = lambda cs: G('co', 'Cor', 'Color', cs)
 NUM = lambda: G('nu', 'Número', 'Número', [(str(n), str(n)) for n in range(35, 45)])
 
 def logo(bg, accent, fg, icon, name, sub, size=30):
+    # encolhe o texto para caber dentro do quadro (o avatar arredonda os cantos)
+    est = lambda txt, fs, ls, k: len(txt) * (fs * k + ls)
+    while size > 14 and est(name, size, 3, 0.72) > 225: size -= 1
+    ss, sl = 13, 5
+    while ss > 9 and est(sub, ss, sl, 0.62) > 225:
+        if sl > 2: sl -= 1
+        else: ss -= 1
     return ("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'>"
             f"<rect width='300' height='200' rx='28' fill='{bg}'/>"
             f"<g fill='none' stroke='{accent}' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'>{icon}</g>"
             f"<text x='150' y='150' text-anchor='middle' font-family='Georgia,serif' font-size='{size}' font-weight='700' fill='{fg}' letter-spacing='3'>{name}</text>"
-            f"<text x='150' y='178' text-anchor='middle' font-family='Arial,sans-serif' font-size='13' fill='{accent}' letter-spacing='5'>{sub}</text></svg>")
+            f"<text x='150' y='178' text-anchor='middle' font-family='Arial,sans-serif' font-size='{ss}' fill='{accent}' letter-spacing='{sl}'>{sub}</text></svg>")
 
 DEMOS = [
  # ---------------- ROPA ----------------
@@ -84,7 +91,7 @@ DEMOS = [
  dict(folder='demo-supermercado', shop='super-familia', ver='sf1', ramo='mercado', name='Super Familia',
   slogan=P('Tudo para sua casa, sem sair dela', 'Todo para tu casa, sin salir de ella'),
   title='Super Familia · Demostración · Araújo Tech', desc='Catálogo de demostración para supermercados y almacenes: productos por kilo, pedido mínimo y delivery.',
-  logo=logo('#14532D', '#FACC15', '#F0FDF4', "<path d='M112 50h12l10 40h40l8-28h-54'/><circle cx='138' cy='104' r='5'/><circle cx='170' cy='104' r='5'/>", 'SUPER FAMILIA', 'SUPERMERCADO', 28),
+  logo=logo('#14532D', '#FACC15', '#F0FDF4', "<path d='M112 50h12l10 40h40l8-28h-54'/><circle cx='138' cy='104' r='5'/><circle cx='170' cy='104' r='5'/>", 'SUPER FAMILIA', 'SUPERMERCADO', 24),
   cover='photo-1604719312566-8912e9227c6a', coupon='FAMILIA5', minOrder=50000,
   theme=TH('#15803D', '#14532D', '#15803D', '#F2F7F3', '#FACC15'),
   cats=[C('alm', 'Mercearia', 'Almacén', 'box'), C('fru', 'Frutas e verduras', 'Frutas y verduras', 'leaf'),
@@ -210,7 +217,7 @@ DEMOS += [
  dict(folder='demo-panaderia', shop='trigo-dorado', ver='td1', ramo='panaderia', name='Trigo Dorado',
   slogan=P('Pães e doces saídos do forno', 'Panes y dulces recién horneados'),
   title='Trigo Dorado · Demostración · Araújo Tech', desc='Catálogo de demostración para panaderías y confiterías: panes, tortas por encargo y delivery.',
-  logo=logo('#3B2412', '#E9B872', '#FFF8EE', "<path d='M150 40v72'/><path d='M150 56c-10-2-16-8-16-16 10 2 16 8 16 16zM150 56c10-2 16-8 16-16-10 2-16 8-16 16zM150 76c-10-2-16-8-16-16 10 2 16 8 16 16zM150 76c10-2 16-8 16-16-10 2-16 8-16 16zM150 96c-10-2-16-8-16-16 10 2 16 8 16 16zM150 96c10-2 16-8 16-16-10 2-16 8-16 16z'/>", 'TRIGO DORADO', 'PANADERÍA · CONFITERÍA', 28),
+  logo=logo('#3B2412', '#E9B872', '#FFF8EE', "<path d='M150 40v72'/><path d='M150 56c-10-2-16-8-16-16 10 2 16 8 16 16zM150 56c10-2 16-8 16-16-10 2-16 8-16 16zM150 76c-10-2-16-8-16-16 10 2 16 8 16 16zM150 76c10-2 16-8 16-16-10 2-16 8-16 16zM150 96c-10-2-16-8-16-16 10 2 16 8 16 16zM150 96c10-2 16-8 16-16-10 2-16 8-16 16z'/>", 'TRIGO DORADO', 'PANADERÍA · CONFITERÍA', 24),
   cover='photo-1568254183919-78a4f43a2877', coupon='PAN10', cards='tiles', hours=['06:00', '20:00'], sun=True, prep=20,
   theme=TH('#B45309', '#3B2412', '#92400E', '#FBF6EF', '#E9B872'),
   cats=[C('pan', 'Pães', 'Panes', 'bread'), C('fac', 'Folhados e doces', 'Facturas y dulces', 'star'),
@@ -449,7 +456,7 @@ DEMOS += [
     ('Brinquedos educativos', 'Juguetes educativos', 'De madeira, a partir de 1 ano', 'De madera, desde 1 año', 'm3', '#C2410C', 'photo-1774464593838-85b320eb7453')]),
  D('demo-libreria', 'punto-y-coma', 'pc1', 'libreria', 'Punto y Coma', P('Papelaria, material escolar e livros', 'Librería, útiles escolares y libros'),
    'Catálogo de demostración para librerías y papelerías: útiles, listas escolares y envío.',
-   logo('#EFF6FF', '#2563EB', '#0F172A', "<path d='M126 46h36l12 12v46h-48z'/><path d='M136 70h28M136 82h28M136 94h18'/>", 'PUNTO Y COMA', 'LIBRERÍA', 30),
+   logo('#EFF6FF', '#2563EB', '#0F172A', "<path d='M126 46h36l12 12v46h-48z'/><path d='M136 70h28M136 82h28M136 94h18'/>", 'PUNTO Y COMA', 'LIBRERÍA', 24),
    'photo-1774878520736-6cacbcce1b7b', 'UTILES10', TH('#2563EB', '#0F172A', '#1D4ED8', '#F4F7FC', '#F59E0B'),
    [C('esc', 'Material escolar', 'Útiles escolares', 'edit'), C('arte', 'Arte e cores', 'Arte y colores', 'palette'), C('ofi', 'Escritório', 'Oficina', 'print'), C('lib', 'Livros', 'Libros', 'book')],
    lambda: [
@@ -465,7 +472,7 @@ DEMOS += [
     ('Arte e cores', 'Arte y colores', 'Lápis, giz e mais', 'Lápices, crayones y más', 'a1', '#1E40AF', 'photo-1760306502820-4cc674e99c0f')]),
  D('demo-optica', 'vision-clara', 'vc1', 'optica', 'Óptica Visión Clara', P('Óculos de grau e de sol', 'Anteojos recetados y de sol'),
    'Catálogo de demostración para ópticas: armazones, lentes y turnos para control de vista.',
-   logo('#F8FAFC', '#0EA5E9', '#0F172A', "<circle cx='130' cy='76' r='16'/><circle cx='170' cy='76' r='16'/><path d='M146 74c3-3 5-3 8 0M114 72l-8-8M186 72l8-8'/>", 'VISIÓN CLARA', 'ÓPTICA', 32),
+   logo('#F8FAFC', '#0EA5E9', '#0F172A', "<circle cx='130' cy='76' r='16'/><circle cx='170' cy='76' r='16'/><path d='M146 74c3-3 5-3 8 0M114 72l-8-8M186 72l8-8'/>", 'VISIÓN CLARA', 'ÓPTICA', 26),
    'photo-1534078477103-9f6a18b3a5e2', 'VISION10', TH('#0284C7', '#0F172A', '#0369A1', '#F3F7FA', '#0EA5E9'),
    [C('arm', 'Armações', 'Armazones', 'eye'), C('len', 'Lentes', 'Lentes', 'sparkle'), C('serv', 'Serviços', 'Servicios', 'check')],
    lambda: [
@@ -511,7 +518,7 @@ DEMOS += [
     ('Rações por saco', 'Balanceados por bolsa', 'Entrega na sua chácara', 'Entrega en tu chacra', 'r1', '#365314', 'photo-1706384447818-ae16960ebfba')], prep=60),
  D('demo-repuestos', 'motopiezas', 'mp2', 'repuestos', 'MotoPiezas Express', P('Peças e acessórios para motos', 'Repuestos y accesorios para motos'),
    'Catálogo de demostración para casas de repuestos: modelos, medidas y pedidos por WhatsApp.',
-   logo('#0A0A0A', '#EF4444', '#FAFAFA', "<circle cx='126' cy='92' r='14'/><circle cx='176' cy='92' r='14'/><path d='M126 92l18-26h18l14 26M144 66l-6-10h-10'/>", 'MOTOPIEZAS', 'REPUESTOS · ACCESORIOS', 32),
+   logo('#0A0A0A', '#EF4444', '#FAFAFA', "<circle cx='126' cy='92' r='14'/><circle cx='176' cy='92' r='14'/><path d='M126 92l18-26h18l14 26M144 66l-6-10h-10'/>", 'MOTOPIEZAS', 'REPUESTOS · ACCESORIOS', 28),
    'photo-1623220988124-bcd1bad9a408', 'MOTO10', TH('#DC2626', '#0A0A0A', '#B91C1C', '#F6F6F6', '#EF4444'),
    [C('cas', 'Capacetes', 'Cascos', 'star'), C('mot', 'Motor', 'Motor', 'wrench'), C('acc', 'Acessórios', 'Accesorios', 'tag')],
    lambda: [
@@ -555,7 +562,7 @@ DEMOS += [
     ('Plano família', 'Plan familiar', 'Roupa limpa o mês todo', 'Ropa limpia todo el mes', 'p1', '#075985', 'photo-1782908199925-15d46fd1d9d4')], sched=True),
  D('demo-grafica', 'imprenta-color', 'ic1', 'grafica', 'Imprenta Color', P('Impressão rápida e personalizada', 'Impresión rápida y personalizada'),
    'Catálogo de demostración para gráficas e imprentas: tarjetas, cantidades, archivos por WhatsApp.',
-   logo('#111827', '#F472B6', '#F9FAFB', "<rect x='122' y='60' width='56' height='30' rx='4'/><path d='M134 60V42h32v18M134 82h32v22h-32z'/>", 'IMPRENTA COLOR', 'GRÁFICA', 28),
+   logo('#111827', '#F472B6', '#F9FAFB', "<rect x='122' y='60' width='56' height='30' rx='4'/><path d='M134 60V42h32v18M134 82h32v22h-32z'/>", 'IMPRENTA COLOR', 'GRÁFICA', 22),
    'photo-1758183961426-88d64eb5f787', 'IMPRIME10', TH('#DB2777', '#111827', '#BE185D', '#F7F6F8', '#F472B6'),
    [C('tar', 'Cartões', 'Tarjetas', 'ticket'), C('imp', 'Impressão', 'Impresiones', 'print'), C('tex', 'Estampados', 'Estampados', 'shirt')],
    lambda: [
@@ -565,8 +572,8 @@ DEMOS += [
     pr('i2', 'imp', 'Impressão de documentos', 'Impresión de documentos', 'Por folha, P&B ou colorido.', 'Por hoja, B/N o color.', 1000, 'photo-1624567881801-a5a85867d990', g=[G('co', 'Cor', 'Color', [('Preto e branco', 'Blanco y negro'), ('Colorido', 'Color', 1500)])]),
     pr('e1', 'tex', 'Camisetas estampadas', 'Remeras estampadas', 'Serigrafia com seu logo. Mínimo 10.', 'Serigrafía con tu logo. Mínimo 10.', 55000, 'photo-1773525912476-213bff96b8a4', best=True, g=[TALLA()]),
    ],
-   [('Cartões de visita', 'Tarjetas personales', 'Envie seu arquivo pelo WhatsApp', 'Mandá tu archivo por WhatsApp', 't1', '#111827', 'photo-1777652918753-d66882b15391'),
-    ('Camisetas para sua empresa', 'Remeras para tu empresa', 'Serigrafia a partir de 10 unidades', 'Serigrafía desde 10 unidades', 'e1', '#9D174D', 'photo-1773525912431-ee1eff5e1ab9')]),
+   [('Cartões de visita', 'Tarjetas personales', 'Envie seu arquivo pelo WhatsApp', 'Mandá tu archivo por WhatsApp', 't1', '#111827', 'photo-1777652918682-dec5c79d1301'),
+    ('Camisetas para sua empresa', 'Remeras para tu empresa', 'Serigrafia a partir de 10 unidades', 'Serigrafía desde 10 unidades', 'e1', '#9D174D', 'photo-1744298975124-58594b6d742b')]),
  D('demo-construccion', 'obra-total', 'ot1', 'construccion', 'Obra Total', P('Materiais de construção com entrega na obra', 'Materiales de construcción con entrega en obra'),
    'Catálogo de demostración para corralones y materiales de construcción: unidades, cantidades y presupuestos.',
    logo('#1C1917', '#F59E0B', '#FAFAF9', "<rect x='120' y='78' width='28' height='14'/><rect x='152' y='78' width='28' height='14'/><rect x='136' y='60' width='28' height='14'/><rect x='120' y='96' width='60' height='10'/>", 'OBRA TOTAL', 'MATERIALES DE CONSTRUCCIÓN', 34),
