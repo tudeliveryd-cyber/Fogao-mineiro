@@ -55,5 +55,30 @@ async function waitImages(p) {
     await p.context().close();
     console.log('ok', d.id);
   }
+  // Todas as demos por ramo: tela do celular (para o manual) + lista de fotos que não carregaram
+  const RUB = path.join(RAW, 'rubros'); fs.mkdirSync(RUB, { recursive: true });
+  const broken = [];
+  const all = fs.readdirSync(path.join(ROOT, 'araujo-tech-site')).filter(x => x.startsWith('demo')).sort();
+  for (const dir of all) {
+    const p = await (await b.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true })).newPage();
+    await p.goto('file://' + path.join(ROOT, 'araujo-tech-site', dir, 'index.html'));
+    await p.addStyleTag({ content: '#top{display:none!important}' });
+    await waitImages(p);
+    await p.screenshot({ path: path.join(RUB, dir + '.jpg'), type: 'jpeg', quality: 82 });
+    await p.evaluate(() => { const s = document.querySelector('.cbody'); window.scrollTo(0, (s ? s.getBoundingClientRect().top + scrollY : 500) + 380); });
+    await p.waitForTimeout(400); await waitImages(p);
+    await p.screenshot({ path: path.join(RUB, dir + '-produtos.jpg'), type: 'jpeg', quality: 82 });
+    // percorre a página inteira para carregar todas as fotos e testa cada uma
+    const bad = await p.evaluate(async () => {
+      for (let y = 0; y < document.body.scrollHeight; y += 600) { window.scrollTo(0, y); await new Promise(r => setTimeout(r, 150)); }
+      document.querySelectorAll('img').forEach(i => (i.loading = 'eager'));
+      await Promise.all([...document.images].map(i => (i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; setTimeout(r, 8000); }))));
+      return [...document.images].filter(i => /unsplash/.test(i.src) && i.naturalWidth === 0).map(i => i.src.split('?')[0]);
+    });
+    bad.forEach(u => broken.push(dir + ' ' + u));
+    await p.context().close();
+    console.log('ok', dir, bad.length, 'fotos com erro');
+  }
+  fs.writeFileSync(path.join(RUB, 'fotos-com-erro.txt'), broken.join('\n') + '\n');
   await b.close();
 })();
