@@ -120,7 +120,7 @@ EXTRA = {'demo': ['restaurante'], 'demo-farmacia': ['farmacia']}
 def build(seed_tpl, logo_svg, out, title, ogtitle, url, desc):
     s = open(SRC, encoding='utf-8').read()
     import urllib.parse
-    logo = "data:image/svg+xml," + urllib.parse.quote(logo_svg, safe='')
+    logo = logo_svg if logo_svg.startswith('data:') else "data:image/svg+xml," + urllib.parse.quote(logo_svg, safe='')
     seed = seed_tpl.replace('__LOGO__', logo)
     n = 0
     def rep(a, b):
@@ -186,6 +186,23 @@ def copiar_admin():
     os.makedirs(ed, exist_ok=True)
     shutil.copyfile(os.path.join(ROOT, 'araujo-tech-site', 'sitio', 'editar', 'index.html'), os.path.join(ed, 'index.html'))
 
+# Demo personalizada para a Casofarma (prospecto): mesmo catálogo de farmácia, com o logo e as cores deles.
+def casofarma():
+    import base64
+    lg = 'data:image/jpeg;base64,' + base64.b64encode(open(os.path.join(ROOT, 'tools', 'logos', 'casofarma-quad.jpg'), 'rb').read()).decode()
+    seed = (FARM_SEED.replace("window.TDC_SHOP='vida-plena'", "window.TDC_SHOP='casofarma'").replace("TDC_SEED_V='vp1'", "TDC_SEED_V='cf1'")
+        .replace("s.name='Farmacia Vida Plena';s.slogan=P('Sua saúde em casa, com entrega rápida','Tu salud en casa, con delivery rápido');",
+                 "s.name='Casofarma';s.slogan=P('Cuidando da sua saúde!','¡Cuidando de tu salud!');")
+        .replace("c.theme={primary:'#0F766E',secondary:'#0B3B36',button:'#0B3B36',text:'#0F1F1D',bg:'#FFFFFF',price:'#0F766E',promo:'#16A34A',highlight:'#14B8A6',card:'#F3F8F7',header:'#0B3B36'};",
+                 "c.theme={primary:'#2E43A0',secondary:'#1E2C6E',button:'#2E43A0',text:'#141B3A',bg:'#FFFFFF',price:'#2E43A0',promo:'#D63A2B',highlight:'#D63A2B',card:'#F4F6FC',header:'#1E2C6E'};")
+        .replace("color:'#0B3B36',img:U('photo-1707129785947", "color:'#1E2C6E',img:U('photo-1707129785947")
+        .replace("color:'#134E4A',img:U('photo-1615486511484", "color:'#B32E22',img:U('photo-1615486511484")
+        .replace("code:'SALUD10'", "code:'CASOFARMA10'"))
+    assert "s.name='Casofarma'" in seed and "#2E43A0" in seed and 'cf1' in seed
+    build(seed, lg, os.path.join(ROOT, 'araujo-tech-site', 'demo-casofarma', 'index.html'),
+          'Casofarma · Catálogo digital · Demostración', 'Casofarma · Catálogo digital',
+          'https://araujotechsistemas.com/demo-casofarma/', 'Demostración del catálogo digital de Casofarma: productos, pedidos por WhatsApp y delivery.')
+
 def main():
     copiar_admin()
     build(SEED, LOGO_SVG, OUT, 'Casa Brasa · Demostración · Araújo Tech', 'Casa Brasa · Catálogo de demostración',
@@ -196,3 +213,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    casofarma()
