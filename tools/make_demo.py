@@ -181,6 +181,10 @@ def copiar_admin():
     for f in ('favicon.png', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png'):
         shutil.copyfile(os.path.join(ROOT, 'admin', f), os.path.join(pd, f))
     print('ok painel copiado')
+    # Editor do site também no subdomínio do catálogo: o cliente que está no painel entra direto, sem novo login.
+    ed = os.path.join(ROOT, 'sitio', 'editar')
+    os.makedirs(ed, exist_ok=True)
+    shutil.copyfile(os.path.join(ROOT, 'araujo-tech-site', 'sitio', 'editar', 'index.html'), os.path.join(ed, 'index.html'))
 
 def main():
     copiar_admin()
